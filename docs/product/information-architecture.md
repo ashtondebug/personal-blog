@@ -107,7 +107,7 @@ graph LR
 | 事项 | 影响 | 标记 |
 | --- | --- | --- |
 | 默认语言是否加前缀 | 全站 URL、Waline path、搜索索引、canonical | 🔵 |
-| 仓库名 / `base` 路径 | 所有静态资源与内链前缀 | 🔵 |
+| 仓库名与 `base` | 所有静态资源与内链前缀 | Confirmed：`personal-blog` / `/personal-blog`（2026-11-26） |
 | Knowledge 层级深度上限 | 路由与目录组件复杂度 | 🟡 |
 | 是否提供 RSS | 页脚与 SEO | 🔵 |
 | 末尾斜杠策略 | 所有内链与评论 path | 🟡 |

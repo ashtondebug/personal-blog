@@ -18,9 +18,9 @@
 | ID | 事项 | 类型 | 影响面 | 何时必须解决 | 状态 | 关联 |
 | --- | --- | --- | --- | --- | --- | --- |
 | TD-01 | 站点名称未定（空间概念方向） | 待验证 | `site`、标题、OG、PWA `name`、logo、仓库名 | Phase 1 创建配置前 | Open | [R-01](../docs/risks-and-validation.md) |
-| TD-02 | 仓库名 / `base` 未定 | 待验证 | 全站内链、评论 path、搜索索引、PWA `start_url` | Phase 1 创建配置前 | Open | [R-02](../docs/risks-and-validation.md) |
+| TD-02 | 仓库名已定 `personal-blog`；`base` 尚未写入配置 | 债务 | 全站内链、评论 path、搜索索引、PWA `start_url` | Phase 1 创建配置时落地 | Open | [R-02](../docs/risks-and-validation.md) |
 | TD-03 | 默认语言是否加 URL 前缀未定 | 待验证 | 全站 URL、评论 key、canonical | Phase 3（多语言）前 | Open | [R-03](../docs/risks-and-validation.md) |
-| TD-04 | 仓库可见性与账号计划未核对 | 风险 | Pages 是否可用 | Phase 1 | Open | [R-04](../docs/risks-and-validation.md) |
+| TD-04 | 仓库可见性已定为 Public（Pages 可用） | 风险 | Pages 是否可用 | Phase 1 | Closed（2026-11-26） | [R-04](../docs/risks-and-validation.md) |
 | TD-05 | 尾斜杠与 `build.format` 策略未定 | 待验证 | 内链一致性、评论 key | Phase 3 前 | Open | [R-05](../docs/risks-and-validation.md) |
 | TD-06 | 浏览量方案未验证 | 待验证 | 是否展示浏览数 | Phase 6/8 | Open | [分析](../docs/integrations/analytics.md) |
 | TD-07 | 点赞是否等同 Waline `reaction` 未确认 | 待验证 | 点赞实现或彻底弃用 | Phase 7 前 | Open | [R-08](../docs/risks-and-validation.md) |

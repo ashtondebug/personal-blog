@@ -58,6 +58,6 @@ node scripts/check-docs.mjs
 
 ## 当前起点
 
-1. 先定 P0 未定项：站点名、仓库名/`base`、默认语言前缀、尾斜杠策略、仓库可见性 —— 见 [风险清单](docs/risks-and-validation.md) §1。
+1. 先定 P0 未定项：站点名、默认语言前缀、尾斜杠策略（仓库已定 `ashtondebug/personal-blog`，`base = '/personal-blog'`）—— 见 [风险清单](docs/risks-and-validation.md) §1。
 2. 然后从 [路线图](plans/active/000-initial-implementation-roadmap.md) 的 Phase 1 开始；不得跳阶段。
 3. `FOR_AGENT.md`（本地任务书）不入库，已在 `.gitignore` 排除；不要引用或推送它。

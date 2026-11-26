@@ -1,4 +1,4 @@
-﻿# 部署架构
+# 部署架构
 
 > **用途**：说明构建、发布、域名与路径的完整链路，以及 GitHub Pages 的硬限制如何约束本站设计。改构建配置、发布流程、`base`、域名前必读。
 > **状态**：Confirmed（GitHub Pages + Actions）+ Proposed（工作流细节）+ Needs Validation（仓库名与 `base`）
@@ -33,6 +33,7 @@ flowchart LR
 
 配置了 `base` 却不给内链加前缀，会造成全站 404；反之去掉 `base` 后残留前缀，同样 404。因此：
 
+- **当前仓库**：`ashtondebug/personal-blog`（Public，2026-11-26 定案），因此 `site = 'https://ashtondebug.github.io'`、`base = '/personal-blog'`。
 - 站内链接一律由框架/工具函数生成（见 [路由与 i18n](./routing-and-i18n.md) 与 [前端架构 §5](./frontend-architecture.md)）。
 - 仓库名 = `base` 值，两者必须一致；仓库名一旦改动，所有已分享链接与 Waline `path` 全部失效 → 这是 [技术债](../../plans/tech-debt.md) 中优先级最高的未定项之一。
 - 自定义域名切换是一次性迁移：改 `site`、删 `base`、加 `public/CNAME`、更新所有外链与 OG URL，并考虑旧路径重定向（`Needs Validation`）。
