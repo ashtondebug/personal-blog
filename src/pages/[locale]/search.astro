@@ -10,7 +10,7 @@ export function getStaticPaths() {
 
 const locale = Astro.params.locale as Locale;
 ---
-<BaseLayout locale={locale} path="search" title={t(locale, 'search.label')}>
+<BaseLayout locale={locale} path="search" title={t(locale, 'search.label')} noindex>
   <div class="u-container search-page">
     <h1>{t(locale, 'search.label')}</h1>
     <SearchOverlay locale={locale} mode="page" />

@@ -51,7 +51,9 @@
 
 ## 6. 安全与供应链
 
-- 定期审计（`npm audit` 或等价）并把结论记入 [技术债](../../plans/tech-debt.md)。
+- 定期审计，命令必须是：`npm audit --omit=dev --registry=https://registry.npmjs.org`。
+  - **原因**：本机默认镜像（registry.npmmirror.com）未实现 `/-/npm/v1/security/*`，直接 `npm audit` 会 `[NOT_IMPLEMENTED]`。
+  - 2026-11-26 审计结果：`@waline/client <= 3.16.2` 有 critical 存储型 XSS（GHSA-crj3-q72p-ggqm，无修复版本）。评论服务端未配置时不受影响；**启用评论前必须解决**（TD-35）。
 - 不使用来源不明的包；不安装 `postinstall` 脚本可疑的包（安装时注意警告）。
 - 依赖配置中不得出现密钥；密钥只通过 CI 环境变量或服务端配置注入。
 - 不允许把 `dist/`、`node_modules/` 提交进仓库。

@@ -47,6 +47,7 @@ plans/
 | [008 · 评论与点赞（前端）](./completed/008-phase-8-comments-frontend.md) | 部分完成（2026-11-26） | Waline 按需挂载、评论 key 规则、点赞=reaction；服务端待定 |
 | [009 · PWA](./completed/009-phase-9-pwa.md) | 已完成（2026-11-26） | 图标、manifest、构建期生成的 SW、版本化缓存、注册 |
 | [010 · 首页二次元主视觉](./completed/010-homepage-acg-style.md) | 已完成（2026-11-26，插画待补） | 漫画式主视觉、强调色限定首页、对比度实测、插画槽位 |
+| [011 · SEO / 隐私 / 安全](./completed/011-phase-10-seo-privacy-security.md) | 已完成（2026-11-26） | keywords/OG/sitemap/robots、安全自动检查、依赖审计发现 critical 漏洞 |
 
 ## 4. 计划的生命周期
 

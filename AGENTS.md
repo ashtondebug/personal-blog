@@ -1,9 +1,9 @@
 # 项目导航（AGENTS.md）
 
 简约文艺风格的多语言个人博客 **The Commons**。Astro + TypeScript + Markdown，托管 GitHub Pages，评论走 Waline 外部服务。
-当前阶段：**Phase 9 已完成（PWA：图标、manifest、构建期生成的 SW、版本化缓存）**，首页已按作者要求改为二次元主视觉（仅首页允许强调色，[ADR-0011](docs/decisions/0011-home-hero-acg-style.md)）。剩余：Phase 10（SEO/隐私/安全）、Phase 12（最终验收）；Phase 8 评论服务端待定。
+当前阶段：**Phase 10 已完成（SEO 收尾、安全自动检查、依赖审计）**。⚠️ 审计发现 `@waline/client` 有 critical 存储型 XSS 且无修复版本——**评论服务端启用前必须先解决**（见 [Phase 10 报告](plans/completed/011-phase-10-seo-privacy-security.md) §5，TD-35）。剩余 Phase 12（最终验收）。
 
-常用命令：`npm run build`、`npm run dev`、`npm run check:docs`、`npm run check:contrast`、`npm run check:i18n`（后者需先 build）。受限环境跑构建需 `ASTRO_TELEMETRY_DISABLED=1`。
+常用命令：`npm run build`、`npm run dev`、`npm run check:docs`、`npm run check:contrast`、`npm run check:i18n`、`npm run check:security`（后两者需先 build）。受限环境跑构建需 `ASTRO_TELEMETRY_DISABLED=1`。
 
 ## 阅读顺序
 
@@ -61,6 +61,6 @@ node scripts/check-docs.mjs
 ## 当前起点
 
 1. URL 策略（全前缀 + 尾斜杠 always）、`base=/personal-blog`、站点名（The Commons）均已定案，见 [ADR-0008](docs/decisions/0008-url-strategy.md) 与 `src/config/site.ts`；不得擅自改动。
-2. 下一步做 Phase 10（SEO/隐私/安全），然后 Phase 12（最终验收）。首页的强调色是**已批准的例外**，只限首页；想扩大到内页必须先改 [ADR-0011](docs/decisions/0011-home-hero-acg-style.md)。Phase 8 的服务端收尾等作者选型，音乐与首页插画等作者提供素材。
+2. 下一步做 Phase 12（最终验收）。**启用评论前先解决 TD-35（Waline critical 漏洞）**，这是硬门槛。首页强调色是已批准例外，扩大范围需新 ADR（[ADR-0011](docs/decisions/0011-home-hero-acg-style.md)）。音乐与首页插画等作者提供素材。
 3. 写文章：`src/content/blog/{zh-CN|zh-TW|en|ja}/<slug>.md`，字段见 [数据模型](docs/architecture/data-models.md)；构建期会自动校验语言目录、`translationKey` 与内部链接。
 3. `FOR_AGENT.md`（本地任务书）不入库，已在 `.gitignore` 排除；不要引用或推送它。

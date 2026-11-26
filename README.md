@@ -11,9 +11,11 @@
 
 ## 当前状态
 
-**Phase 9：PWA（已完成）**——图标、manifest、构建期生成的 Service Worker（版本化缓存，HTML 网络优先）、生产环境注册；**首页已改为二次元主视觉**（漫画网点/速度线/月牙，仅首页使用强调色 `#22d3ee`）。
+**Phase 10：SEO / 隐私 / 安全（已完成）**——`meta keywords`、OG/Twitter 卡片、`robots.txt`、`sitemap.xml`（含 hreflang alternate）、搜索页 `noindex`，以及构建产物的安全自动检查（外链属性、混合内容、内联事件、第三方脚本）。
 
-此前已完成：八大页面、搜索、TOC/进度/分享、灯箱/热力图/时间轴/播放器（待音乐文件）、评论前端（待服务端）、四语言元信息与 404。**尚未开始**：SEO/隐私/安全收尾、最终验收。
+⚠️ **依赖审计发现阻塞项**：`@waline/client <= 3.16.2` 存在 critical 存储型 XSS（GHSA-crj3-q72p-ggqm），无修复版本。评论服务端未配置时不受影响；**启用评论前必须先解决**（[详情](plans/completed/011-phase-10-seo-privacy-security.md)）。
+
+此前已完成：八大页面、搜索、TOC/进度/分享、灯箱/热力图/时间轴、PWA、评论前端、首页二次元主视觉（打字机句子）。**剩余**：Phase 12 最终验收。
 
 写文章：在 `src/content/blog/<语言>/<slug>.md` 新建文件，字段见 [数据模型](docs/architecture/data-models.md)。
 

@@ -50,6 +50,8 @@
 | TD-31 | 未配置评论服务端时，构建产物仍会留下未被引用的评论 JS/CSS chunk | 债务 | 构建体积（非运行时） | 需要瘦身时 | Open | [Phase 8 报告](./completed/008-phase-8-comments-frontend.md) |
 | TD-32 | 评论服务端上线后需补：联通测试、隐私说明、评论数据导出流程 | 待验证 | 评论区可用性与合规 | 服务端选定后 | Open | [Waline](../docs/integrations/waline.md) |
 | TD-33 | 首页主视觉背景插画待作者提供（当前用 CSS 几何图形占位） | 待验证 | 首页二次元观感 | 作者交付素材时 | Open | [Phase 10 报告](./completed/010-homepage-acg-style.md) |
+| TD-34 | `npm audit` 在本机镜像不可用，需显式指定官方 registry；未进 CI | 债务 | 依赖安全可观测性 | 建立 CI 审计时（可容忍失败或换镜像） | Open | [依赖策略](../docs/engineering/dependency-policy.md) |
+| TD-35 | **Waline 客户端 critical 存储型 XSS，无修复版本**（GHSA-crj3-q72p-ggqm） | 风险 | 评论启用后的访问者安全 | **启用评论前必须解决** | Open（阻塞） | [Phase 10 报告](./completed/011-phase-10-seo-privacy-security.md) |
 
 ## 3. 维护规则
 

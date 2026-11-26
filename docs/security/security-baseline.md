@@ -57,7 +57,17 @@ GitHub Pages 对自定义响应头的支持有限（`Needs Validation`：需按�
 - 分支保护与强制审查：个人项目可省略，但 `main` 必须可构建。
 - 定期检查仓库协作者与 token 权限。
 
-## 8. 发布前安全清单
+## 8. 发布前安全清单（自动化 + 人工）
+
+自动检查（CI 每次构建执行）：`node scripts/check-security.mjs`
+
+- 外链是否带 `rel="noopener"`
+- 是否出现 `http://` 资源（混合内容）
+- 是否出现内联事件处理器（`onclick=` 等）
+- 是否引用第三方 `<script src="http...">`
+- `manifest` 与 `sw.js` 是否存在
+
+人工检查：
 
 - [ ] 产物中搜索 `key`、`token`、`secret`、`password`、数据库连接串 → 无命中。
 - [ ] 无 `http://` 资源。
@@ -65,3 +75,11 @@ GitHub Pages 对自定义响应头的支持有限（`Needs Validation`：需按�
 - [ ] 新增第三方脚本已评估并记录。
 - [ ] 依赖审计无未处理的高危项。
 - [ ] 评论管理凭据未出现在仓库任何文件中。
+
+## 9. 已知依赖漏洞（2026-11-26）
+
+| 依赖 | 漏洞 | 影响 | 当前处置 |
+| --- | --- | --- | --- |
+| `@waline/client <= 3.16.2` | GHSA-crj3-q72p-ggqm：评论编辑预览的存储型 XSS（critical） | 仅在启用评论后暴露 | **评论服务端未配置 → 客户端不加载**；启用评论前必须解决（TD-35） |
+
+审计命令：`npm audit --omit=dev --registry=https://registry.npmjs.org`（本机镜像不支持审计接口）。

@@ -12,7 +12,8 @@
     "preview": "astro preview",
     "check:docs": "node scripts/check-docs.mjs",
     "check:contrast": "node scripts/check-contrast.mjs",
-    "check:i18n": "node scripts/check-i18n.mjs"
+    "check:i18n": "node scripts/check-i18n.mjs",
+    "check:security": "node scripts/check-security.mjs"
   },
   "dependencies": {
     "@waline/client": "^3.16.2",

@@ -34,6 +34,8 @@ interface Props {
   noindex?: boolean;
   /** 是否进入 Pagefind 搜索索引（只有内容详情页为 true，列表页不进索引以免重复命中） */
   indexable?: boolean;
+  /** 关键词（来自分类与标签），用于 meta keywords */
+  keywords?: string[];
 }
 
 const {
@@ -47,6 +49,7 @@ const {
   showAlternates = true,
   noindex = false,
   indexable = false,
+  keywords,
 } = Astro.props;
 
 // 内容完整性门禁：任何页面构建都会触发一次（模块内缓存）
@@ -60,6 +63,9 @@ const available = availableLocales ?? LOCALE_CODES;
 
 // canonical：使用实际路径（已包含 base），保证与 URL 一字不差
 const canonical = new URL(Astro.url.pathname, Astro.site);
+
+// 社交分享图：默认一张自绘的站点图；内容页未来若有封面可覆盖
+const ogImage = new URL(`${import.meta.env.BASE_URL}og-default.png`, Astro.site).href;
 
 // hreflang 只指向真实存在的语言版本，且用绝对地址；内容页按 alternatePaths 取真实 slug
 const absolute = (code: Locale) =>
@@ -77,6 +83,7 @@ const xDefaultHref = absolute(DEFAULT_LOCALE);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{pageTitle}</title>
     <meta name="description" content={pageDescription} />
+    {keywords && keywords.length > 0 && <meta name="keywords" content={keywords.join(', ')} />}
     <link rel="canonical" href={canonical.href} />
     <link rel="icon" href={`${import.meta.env.BASE_URL}favicon.svg`} type="image/svg+xml" />
     <link rel="apple-touch-icon" href={`${import.meta.env.BASE_URL}icons/apple-touch-icon-180.png`} />
@@ -99,6 +106,12 @@ const xDefaultHref = absolute(DEFAULT_LOCALE);
     <meta property="og:description" content={pageDescription} />
     <meta property="og:locale" content={definition.ogLocale} />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical.href} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDescription} />
+    <meta name="twitter:image" content={ogImage} />
     <script is:inline>
       // 首屏绘制前决定主题，避免闪白/闪黑（docs/design/color-and-theme.md）
       (function () {

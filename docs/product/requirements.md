@@ -144,8 +144,8 @@
 
 | ID | 需求 | 状态 |
 | --- | --- | --- |
-| REQ-SEO-01 | 基础 SEO：独立页面标题、Meta Description、Meta Keywords、Canonical、四语言元信息 | ✅ |
-| REQ-SEO-02 | 不扩展成未经确认的复杂 SEO 系统（如自动聚合页、结构化数据矩阵） | ✅ |
+| REQ-SEO-01 | 基础 SEO：独立页面标题、Meta Description、Meta Keywords、Canonical、四语言元信息 | ✅ 已实现（另含 og:url/og:image/twitter 卡片与 sitemap/robots，见 [Phase 10 报告](../../plans/completed/011-phase-10-seo-privacy-security.md)） |
+| REQ-SEO-02 | 不扩展成未经确认的复杂 SEO 系统（如自动聚合页、结构化数据矩阵） | ✅ 遵守：sitemap 仅含站点级页面与内容详情页；未加结构化数据与聚合页 |
 | REQ-PRIV-01 | 不公开真实姓名、学校、班级、住址、私人联系方式 | ✅ |
 | REQ-PRIV-02 | 不编造个人资料 | ✅ |
 | REQ-PRIV-03 | 前端不暴露 API 密钥、数据库凭据 | ✅ |

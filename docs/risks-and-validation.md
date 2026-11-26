@@ -34,6 +34,7 @@
 | R-10 | 中文字体策略（系统栈 / 子集化） | 首屏性能、视觉统一度 | 子集化体积实测 + 观感对比 | Needs Validation |
 | R-11 | 高清图外置存储方案 | Gallery 可用性、成本、稳定性 | 候选对比（[媒体存储](./integrations/media-storage.md)） | Needs Validation |
 | R-12 | 音乐体积 vs Pages 限制 | 播放器能否实现、是否压缩 | 体积预算实测 | Needs Validation |
+| R-23 | **Waline 客户端存在 critical 存储型 XSS**（GHSA-crj3-q72p-ggqm，`@waline/client <= 3.16.2`，无修复版本） | 评论启用后的访问者安全 | 上游修复 / 暂缓启用 / 换系统：需作者决策，见 [报告](../plans/completed/011-phase-10-seo-privacy-security.md) §5 | **阻塞（评论启用前必须解决）** |
 
 ## 3. P2：实现期需注意的技术风险
 

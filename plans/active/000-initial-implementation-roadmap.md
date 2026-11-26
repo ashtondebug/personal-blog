@@ -25,7 +25,7 @@
 | 7 | 交互功能 | 快捷键、灯箱、热力图、时间轴、音乐播放器 | 5、6 | ✅ 已完成（2026-11-26，[报告](../completed/007-phase-7-interactions.md)；音乐待作者提供文件） |
 | 8 | Waline 与第三方服务 | 评论、留言板、条件性浏览量/点赞 | 3、5 | 部分完成（2026-11-26：[前端就绪](../completed/008-phase-8-comments-frontend.md)；服务端待定、点赞=reaction 已定） |
 | 9 | PWA | Manifest、Service Worker、更新机制 | 2、6 | ✅ 已完成（2026-11-26，[报告](../completed/009-phase-9-pwa.md)；真机离线验证留到 Phase 12） |
-| 10 | SEO、隐私、安全 | meta/canonical/hreflang、隐私与安全清单落地 | 5、3 | 未开始 |
+| 10 | SEO、隐私、安全 | meta/canonical/hreflang、隐私与安全清单落地 | 5、3 | ✅ 已完成（2026-11-26，[报告](../completed/011-phase-10-seo-privacy-security.md)；含全部署阻塞项） |
 | 11 | 自动化部署 | 生产部署工作流、发布冒烟 | 1 且全站可构建 | 已完成首版（2026-11-26：`deploy.yml` 上线成功，冒烟待流程化） |
 | 12 | 最终验收 | 全量验收、性能实测、文档一致性 | 全部 | 未开始 |
 
