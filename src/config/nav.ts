@@ -16,7 +16,7 @@ export interface NavItem {
 /** 主导航顺序与信息架构一致（guestbook 放页脚） */
 export const PRIMARY_NAV: NavItem[] = [
   { key: 'nav.home', path: '', enabled: true },
-  { key: 'nav.blog', path: 'blog', enabled: false },
+  { key: 'nav.blog', path: 'blog', enabled: true },
   { key: 'nav.knowledge', path: 'knowledge', enabled: false },
   { key: 'nav.projects', path: 'projects', enabled: false },
   { key: 'nav.gallery', path: 'gallery', enabled: false },

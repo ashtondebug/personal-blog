@@ -31,13 +31,16 @@
 | TD-12 | 高清摄影图外置存储未定 | 待验证 | Gallery 成本与稳定性 | Phase 5 | Open | [R-11](../docs/risks-and-validation.md) |
 | TD-13 | PWA 缓存与内容更新冲突 | 风险 | 用户看到旧内容 | Phase 9 | Open | [PWA](../docs/integrations/pwa.md) |
 | TD-14 | `base` 前缀一致性风险 | 风险 | 全站 404 | 持续 | Open | [部署架构](../docs/architecture/deployment-architecture.md) |
-| TD-15 | 双向链接语法与解析方案未定 | 待验证 | Knowledge 互链、死链 | Phase 4 | Open | [内容架构](../docs/architecture/content-architecture.md) |
+| TD-15 | 双向链接语法已定：`[[slug]]` / `[[slug\|别名]]`，同语言匹配 slug 或 aliases，悬空即构建失败 | 待验证 | Knowledge 互链、死链 | 已完成（2026-11-26） | Closed（Phase 4） | [内容架构](../docs/architecture/content-architecture.md) |
 | TD-16 | "高级标签系统"语义未确认 | 待验证 | 标签模型与 UI | Phase 4 | Open | [需求 §3](../docs/product/requirements.md) |
 | TD-17 | 对比度已实测（两套主题全部 ≥4.5:1），并由 CI 拦截 | 债务 | 可用性与合规 | — | Closed（2026-11-26） | [配色](../docs/design/color-and-theme.md) |
 | TD-18 | 文档与实现同步尚无自动校验 | 债务 | 文档漂移 | Phase 12 前 | Open（当前仅链接检查） | [脚本](../scripts/check-docs.mjs) |
 | TD-19 | 站内链接检查工具未建立 | 债务 | 发布后 404 | Phase 6 前 | Open | [测试策略](../docs/engineering/testing-strategy.md) |
 | TD-20 | 评论数据备份/导出流程未建立 | 风险 | 数据丢失 | Phase 8 | Open | [Waline](../docs/integrations/waline.md) |
-| TD-21 | 内容页的语言切换尚未生效（缺 `translationKey` 派生数据） | 待验证 | 多语言文章切换、hreflang 部分存在场景 | Phase 4 | Open | [路由与 i18n](../docs/architecture/routing-and-i18n.md) |
+| TD-21 | 内容页的语言切换尚未生效（缺 `translationKey` 派生数据） | 待验证 | 多语言文章切换、hreflang 部分存在场景 | Phase 4 | Closed（2026-11-26，`alternatePaths` + `buildTranslations`） | [路由与 i18n](../docs/architecture/routing-and-i18n.md) |
+| TD-22 | MDX 未接入（当前仅 `.md`） | 债务 | 文章内嵌组件的能力 | 需要组件化文章时（Phase 5/6） | Open | [内容架构](../docs/architecture/content-architecture.md) |
+| TD-23 | 数学公式未接入（需 remark-math + rehype-katex） | 债务 | REQ-CONTENT-03 的公式部分 | Phase 6 | Open | [需求 §3](../docs/product/requirements.md) |
+| TD-24 | 未启用 schema `.strict()`，拼错字段会被静默忽略 | 风险 | 内容质量 | 写正式内容前评估 | Open | [数据模型](../docs/architecture/data-models.md) |
 
 ## 3. 维护规则
 

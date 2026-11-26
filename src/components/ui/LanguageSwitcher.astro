@@ -7,18 +7,20 @@ interface Props {
   locale: Locale;
   /** 当前版块路径（不含语言段），切换语言时保持同一版块 */
   path?: string;
+  /** 内容页用：按语言给出真实路径（不同语言可能不同 slug） */
+  alternatePaths?: Partial<Record<Locale, string>>;
   /** 该页面真实存在的语言；缺省视为全部存在 */
   availableLocales?: Locale[];
 }
 
-const { locale, path = '', availableLocales } = Astro.props;
+const { locale, path = '', alternatePaths, availableLocales } = Astro.props;
 const available = availableLocales ?? LOCALES.map((item) => item.code);
 
 const links = LOCALES.map((item) => ({
   code: item.code,
   label: item.label,
   htmlLang: item.htmlLang,
-  href: localeUrl(item.code, path),
+  href: localeUrl(item.code, alternatePaths?.[item.code] ?? path),
   current: item.code === locale,
   // 不存在的语言版本不生成可点击链接（禁止伪翻译入口）
   available: available.includes(item.code),

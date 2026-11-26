@@ -40,6 +40,7 @@ plans/
 | [001 · 项目初始化](./completed/001-phase-1-initialization.md) | 已完成（2026-11-26） | Astro 骨架、四语言首页、部署工作流 |
 | [002 · 设计系统与全局布局](./completed/002-phase-2-design-system.md) | 已完成（2026-11-26） | token、reset、排版基线、Header/Footer、三态主题、对比度检查 |
 | [003 · 多语言系统](./completed/003-phase-3-i18n.md) | 已完成（2026-11-26） | hreflang/x-default/og:locale、版块级语言切换、语言感知 404、i18n 产物校验 |
+| [004 · 内容模型](./completed/004-phase-4-content-model.md) | 已完成（2026-11-26） | 五集合 schema、派生数据、双向链接、构建期内容门禁、最小 Blog 列表/详情 |
 
 ## 4. 计划的生命周期
 

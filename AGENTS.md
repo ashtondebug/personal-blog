@@ -1,7 +1,7 @@
 # 项目导航（AGENTS.md）
 
 简约文艺风格的多语言个人博客 **The Commons**。Astro + TypeScript + Markdown，托管 GitHub Pages，评论走 Waline 外部服务。
-当前阶段：**Phase 3 已完成（多语言：hreflang、版块级切换、语言感知 404）**；内容模型、八大页面、搜索与评论尚未开始。
+当前阶段：**Phase 4 已完成（内容模型：五集合 schema、派生数据、构建期内容门禁、最小 Blog 列表/详情）**；其余页面、搜索与评论尚未开始。
 
 常用命令：`npm run build`、`npm run dev`、`npm run check:docs`、`npm run check:contrast`、`npm run check:i18n`（后者需先 build）。受限环境跑构建需 `ASTRO_TELEMETRY_DISABLED=1`。
 
@@ -61,5 +61,6 @@ node scripts/check-docs.mjs
 ## 当前起点
 
 1. URL 策略（全前缀 + 尾斜杠 always）、`base=/personal-blog`、站点名（The Commons）均已定案，见 [ADR-0008](docs/decisions/0008-url-strategy.md) 与 `src/config/site.ts`；不得擅自改动。
-2. 从 [路线图](plans/active/000-initial-implementation-roadmap.md) 的 Phase 4 开始；不得跳阶段。
+2. 从 [路线图](plans/active/000-initial-implementation-roadmap.md) 的 Phase 5 开始；不得跳阶段。
+3. 写文章：`src/content/blog/{zh-CN|zh-TW|en|ja}/<slug>.md`，字段见 [数据模型](docs/architecture/data-models.md)；构建期会自动校验语言目录、`translationKey` 与内部链接。
 3. `FOR_AGENT.md`（本地任务书）不入库，已在 `.gitignore` 排除；不要引用或推送它。

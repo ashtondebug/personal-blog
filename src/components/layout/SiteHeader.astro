@@ -13,10 +13,12 @@ interface Props {
   navPath?: string;
   /** 用于生成语言切换链接；缺省与 navPath 相同 */
   switchPath?: string;
+  /** 内容页用：按语言给出真实路径 */
+  alternatePaths?: Partial<Record<Locale, string>>;
   availableLocales?: Locale[];
 }
 
-const { locale, navPath = '', switchPath, availableLocales } = Astro.props;
+const { locale, navPath = '', switchPath, alternatePaths, availableLocales } = Astro.props;
 const switchTarget = switchPath ?? navPath;
 ---
 <header class="header">
@@ -48,7 +50,12 @@ const switchTarget = switchPath ?? navPath;
     </nav>
 
     <div class="header__controls">
-      <LanguageSwitcher locale={locale} path={switchTarget} availableLocales={availableLocales} />
+      <LanguageSwitcher
+        locale={locale}
+        path={switchTarget}
+        alternatePaths={alternatePaths}
+        availableLocales={availableLocales}
+      />
       <ThemeToggle locale={locale} />
     </div>
   </div>

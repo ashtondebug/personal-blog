@@ -11,9 +11,11 @@
 
 ## 当前状态
 
-**Phase 3：多语言系统（已完成）**——四语言页面带 `hreflang` + `x-default` + `og:locale`；语言切换停在**同一版块**；404 按 URL/浏览器语言显示提示；i18n 产物由 `npm run check:i18n` 与 CI 校验。
+**Phase 4：内容模型（已完成）**——五个内容集合（blog/knowledge/projects/moments/gallery）的 zod schema、按语言分目录的约定、派生数据（排序、阅读时长、标签、多语言版本、双向链接、年度活动）与**构建期内容门禁**都已就位；Blog 列表与详情页可用（当前无文章，显示空状态）。
 
-设计系统与三态主题已在 Phase 2 落地（对比度实测两套主题全部 ≥ 4.5:1）。**尚无**文章内容、八大页面与搜索、评论（按路线图后续阶段推进）。
+设计系统、三态主题、四语言元信息与语言感知 404 已在前几个阶段落地。**尚无**其余七个页面、搜索、评论（按路线图后续阶段推进）。
+
+写文章：在 `src/content/blog/<语言>/<slug>.md` 新建文件，字段见 [数据模型](docs/architecture/data-models.md)。
 
 ## 常用命令
 
@@ -55,12 +57,15 @@ plans/               路线图、技术债与已完成计划
 scripts/             文档检查、对比度检查、i18n 产物检查
 src/
   config/            站点常量与导航配置（站名唯一定义处）
+  content/           五个内容集合（按语言分目录；.gitkeep 保持目录入库）
+  content.config.ts  集合定义与 zod schema
   i18n/              语言定义、UI 词典、带 base 的路径工具
-  styles/            设计 token、reset、排版基线
+  lib/               内容派生函数、构建期内容门禁、日期格式化
+  styles/            设计 token、reset、排版基线、正文排版
   scripts/           客户端交互脚本（主题）
   components/        layout（Header/Footer）与 ui（语言/主题切换）
   layouts/           页面骨架
-  pages/             路由（[locale] 展开四语言 + 根重定向）
+  pages/             路由（[locale] 展开四语言 + 根重定向 + 404）
 .github/workflows/   文档与设计检查 CI + Pages 部署
 ```
 

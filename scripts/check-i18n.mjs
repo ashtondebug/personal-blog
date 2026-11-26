@@ -26,7 +26,7 @@ const LOCALES = [
   { code: 'ja', htmlLang: 'ja', ogLocale: 'ja_JP' },
 ];
 const DEFAULT_LOCALE = 'zh-CN';
-const SECTIONS = ['', 'about'];
+const SECTIONS = ['', 'about', 'blog'];
 
 const failures = [];
 

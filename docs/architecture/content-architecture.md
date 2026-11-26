@@ -78,3 +78,18 @@ src/content/
 2. 任何 frontmatter 字段变更，先改 [数据模型](./data-models.md) 与 `src/content.config.ts`，再改内容；不允许"先写内容后补 schema"。
 3. 内容的 `translationKey` 相同才被视为同一篇的不同语言版本；没有 `translationKey` 的内容视为独立内容，不产生任何跨语言链接。
 4. 悬空双向链接（指向不存在的 `knowledge` 条目）必须在构建期报错，不得静默降级为纯文本。
+
+## 8. 实现（Phase 4，2026-11-26）
+
+| 项 | 实际做法 |
+| --- | --- |
+| 集合目录 | `src/content/{blog,knowledge,projects,moments,gallery}/`，每个集合目录放 `.gitkeep` 保证目录入库；语言子目录（`zh-CN/` 等）在添加内容时创建 |
+| 加载器 | `glob({ pattern: '**/*.md', base: './src/content/<collection>' })`，见 `src/content.config.ts` |
+| 条目 id | 被 `glob()` **整体 slug 化**：`zh-CN/hello` → `zh-cn/hello`。URL 里的语言段仍由我们自己的 `Locale` 决定（`/zh-CN/`），两者不要混用 |
+| 语言判定 | `src/lib/content.ts` 的 `entryLocale()` 做大小写无关映射；非法语言目录直接抛错 |
+| 派生数据 | 全部是 `src/lib/content.ts` 里的纯函数：`published` / `sortByDateDesc` / `byLocale` / `readingMinutes` / `normalizeTag` / `buildTagIndex` / `buildTranslations` / `availableLocalesFor` / `wikiLinkTargets` / `assertKnowledgeLinks` / `buildBacklinks` / `yearlyActivity` |
+| 双向链接语法 | `[[slug]]` 或 `[[slug\|显示文本]]`；在同一语言内匹配目标条目的 slug 或 `aliases`；目标不存在 → 构建失败并列出全部悬空链接 |
+| 内容门禁 | `src/lib/content-integrity.ts` 的 `assertContentIntegrity()` 在 `BaseLayout` 调用一次（模块级缓存）：语言目录合法、`translationKey` 同语言不重复、知识链接可解析 |
+| 空集合 | 构建会打印 `[WARN] [glob-loader] No files found ...`，属正常现象，不是错误 |
+
+**已实测的四类失败**（构建均中断并给出可读信息）：非法语言目录、悬空内部链接、`translationKey` 同语言重复、缺必填字段。证据见 [Phase 4 报告](../../plans/completed/004-phase-4-content-model.md)。

@@ -48,7 +48,7 @@
 
 **次级入口**：Guestbook（页脚 + About 内链）、Search（`/` 快捷键 + 图标）、主题切换（三态）、语言切换。
 
-> **现状（Phase 3）**：Home 与 About 可点击（About 为占位页），其余项在 `src/config/nav.ts` 中 `enabled: false`，渲染为弱化且不可点击的文本（避免死链）。Phase 5 建好页面后逐个置为 `true`。
+> **现状（Phase 4）**：Home / Blog / About 可点击（About 为占位页）；Projects、Knowledge、Gallery、Moments 在 `src/config/nav.ts` 中仍为 `enabled: false`，渲染为不可点击文本（避免死链）。Phase 5 建好页面后逐个置为 `true`。
 
 **页脚**：站点简介、四大内容方向入口、Guestbook、RSS（是否提供未定 🔵）、版权与许可声明（未定 🔵）、Waline 服务状态说明。
 

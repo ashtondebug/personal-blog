@@ -28,6 +28,12 @@ export const ui = {
     'notFound.hint': '这个地址没有对应内容，可能已被移动或删除。',
     'notFound.homeLink': '返回首页',
     'about.placeholder': '这一页还没写。作者稍后补充。',
+    'blog.empty.title': '暂无文章',
+    'blog.empty.hint': '文章会陆续出现在这里。',
+    'blog.listLabel': '文章列表',
+    'blog.readingTime': '约 {n} 分钟',
+    'blog.updated': '更新于 {date}',
+    'blog.backToList': '返回文章列表',
   },
   'zh-TW': {
     'site.tagline': '簡約文藝的個人部落格',
@@ -52,6 +58,12 @@ export const ui = {
     'notFound.hint': '這個位址沒有對應內容，可能已被移動或刪除。',
     'notFound.homeLink': '返回首頁',
     'about.placeholder': '這一頁還沒寫。作者稍後補充。',
+    'blog.empty.title': '暫無文章',
+    'blog.empty.hint': '文章會陸續出現在這裡。',
+    'blog.listLabel': '文章列表',
+    'blog.readingTime': '約 {n} 分鐘',
+    'blog.updated': '更新於 {date}',
+    'blog.backToList': '返回文章列表',
   },
   en: {
     'site.tagline': 'A minimal, literary personal blog',
@@ -76,6 +88,12 @@ export const ui = {
     'notFound.hint': 'This address has no content. It may have moved or been removed.',
     'notFound.homeLink': 'Back to home',
     'about.placeholder': 'This page has not been written yet.',
+    'blog.empty.title': 'No posts yet',
+    'blog.empty.hint': 'Posts will appear here.',
+    'blog.listLabel': 'Post list',
+    'blog.readingTime': '{n} min read',
+    'blog.updated': 'Updated {date}',
+    'blog.backToList': 'Back to post list',
   },
   ja: {
     'site.tagline': '簡素で文芸的な個人ブログ',
@@ -100,6 +118,12 @@ export const ui = {
     'notFound.hint': 'このアドレスに対応する内容はありません。移動または削除された可能性があります。',
     'notFound.homeLink': 'ホームへ戻る',
     'about.placeholder': 'このページはまだ書かれていません。',
+    'blog.empty.title': 'まだ記事がありません',
+    'blog.empty.hint': '記事はここに追加されます。',
+    'blog.listLabel': '記事一覧',
+    'blog.readingTime': '約 {n} 分',
+    'blog.updated': '{date} 更新',
+    'blog.backToList': '記事一覧へ戻る',
   },
 } as const;
 
@@ -113,4 +137,15 @@ export function t(locale: Locale, key: UiKey): string {
     throw new Error(`词典缺少键：${locale} / ${String(key)}`);
   }
   return value;
+}
+
+/** 带占位符的文案：`{n}`、`{date}` 之类；缺变量时保留占位符，便于发现遗漏 */
+export function tFormat(
+  locale: Locale,
+  key: UiKey,
+  vars: Record<string, string | number>,
+): string {
+  return t(locale, key).replace(/\{(\w+)\}/g, (whole, name: string) =>
+    name in vars ? String(vars[name]) : whole,
+  );
 }

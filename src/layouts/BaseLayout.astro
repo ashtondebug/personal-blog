@@ -11,6 +11,7 @@ import {
 } from '../i18n/config';
 import { localeUrl } from '../i18n/url';
 import { t } from '../i18n/ui';
+import { assertContentIntegrity } from '../lib/content-integrity';
 import SiteHeader from '../components/layout/SiteHeader.astro';
 import SiteFooter from '../components/layout/SiteFooter.astro';
 
@@ -20,6 +21,8 @@ interface Props {
   description?: string;
   /** 版块路径（不含语言段）：用于语言切换与 hreflang */
   path?: string;
+  /** 内容页用：按语言给出真实路径（不同语言可能不同 slug） */
+  alternatePaths?: Partial<Record<Locale, string>>;
   /** 导航高亮用的路径；缺省与 path 相同。404 可传哨兵值表示不高亮 */
   navPath?: string;
   /** 该页面真实存在的语言；内容页传入，站点级页面默认全部语言 */
@@ -34,11 +37,15 @@ const {
   title,
   description,
   path = '',
+  alternatePaths,
   navPath,
   availableLocales,
   showAlternates = true,
   noindex = false,
 } = Astro.props;
+
+// 内容完整性门禁：任何页面构建都会触发一次（模块内缓存）
+await assertContentIntegrity();
 
 const definition = getLocaleDefinition(locale);
 const pageTitle = title ? `${title} · ${SITE_NAME}` : SITE_NAME;
@@ -49,8 +56,9 @@ const available = availableLocales ?? LOCALE_CODES;
 // canonical：使用实际路径（已包含 base），保证与 URL 一字不差
 const canonical = new URL(Astro.url.pathname, Astro.site);
 
-// hreflang 只指向真实存在的语言版本，且用绝对地址
-const absolute = (code: Locale) => new URL(localeUrl(code, path), Astro.site).href;
+// hreflang 只指向真实存在的语言版本，且用绝对地址；内容页按 alternatePaths 取真实 slug
+const absolute = (code: Locale) =>
+  new URL(localeUrl(code, alternatePaths?.[code] ?? path), Astro.site).href;
 const alternates = available.map((code) => ({
   hreflang: getLocaleDefinition(code).htmlLang,
   href: absolute(code),
@@ -105,6 +113,7 @@ const xDefaultHref = absolute(DEFAULT_LOCALE);
       locale={locale}
       navPath={navPath ?? path}
       switchPath={path}
+      alternatePaths={alternatePaths}
       availableLocales={available}
     />
     <main id="main" class="main">

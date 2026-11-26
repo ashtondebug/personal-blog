@@ -1,0 +1,119 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { LOCALES, type Locale } from '../../../i18n/config';
+import { t, tFormat } from '../../../i18n/ui';
+import { localeUrl } from '../../../i18n/url';
+import {
+  byLocale,
+  entrySlug,
+  published,
+  readingMinutes,
+  sortByDateDesc,
+} from '../../../lib/content';
+import { formatDate, isoDate } from '../../../lib/format';
+
+export function getStaticPaths() {
+  return LOCALES.map((locale) => ({ params: { locale: locale.code } }));
+}
+
+const locale = Astro.params.locale as Locale;
+
+const all = await getCollection('blog');
+const posts = sortByDateDesc(byLocale(published(all), locale));
+---
+<BaseLayout locale={locale} path="blog" title={t(locale, 'nav.blog')}>
+  <div class="u-container list">
+    <h1>{t(locale, 'nav.blog')}</h1>
+
+    {
+      posts.length === 0 ? (
+        <div class="empty u-sans">
+          <p class="empty__title">{t(locale, 'blog.empty.title')}</p>
+          <p class="u-muted">{t(locale, 'blog.empty.hint')}</p>
+        </div>
+      ) : (
+        <ul role="list" class="posts" aria-label={t(locale, 'blog.listLabel')}>
+          {posts.map((post) => {
+            const slug = entrySlug(post.id);
+            const minutes = readingMinutes(post.body);
+            return (
+              <li class="post">
+                <a class="post__title" href={localeUrl(locale, `blog/${slug}`)}>
+                  {post.data.title}
+                </a>
+                <p class="post__desc">{post.data.description}</p>
+                <p class="post__meta u-sans u-muted">
+                  <time datetime={isoDate(post.data.date)}>{formatDate(locale, post.data.date)}</time>
+                  <span aria-hidden="true">·</span>
+                  <span>{tFormat(locale, 'blog.readingTime', { n: minutes })}</span>
+                </p>
+              </li>
+            );
+          })}
+        </ul>
+      )
+    }
+  </div>
+</BaseLayout>
+
+<style>
+  .list {
+    display: grid;
+    gap: var(--space-8);
+    max-width: 48rem;
+  }
+
+  h1 {
+    font-size: var(--text-3xl);
+  }
+
+  .posts {
+    display: grid;
+    gap: var(--space-8);
+    border-top: var(--line-hair) solid var(--color-line);
+    padding-top: var(--space-8);
+  }
+
+  .post {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .post__title {
+    font-size: var(--text-xl);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .post__title:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .post__desc {
+    font-size: var(--text-base);
+    color: var(--color-muted);
+    max-width: var(--measure-prose);
+  }
+
+  .post__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .empty {
+    border-top: var(--line-hair) solid var(--color-line);
+    padding-top: var(--space-8);
+    font-size: var(--text-sm);
+  }
+
+  .empty__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-2);
+  }
+</style>

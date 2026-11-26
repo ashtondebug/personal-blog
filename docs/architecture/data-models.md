@@ -1,7 +1,7 @@
 # 数据模型
 
 > **用途**：frontmatter 字段的唯一权威定义。改 schema、加字段、写内容前必读；与 `src/content.config.ts` 必须逐字一致。
-> **状态**：Proposed（字段集为 Agent 提议，实现阶段可调整；一经验证并写入 schema 即转 Confirmed）
+> **状态**：Confirmed（已落地为 `src/content.config.ts`；字段变更需同批改本文与 schema）
 > **更新**：2026-11-26
 > **相关**：[内容架构](./content-architecture.md) · [功能规格](../product/feature-specifications.md) · [路由与 i18n](./routing-and-i18n.md) · [内容集合官方参考](../references/astro.md)
 
@@ -11,6 +11,21 @@
 2. **不在内容里存统计值**：浏览量、点赞数、评论数一律不存在于 frontmatter；它们是运行时/外部服务数据（[ADR-0007](../decisions/0007-static-dynamic-service-boundary.md)）。
 3. **字段名用 camelCase**，与 TypeScript 一致；schema 中未声明的字段视为错误（`.strict()`，Proposed）。
 4. **必填字段缺失 = 构建失败**，优于运行时 undefined。
+
+### 1.1 实现状态（Phase 4，2026-11-26）
+
+| 项 | 实际做法 |
+| --- | --- |
+| 实现位置 | `src/content.config.ts`：`defineCollection` + `glob()` 加载器 + `z`（`astro/zod`） |
+| 默认值 | `tags`/`aliases`/`related`/`screenshots`/`media` 默认 `[]`；`draft`/`featured` 默认 `false`；`toc` 默认 `true`；`projects.status` 默认 `active` |
+| 断言 | `projects.stack` 至少 1 项；`gallery.images` 至少 1 项且每项必须有 `alt` |
+| 日期 | `date`/`updated`/`startDate`/`endDate`/`shotAt` 用 `z.coerce.date()`，写成 `YYYY-MM-DD` 即可 |
+| 图片字段 | `cover`/`screenshots`/`gallery.images[].src` 用 `image()`（SchemaContext），只接受**本地**图片；外链图片请改用普通字符串字段（当前 schema 未开放，需要时先改本文） |
+| 未知字段 | **未启用** `.strict()`：拼错的字段会被静默忽略而非报错。写内容后请跑一次构建并人工确认 |
+| 条目 id | 由 `glob()` 生成并**整体 slug 化**（目录段变小写：`zh-CN/` → `zh-cn/`），见 [Astro 参考](../references/astro.md) 的实测踩坑 |
+| 语言判定 | `src/lib/content.ts` 的 `entryLocale()` 对 id 首段做大小写无关映射，非法目录直接抛错 |
+
+> 构建期还有一道内容门禁：`src/lib/content-integrity.ts` 的 `assertContentIntegrity()` 在 `BaseLayout` 中调用一次，校验语言目录、`translationKey` 同语言不重复、知识条目内部链接可解析。任一失败即中断构建。
 
 ## 2. 公共字段（五个集合共用）
 

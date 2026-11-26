@@ -68,6 +68,7 @@
 | 链接指向 `/zh-cn/` 但产物目录是 `/zh-CN/` → 线上 404 | `getRelativeLocaleUrl` 默认 `normalizeLocale: true`，会把 locale 小写化 | 统一走 `src/i18n/url.ts` 的 `localeUrl()`（传 `normalizeLocale: false`） |
 | 构建报 `EPERM: mkdir <user>\AppData\Roaming\astro\Config` | Astro 遥测写用户目录，受限环境不可写 | 构建时设 `ASTRO_TELEMETRY_DISABLED=1` |
 | 静态构建下 `Astro.redirect` 的产物 | 生成带 `<meta http-equiv="refresh">` 与 canonical 的 HTML 重定向页，目标需自带 `base` | 用 `localeUrl()` 生成目标 |
+| `glob()` 加载器把条目 `id` **整体 slug 化** | `zh-CN/hello.md` → id 为 `zh-cn/hello`（目录段小写）。若按 `id` 首段判定语言且区分大小写，四语言内容全部被判非法 | 语言判定做大小写无关映射（`src/lib/content.ts` 的 `entryLocale`），URL 语言段仍用我们自己的 `Locale` 常量 |
 
 ## 7. 待复核
 
