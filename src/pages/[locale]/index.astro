@@ -3,7 +3,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { SITE_NAME } from '../../config/site';
 import { LOCALES, getLocaleDefinition, type Locale } from '../../i18n/config';
 import { t } from '../../i18n/ui';
-import { localeUrl } from '../../i18n/url';
 
 export function getStaticPaths() {
   return LOCALES.map((locale) => ({ params: { locale: locale.code } }));
@@ -11,35 +10,40 @@ export function getStaticPaths() {
 
 const locale = Astro.params.locale as Locale;
 const definition = getLocaleDefinition(locale);
-const languageLinks = LOCALES.map((item) => ({
-  ...item,
-  href: localeUrl(item.code),
-  current: item.code === definition.code,
-}));
 ---
-<BaseLayout locale={locale}>
-  <main>
-    <h1>{SITE_NAME}</h1>
-    <p>{t(locale, 'site.tagline')}</p>
-    <p>{t(locale, 'home.status')}</p>
-
-    <nav aria-label={t(locale, 'home.languageHint')}>
-      <p>{t(locale, 'home.languageHint')}</p>
-      <ul>
-        {
-          languageLinks.map((item) => (
-            <li>
-              {item.current ? (
-                <strong aria-current="page">{item.label}</strong>
-              ) : (
-                <a href={item.href} hreflang={item.htmlLang} lang={item.htmlLang}>
-                  {item.label}
-                </a>
-              )}
-            </li>
-          ))
-        }
-      </ul>
-    </nav>
-  </main>
+<BaseLayout locale={locale} currentPath="">
+  <div class="u-container hero">
+    <p class="hero__eyebrow u-sans u-muted" lang={definition.htmlLang}>
+      {t(locale, 'site.tagline')}
+    </p>
+    <h1 class="hero__title">{SITE_NAME}</h1>
+    <p class="hero__status u-sans u-muted">{t(locale, 'home.status')}</p>
+  </div>
 </BaseLayout>
+
+<style>
+  .hero {
+    display: grid;
+    gap: var(--space-6);
+    padding-block: var(--space-8) var(--space-16);
+    max-width: 42rem;
+  }
+
+  .hero__eyebrow {
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+
+  .hero__title {
+    font-size: var(--text-4xl);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .hero__status {
+    font-size: var(--text-sm);
+    border-top: var(--line-hair) solid var(--color-line);
+    padding-top: var(--space-4);
+  }
+</style>

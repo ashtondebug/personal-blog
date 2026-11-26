@@ -1,0 +1,141 @@
+---
+import { SITE_NAME } from '../../config/site';
+import { PRIMARY_NAV } from '../../config/nav';
+import { localeUrl } from '../../i18n/url';
+import { t } from '../../i18n/ui';
+import type { Locale } from '../../i18n/config';
+import LanguageSwitcher from '../ui/LanguageSwitcher.astro';
+import ThemeToggle from '../ui/ThemeToggle.astro';
+
+interface Props {
+  locale: Locale;
+  /** 当前页面在导航中的 path（用于 aria-current） */
+  currentPath?: string;
+}
+
+const { locale, currentPath = '' } = Astro.props;
+---
+<header class="header">
+  <div class="u-container header__inner">
+    <a class="header__brand" href={localeUrl(locale)}>{SITE_NAME}</a>
+
+    <nav class="nav" aria-label={t(locale, 'nav.primary')}>
+      <ul role="list" class="nav__list">
+        {
+          PRIMARY_NAV.map((item) => (
+            <li>
+              {item.enabled ? (
+                <a
+                  class="nav__link"
+                  href={localeUrl(locale, item.path)}
+                  aria-current={item.path === currentPath ? 'page' : undefined}
+                >
+                  {t(locale, item.key)}
+                </a>
+              ) : (
+                <span class="nav__link nav__link--pending" aria-disabled="true">
+                  {t(locale, item.key)}
+                </span>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="header__controls">
+      <LanguageSwitcher locale={locale} />
+      <ThemeToggle locale={locale} />
+    </div>
+  </div>
+</header>
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+    background-color: var(--color-bg);
+    border-bottom: var(--line-hair) solid var(--color-line);
+    font-family: var(--font-sans);
+  }
+
+  .header__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-6);
+    padding-block: var(--space-3);
+  }
+
+  .header__brand {
+    font-family: var(--font-serif);
+    font-size: var(--text-lg);
+    font-weight: 600;
+    letter-spacing: var(--tracking-tight);
+    text-decoration: none;
+  }
+
+  .nav {
+    flex: 1 1 100%;
+    order: 3;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav__list {
+    display: flex;
+    gap: var(--space-4);
+    white-space: nowrap;
+  }
+
+  .nav__link {
+    display: inline-block;
+    padding-block: var(--space-1);
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+    text-decoration: none;
+    border-bottom: var(--line-hair) solid transparent;
+  }
+
+  a.nav__link:hover {
+    color: var(--color-text);
+    border-bottom-color: var(--color-text);
+  }
+
+  .nav__link[aria-current='page'] {
+    color: var(--color-text);
+    border-bottom-color: var(--color-text);
+  }
+
+  .nav__link--pending {
+    opacity: 0.38;
+    cursor: default;
+  }
+
+  .header__controls {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    margin-inline-start: auto;
+  }
+
+  @media (min-width: 900px) {
+    .header__inner {
+      flex-wrap: nowrap;
+    }
+
+    .nav {
+      flex: 0 1 auto;
+      order: 2;
+    }
+
+    .header__controls {
+      order: 3;
+    }
+  }
+</style>

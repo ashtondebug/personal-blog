@@ -1,10 +1,10 @@
 /**
  * 站点级常量。
  *
- * SITE_NAME 目前是**占位值**：站点名称为空间概念方向、尚未定名（docs/risks-and-validation.md R-01）。
- * 定名后只改这一处，不要在其他文件里硬编码站名。
+ * 站点名已定：The Commons（2026-11-26，空间/公共空间概念方向）。
+ * 站名只在此处定义，其余文件一律引用，不要硬编码。
  */
-export const SITE_NAME = '未命名空间';
+export const SITE_NAME = 'The Commons';
 
-/** 站点一句话定位，用于默认 meta description（正式文案在 Phase 2/5 补） */
+/** 站点一句话定位，用于默认 meta description 与页脚 */
 export const SITE_TAGLINE = '简约文艺的个人博客';

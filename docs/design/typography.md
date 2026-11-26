@@ -72,3 +72,15 @@
 - 正文对比度 ≥ 4.5:1（两种主题都要测），见 [配色与主题](./color-and-theme.md)。
 - 不使用纯装饰字体承担正文；标题字体若为装饰性，必须保证字形可辨。
 - 允许用户字号放大到 200% 而不破版（`rem` 相对单位，不用 `px` 写死正文）。
+
+## 8. 当前实现（Phase 2）
+
+采用方案 A（系统字体栈），暂不加载任何字体文件：
+
+| Token | 实际取值 |
+| --- | --- |
+| `--font-serif`（标题与正文） | `'Iowan Old Style', 'Palatino Linotype', 'Songti SC', 'SimSun', 'Noto Serif CJK SC', serif` |
+| `--font-sans`（UI/导航/元信息） | `system-ui, -apple-system, 'Segoe UI', 'Noto Sans SC', 'Microsoft YaHei', sans-serif` |
+| `--font-mono`（代码） | `ui-monospace, SFMono-Regular, Menlo, Consolas, monospace` |
+
+已知代价：各平台观感不一致（macOS 宋体 vs Windows 宋体差异明显）。若日后要统一观感 → 走方案 B/D 子集化，必须先实测体积与首屏（TD-10 仍开放）。

@@ -1,15 +1,22 @@
 ---
+import '../styles/tokens.css';
+import '../styles/reset.css';
+import '../styles/base.css';
 import { SITE_NAME } from '../config/site';
 import { getLocaleDefinition, type Locale } from '../i18n/config';
 import { t } from '../i18n/ui';
+import SiteHeader from '../components/layout/SiteHeader.astro';
+import SiteFooter from '../components/layout/SiteFooter.astro';
 
 interface Props {
   locale: Locale;
   title?: string;
   description?: string;
+  /** 用于导航高亮，取 NavItem.path */
+  currentPath?: string;
 }
 
-const { locale, title, description } = Astro.props;
+const { locale, title, description, currentPath = '' } = Astro.props;
 const definition = getLocaleDefinition(locale);
 const pageTitle = title ? `${title} · ${SITE_NAME}` : SITE_NAME;
 const pageDescription = description ?? t(locale, 'site.tagline');
@@ -25,9 +32,40 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <title>{pageTitle}</title>
     <meta name="description" content={pageDescription} />
     <link rel="canonical" href={canonical.href} />
-    <meta name="color-scheme" content="light dark" />
+    <script is:inline>
+      // 首屏绘制前决定主题，避免闪白/闪黑（docs/design/color-and-theme.md）
+      (function () {
+        var root = document.documentElement;
+        root.classList.add('js');
+        var mode = 'system';
+        try {
+          var saved = localStorage.getItem('blog:theme');
+          if (saved === 'light' || saved === 'dark' || saved === 'system') mode = saved;
+        } catch (error) {
+          /* 无法读取时退回 system */
+        }
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        root.dataset.theme = mode === 'system' ? (prefersDark ? 'dark' : 'light') : mode;
+        root.dataset.themeMode = mode;
+      })();
+    </script>
   </head>
   <body>
-    <slot />
+    <a class="skip-link" href="#main">{t(locale, 'skip.toContent')}</a>
+    <SiteHeader locale={locale} currentPath={currentPath} />
+    <main id="main" class="main">
+      <slot />
+    </main>
+    <SiteFooter locale={locale} />
+    <script>
+      import '../scripts/theme';
+    </script>
   </body>
 </html>
+
+<style>
+  .main {
+    display: block;
+    padding-block: var(--space-16) var(--space-8);
+  }
+</style>

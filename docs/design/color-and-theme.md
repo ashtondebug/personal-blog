@@ -1,7 +1,7 @@
 # 配色与主题
 
 > **用途**：定义黑白灰灰阶、三态主题的实现方式与深色适配规则。写任何颜色值之前必读。
-> **状态**：Confirmed（黑白灰、浅色/深色/跟随系统）+ Proposed（具体灰阶值）+ Needs Validation（对比度需实测）
+> **状态**：Confirmed（灰阶已落地为 `src/styles/tokens.css` 并实测对比度）+ Proposed（个别灰值仍可微调）
 > **更新**：2026-11-26
 > **相关**：[设计索引](./index.md) · [设计系统](./design-system.md) · [字体与排版](./typography.md) · [交互准则](./interaction-guidelines.md) · [Waline 集成](../integrations/waline.md)
 
@@ -68,3 +68,25 @@ Waline 客户端有 `dark` 选项，可接受 `true`/`false`/`'auto'` 或 **CSS 
 - [ ] 首屏无颜色闪烁。
 - [ ] Waline 评论区在两种主题下都不出现"白底嵌黑块"。
 - [ ] 打印预览无背景色块、无控件。
+
+## 7. 实现与实测（2026-11-26，Phase 2）
+
+| 项 | 实现 |
+| --- | --- |
+| 变量位置 | `src/styles/tokens.css`：`:root` 为浅色，`[data-theme='dark']` 为深色，另有无 JS 的 `@media (prefers-color-scheme: dark)` 回退 |
+| 主题属性 | `<html data-theme="light\|dark">` 驱动变量；`data-theme-mode="light\|dark\|system"` 记录用户选择 |
+| 首屏无闪烁 | `<head>` 内联脚本在绘制前读取 `localStorage: blog:theme` 并写入 `data-theme` |
+| 切换逻辑 | `src/scripts/theme.ts`：三态循环、写存储、`matchMedia` 变化时仅在 system 模式跟随 |
+| 对比度检查 | `scripts/check-contrast.mjs`（CI 执行），阈值 4.5:1 |
+
+实测结果（`npm run check:contrast`）：
+
+| 组合 | 浅色 | 深色 |
+| --- | --- | --- |
+| 正文 / 背景 | 17.40:1 | 16.00:1 |
+| 正文 / 次级背景 | 16.25:1 | 14.87:1 |
+| 次要文字 / 背景 | 5.33:1 | 7.16:1 |
+| 次要文字 / 次级背景 | 4.97:1 | 6.66:1 |
+| 反白文字 / 反白底 | 17.40:1 | 16.00:1 |
+
+注意：浅色"次要文字 / 次级背景"余量最小（4.97:1）。调整 `--color-muted` 或 `--color-surface` 会被 CI 拦截。

@@ -1,4 +1,4 @@
-name: Docs Check
+name: Docs & Design Check
 
 on:
   push:
@@ -19,3 +19,5 @@ jobs:
           node-version: 24
       - name: 检查文档链接与结构
         run: node scripts/check-docs.mjs
+      - name: 检查设计 token 对比度
+        run: node scripts/check-contrast.mjs

@@ -1,0 +1,84 @@
+---
+import { LOCALES, type Locale } from '../../i18n/config';
+import { localeUrl } from '../../i18n/url';
+import { t } from '../../i18n/ui';
+
+interface Props {
+  locale: Locale;
+  /** 该页面在其他语言下是否真的存在；站点级页面传 false 表示都存在 */
+  variant?: 'site' | 'content';
+}
+
+const { locale, variant = 'site' } = Astro.props;
+
+const links = LOCALES.map((item) => ({
+  code: item.code,
+  label: item.label,
+  htmlLang: item.htmlLang,
+  href: localeUrl(item.code),
+  current: item.code === locale,
+  // 内容页在 Phase 5 接入 translationKey 判断；站内页面四语言始终存在
+  available: variant === 'site' || item.code === locale,
+}));
+---
+<nav class="lang" aria-label={t(locale, 'lang.label')}>
+  <ul role="list" class="lang__list">
+    {
+      links.map((item) => (
+        <li>
+          {item.current ? (
+            <span class="lang__item lang__item--current" aria-current="page">
+              {item.label}
+            </span>
+          ) : item.available ? (
+            <a class="lang__item" href={item.href} hreflang={item.htmlLang} lang={item.htmlLang}>
+              {item.label}
+            </a>
+          ) : (
+            <span class="lang__item lang__item--unavailable" aria-disabled="true">
+              {item.label}
+            </span>
+          )}
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<style>
+  .lang {
+    font-family: var(--font-sans);
+  }
+
+  .lang__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-3);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .lang__item {
+    display: inline-block;
+    padding-block: var(--space-1);
+    text-decoration: none;
+    color: var(--color-muted);
+    white-space: nowrap;
+  }
+
+  a.lang__item:hover {
+    color: var(--color-text);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .lang__item--current {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .lang__item--unavailable {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+</style>

@@ -1,0 +1,119 @@
+/**
+ * 设计 token —— 全站唯一的数值来源。
+ * 对应文档：docs/design/design-system.md、docs/design/color-and-theme.md
+ * 只允许在此文件定义具体数值；组件里一律引用变量。
+ */
+
+:root {
+  /* 灰阶（浅色） */
+  --color-bg: #ffffff;
+  --color-surface: #f7f7f7;
+  --color-line: #e5e5e5;
+  --color-muted: #6b6b6b;
+  --color-text: #1a1a1a;
+  --color-invert-bg: #1a1a1a;
+  --color-invert-text: #ffffff;
+
+  /* 字体族：暂用系统字体栈（中文网络字体体积问题见 docs/design/typography.md） */
+  --font-serif: 'Iowan Old Style', 'Palatino Linotype', 'Songti SC', 'SimSun', 'Noto Serif CJK SC',
+    serif;
+  --font-sans: system-ui, -apple-system, 'Segoe UI', 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* 字号（移动端） */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: 2.125rem;
+  --text-4xl: 2.5rem;
+
+  /* 行高与字距 */
+  --leading-tight: 1.2;
+  --leading-normal: 1.6;
+  --leading-relaxed: 1.8;
+  --tracking-tight: -0.01em;
+  --tracking-wide: 0.08em;
+
+  /* 间距（4px 基准） */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+
+  /* 线、圆角 */
+  --line-hair: 1px;
+  --line-bold: 2px;
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+
+  /* 动效 */
+  --dur-fast: 120ms;
+  --dur-base: 200ms;
+  --dur-slow: 320ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+
+  /* 层级 */
+  --z-header: 100;
+  --z-overlay: 200;
+  --z-modal: 300;
+  --z-toast: 400;
+
+  /* 布局 */
+  --container-max: 1200px;
+  --measure-prose: 68ch;
+  --gutter: var(--space-4);
+
+  color-scheme: light;
+}
+
+/* 深色：重新选值，不是反相 */
+[data-theme='dark'] {
+  --color-bg: #121212;
+  --color-surface: #1a1a1a;
+  --color-line: #2a2a2a;
+  --color-muted: #a0a0a0;
+  --color-text: #ededed;
+  --color-invert-bg: #ededed;
+  --color-invert-text: #121212;
+
+  color-scheme: dark;
+}
+
+/* 无 JS 时的系统深色回退（有 JS 时内联脚本总会写上 data-theme） */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --color-bg: #121212;
+    --color-surface: #1a1a1a;
+    --color-line: #2a2a2a;
+    --color-muted: #a0a0a0;
+    --color-text: #ededed;
+    --color-invert-bg: #ededed;
+    --color-invert-text: #121212;
+
+    color-scheme: dark;
+  }
+}
+
+/* 桌面端字号阶梯（保持 1.25 左右的比例） */
+@media (min-width: 900px) {
+  :root {
+    --text-base: 1.0625rem;
+    --text-lg: 1.25rem;
+    --text-xl: 1.625rem;
+    --text-2xl: 2.125rem;
+    --text-3xl: 2.75rem;
+    --text-4xl: 3.75rem;
+    --gutter: var(--space-8);
+  }
+}

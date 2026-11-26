@@ -17,7 +17,7 @@
 
 | ID | 事项 | 影响面 | 验证/决策方式 | 状态 |
 | --- | --- | --- | --- | --- |
-| R-01 | 站点名称未定（空间概念方向） | `site`、标题、OG、PWA `name`、logo、仓库名 | 用户决策；代码中走配置项 | Needs Validation |
+| R-01 | 站点名称：**已定 `The Commons`** | `site`、标题、OG、PWA `name`、logo | 唯一定义在 `src/config/site.ts`，已定案（2026-11-26） | Confirmed |
 | R-02 | 仓库名与 `base`：已定 `ashtondebug/personal-blog` → `base = '/personal-blog'` | 全站内链、资源路径、Waline `path`、搜索索引、PWA `start_url` | 已定案（2026-11-26）；日后改名会破坏评论 path 与分享链接 | Confirmed |
 | R-03 | 默认语言是否带 URL 前缀：**已定全部带前缀** `/{locale}/...` | 全站 URL、评论 key、canonical、`hreflang` | 已定案（2026-11-26，[ADR-0008](./decisions/0008-url-strategy.md)） | Confirmed |
 | R-04 | 仓库可见性：已选 **Public** | Pages 可用性（公开仓库在 Free 计划下可发布） | 已定案（2026-11-26）；改私有需 Pro/Team | Confirmed |
@@ -45,7 +45,7 @@
 | R-16 | 双向链接悬空 | 指向不存在条目产生死链 | 构建期报错 |
 | R-17 | `translationKey` 写错 | 语言切换指向错误页面 | 构建期一致性校验（同组语言不重复） |
 | R-18 | schema 与文档不一致 | 字段漂移，内容构建失败 | 改字段必须同批改 [数据模型](./architecture/data-models.md) |
-| R-19 | 对比度不达标 | 无障碍缺陷 | 两套主题实测（[配色 §6](./design/color-and-theme.md)） |
+| R-19 | 对比度：已实测全部 ≥4.5:1，由 CI 拦截（[配色与主题](./design/color-and-theme.md)） | 无障碍缺陷 | `npm run check:contrast` | Confirmed |
 | R-20 | 图片 EXIF 泄漏位置 | 隐私风险 | 入库前剥离（[隐私](./security/privacy.md)） |
 | R-21 | 构建超时（>10 分钟） | 发布失败 | 监控构建耗时；媒体外置 |
 | R-22 | 第三方脚本体积/可用性 | 首屏变慢或页面报错 | 按需加载 + 降级（[集成门槛](./integrations/index.md)） |

@@ -69,3 +69,16 @@
 ## 7. 验收
 
 交互完成后逐条自查：键盘能完成主流程（打开搜索 → 输入 → 关闭；打开灯箱 → 翻页 → 关闭）；`prefers-reduced-motion` 下无位移动画；断网时页面仍可读；浅色/深色下焦点环均可见。
+
+## 8. 当前实现状态（Phase 2）
+
+| 交互 | 状态 | 说明 |
+| --- | --- | --- |
+| 主题三态切换 | ✅ 已实现 | `src/scripts/theme.ts` + `ThemeToggle.astro`；无 JS 时按钮隐藏 |
+| 语言切换 | ✅ 已实现 | 当前语言 `aria-current`，其他带 `hreflang`；不可用语言弱化显示 |
+| 跳至正文 | ✅ 已实现 | `.skip-link`，仅键盘聚焦时出现 |
+| 焦点环 | ✅ 已实现 | 全局 `:focus-visible` 2px 描边 |
+| 减少动效 | ✅ 已实现 | `reset.css` 内全局 `prefers-reduced-motion` 降级 |
+| 导航抽屉（移动端） | ⏳ Phase 5 | 当前移动端导航为横向滚动 |
+| 搜索浮层 `/` `Esc` | ⏳ Phase 6 | — |
+| 灯箱 / 阅读进度 / 播放器 | ⏳ Phase 7 | — |

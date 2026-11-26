@@ -1,11 +1,13 @@
 # 设计系统（Token 与组件契约）
 
 > **用途**：给出可测量的设计决策（token 命名、刻度、断点、组件清单），让不同阶段的实现保持一致。**本文件是设计数值的唯一来源。**
-> **状态**：Proposed（全部数值为 Agent 提议，待实现阶段校验；风格方向本身是 Confirmed）。
+> **状态**：Confirmed（已落地为 `src/styles/tokens.css`；数值可随设计演进调整，但须保持对比度门槛并同步本文）
 > **更新**：2026-11-26
 > **相关**：[设计原则](./design-principles.md) · [字体与排版](./typography.md) · [配色与主题](./color-and-theme.md) · [交互准则](./interaction-guidelines.md) · [前端架构](../architecture/frontend-architecture.md)
 
 ## 1. Token 命名约定
+
+**实现位置**：`src/styles/tokens.css`（全站唯一数值来源）。组件只引用变量，不得写死数值；改数值改这一个文件，并跑 `npm run check:contrast`。
 
 CSS 自定义属性，语义优先于外观：
 

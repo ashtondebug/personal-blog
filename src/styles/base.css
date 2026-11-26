@@ -1,0 +1,120 @@
+/* 排版基线：正文用衬线（杂志编辑式），UI 用无衬线 */
+
+html {
+  background-color: var(--color-bg);
+}
+
+body {
+  font-family: var(--font-serif);
+  font-size: var(--text-base);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  transition: background-color var(--dur-base) var(--ease-standard),
+    color var(--dur-base) var(--ease-standard);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: var(--text-3xl);
+}
+
+h2 {
+  font-size: var(--text-2xl);
+}
+
+h3 {
+  font-size: var(--text-xl);
+}
+
+p {
+  max-width: var(--measure-prose);
+}
+
+a {
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  transition: opacity var(--dur-fast) var(--ease-standard);
+}
+
+a:hover {
+  opacity: 0.72;
+}
+
+:focus-visible {
+  outline: var(--line-bold) solid currentColor;
+  outline-offset: var(--space-1);
+  border-radius: var(--radius-sm);
+}
+
+::selection {
+  background-color: var(--color-text);
+  color: var(--color-bg);
+}
+
+hr {
+  border: 0;
+  border-top: var(--line-hair) solid var(--color-line);
+  margin-block: var(--space-8);
+}
+
+/* 通用布局工具类：只用少量、语义清晰的几个 */
+.u-container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.u-sans {
+  font-family: var(--font-sans);
+}
+
+.u-muted {
+  color: var(--color-muted);
+}
+
+.u-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* 跳过导航：仅在键盘聚焦时出现 */
+.skip-link {
+  position: absolute;
+  inset-inline-start: var(--space-4);
+  inset-block-start: var(--space-4);
+  padding: var(--space-2) var(--space-3);
+  background-color: var(--color-invert-bg);
+  color: var(--color-invert-text);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  text-decoration: none;
+  border-radius: var(--radius-md);
+  transform: translateY(-200%);
+  transition: transform var(--dur-fast) var(--ease-out);
+  z-index: var(--z-toast);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline-offset: var(--space-1);
+}

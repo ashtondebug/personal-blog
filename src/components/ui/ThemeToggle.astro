@@ -1,0 +1,49 @@
+---
+import { t } from '../../i18n/ui';
+import type { Locale } from '../../i18n/config';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+<button
+  type="button"
+  class="theme-toggle"
+  data-theme-toggle
+  data-label-light={t(locale, 'theme.light')}
+  data-label-dark={t(locale, 'theme.dark')}
+  data-label-system={t(locale, 'theme.system')}
+  aria-label={t(locale, 'theme.label')}
+  title={t(locale, 'theme.label')}
+>
+  <span class="u-visually-hidden">{t(locale, 'theme.label')}:</span>
+  <span data-theme-label>{t(locale, 'theme.system')}</span>
+</button>
+
+<style>
+  .theme-toggle {
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-muted);
+    border: var(--line-hair) solid var(--color-line);
+    border-radius: var(--radius-sm);
+    padding: var(--space-2) var(--space-3);
+    min-height: 2.75rem;
+    min-width: 2.75rem;
+    transition: color var(--dur-fast) var(--ease-standard),
+      border-color var(--dur-fast) var(--ease-standard);
+  }
+
+  .theme-toggle:hover {
+    color: var(--color-text);
+    border-color: var(--color-text);
+  }
+
+  /* 无 JS 时不显示一个点了没反应的按钮 */
+  :global(html:not(.js) .theme-toggle) {
+    display: none;
+  }
+</style>

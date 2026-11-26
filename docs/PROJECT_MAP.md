@@ -9,7 +9,7 @@
 
 一个**简约文艺风格的多语言个人门户型博客**：四个内容方向（Tech / Life / Knowledge / Thought），八个页面（Home / Blog / Projects / Knowledge / About / Gallery / Moments / Guestbook），四种语言（`zh-CN` / `zh-TW` / `en` / `ja`），技术栈为 Astro + TypeScript + Markdown/MDX + Content Collections，托管在 GitHub Pages，评论用 Waline（独立外部服务）。默认不引入前端框架。
 
-**当前阶段**：Phase 1 已完成 —— 有可构建、可部署的四语言骨架（首页 + 根重定向 + 部署工作流），尚无内容与八大页面。
+**当前阶段**：Phase 2 已完成 —— 设计 token、排版基线、Header/Footer、三态主题已落地并实测对比度；尚无内容与八大页面。
 
 ## 2. 领域与权威文档
 
@@ -84,7 +84,7 @@ flowchart LR
 
 | 类别 | 未确认项 |
 | --- | --- |
-| 不可逆前置 | 仅剩**站点名称**（仓库名、`base`、可见性、语言前缀、尾斜杠均已于 2026-11-26 定案） |
+| 不可逆前置 | 已全部定案：站点名 `The Commons`、仓库 `personal-blog`、`base`、语言前缀、尾斜杠策略 |
 | 外部服务 | Waline 服务端与数据库选型、浏览量方案、点赞（Waline `reaction` 是否等价） |
 | 实现方案 | 搜索（Pagefind 候选）、中文字体加载策略、高清图外置存储、音乐体积、双向链接语法、"高级标签"语义 |
 | 平台能力 | 自定义响应头/CSP、单文件大小上限、旧 SW 自注销 |

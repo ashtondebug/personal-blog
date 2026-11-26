@@ -69,11 +69,11 @@
 - 任何形式的密钥、令牌、数据库连接串。
 - 与需求无关的"示例页面""演示组件"。
 
-## 5. 当前状态声明（Phase 1 完成后）
+## 5. 当前状态声明（Phase 2 完成后）
 
-已创建：`package.json`（lockfile 已生成）、`astro.config.mjs`、`tsconfig.json`、`src/config/site.ts`、`src/i18n/{config,ui,url}.ts`、`src/layouts/BaseLayout.astro`、`src/pages/index.astro`（根重定向）、`src/pages/[locale]/index.astro`、`.github/workflows/{docs-check,deploy}.yml`。
+已创建：`package.json`（lockfile 已生成）、`astro.config.mjs`、`tsconfig.json`、`src/config/{site,nav}.ts`、`src/i18n/{config,ui,url}.ts`、`src/styles/{tokens,reset,base}.css`、`src/scripts/theme.ts`、`src/layouts/BaseLayout.astro`、`src/components/layout/{SiteHeader,SiteFooter}.astro`、`src/components/ui/{ThemeToggle,LanguageSwitcher}.astro`、`src/pages/index.astro`（根重定向）、`src/pages/[locale]/index.astro`、`scripts/{check-docs,check-contrast}.mjs`、`.github/workflows/{docs-check,deploy}.yml`。
 
-尚未创建（按路线图后续阶段）：`src/content/` 与 `content.config.ts`（Phase 4）、`src/components/` 与 `src/styles/`（Phase 2/5）、`public/`（Phase 2/5）、搜索与 PWA 产物（Phase 6/9）。
+尚未创建（按路线图后续阶段）：`src/content/` 与 `content.config.ts`（Phase 4）、其余页面组件（Phase 5）、搜索与 PWA 产物（Phase 6/9）。
 
 ## 6. 与 Phase 1 实际结构的差异说明
 

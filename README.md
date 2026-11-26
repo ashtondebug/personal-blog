@@ -1,4 +1,4 @@
-# 个人博客
+# The Commons
 
 一个**简约文艺风格的多语言个人门户型博客**：文字与摄影为主，静态生成，长期可维护。
 
@@ -11,18 +11,19 @@
 
 ## 当前状态
 
-**Phase 1：项目初始化（已完成）**——已有可构建、可部署的骨架：四语言首页、根路径重定向、i18n 词典与路径工具、`base` 前缀正确、部署工作流。**尚无**文章内容、八大页面与设计系统（Phase 2 及以后）。
+**Phase 2：设计系统与全局布局（已完成）**——设计 token、排版基线、Header/Footer、语言切换与三态主题（浅色/深色/跟随系统，首屏无闪烁）已落地，对比度经脚本与 CI 实测（两套主题全部 ≥ 4.5:1）。
 
-站点名称仍是占位值 `未命名空间`（集中定义在 `src/config/site.ts`，定名后只改这一处），见 [风险清单](docs/risks-and-validation.md)。
+**尚无**文章内容、八大页面与搜索、评论（按路线图后续阶段推进）。
 
 ## 常用命令
 
 ```bash
-npm install          # 安装依赖（lockfile 已入库，CI 用 npm ci）
-npm run dev          # 本地开发
-npm run build        # 构建到 dist/
-npm run preview      # 预览构建产物
-npm run check:docs   # 文档链接与结构检查（CI 也会跑）
+npm install             # 安装依赖（lockfile 已入库，CI 用 npm ci）
+npm run dev             # 本地开发
+npm run build           # 构建到 dist/
+npm run preview         # 预览构建产物
+npm run check:docs      # 文档链接与结构检查（CI 也会跑）
+npm run check:contrast  # 设计 token 对比度检查（CI 也会跑）
 ```
 
 构建注意：若在受限环境（如沙箱）运行，Astro 会尝试写用户目录的遥测配置，可设环境变量 `ASTRO_TELEMETRY_DISABLED=1`。
@@ -50,13 +51,16 @@ astro.config.mjs     站点配置（site / base / i18n / trailingSlash）
 tsconfig.json        TypeScript 严格模式配置
 docs/                项目知识库（产品/设计/架构/工程/集成/安全/决策/参考资料）
 plans/               路线图、技术债与已完成计划
-scripts/check-docs.mjs  文档链接与结构检查
+scripts/             文档检查、对比度检查
 src/
-  config/site.ts     站点名与定位（站名占位值的唯一定义处）
+  config/            站点常量与导航配置（站名唯一定义处）
   i18n/              语言定义、UI 词典、带 base 的路径工具
+  styles/            设计 token、reset、排版基线
+  scripts/           客户端交互脚本（主题）
+  components/        layout（Header/Footer）与 ui（语言/主题切换）
   layouts/           页面骨架
   pages/             路由（[locale] 展开四语言 + 根重定向）
-.github/workflows/   文档检查 CI + Pages 部署
+.github/workflows/   文档与设计检查 CI + Pages 部署
 ```
 
 ## 约定
@@ -68,7 +72,7 @@ src/
 
 ## 尚未确定
 
-站点名称（空间概念方向）；Waline 服务端选型、浏览量方案与点赞是否启用、搜索方案、中文字体策略。完整清单见 [docs/risks-and-validation.md](docs/risks-and-validation.md)。
+Waline 服务端选型、浏览量方案与点赞是否启用、搜索方案、中文字体是否自托管子集化。完整清单见 [docs/risks-and-validation.md](docs/risks-and-validation.md)。
 
 ## 许可
 
