@@ -16,6 +16,7 @@
 | [0005](./0005-waline-for-comments.md) | 评论使用 Waline 独立服务 | Confirmed + Needs Validation（服务端选型） | 2026-11-26 |
 | [0006](./0006-no-default-ui-framework.md) | 默认不引入 React/Vue 等 UI 框架 | Confirmed | 2026-11-26 |
 | [0007](./0007-static-dynamic-service-boundary.md) | 静态能力与外部动态服务分离 | Confirmed | 2026-11-26 |
+| [0008](./0008-url-strategy.md) | URL 策略：全语言前缀 + 尾斜杠 always + `base=/personal-blog` | Confirmed（Phase 1 定案） | 2026-11-26 |
 
 ## 2. 什么情况必须写 ADR
 

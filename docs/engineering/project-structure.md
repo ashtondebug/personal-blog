@@ -69,6 +69,12 @@
 - 任何形式的密钥、令牌、数据库连接串。
 - 与需求无关的"示例页面""演示组件"。
 
-## 5. 当前状态声明
+## 5. 当前状态声明（Phase 1 完成后）
 
-本结构是 **Phase 1 的目标**。当前仓库只有：`AGENTS.md`、`ARCHITECTURE.md`、`README.md`、`docs/`、`plans/`、`scripts/check-docs.mjs`、`.github/workflows/docs-check.yml` 与 `.gitignore`/`.gitattributes`。创建 `src/` 属于 Phase 1 的工作，需按 [路线图](../../plans/active/000-initial-implementation-roadmap.md) 推进。
+已创建：`package.json`（lockfile 已生成）、`astro.config.mjs`、`tsconfig.json`、`src/config/site.ts`、`src/i18n/{config,ui,url}.ts`、`src/layouts/BaseLayout.astro`、`src/pages/index.astro`（根重定向）、`src/pages/[locale]/index.astro`、`.github/workflows/{docs-check,deploy}.yml`。
+
+尚未创建（按路线图后续阶段）：`src/content/` 与 `content.config.ts`（Phase 4）、`src/components/` 与 `src/styles/`（Phase 2/5）、`public/`（Phase 2/5）、搜索与 PWA 产物（Phase 6/9）。
+
+## 6. 与 Phase 1 实际结构的差异说明
+
+Phase 1 未创建 `src/components/` 与 `src/styles/`：首页骨架只需布局与 i18n，设计系统属于 Phase 2；提前建空目录只会制造噪音。目录在真正需要时创建。

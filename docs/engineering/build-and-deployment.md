@@ -31,7 +31,14 @@
 
 第 4 步的缺失会让搜索"构建成功但用不了"，因此发布后必须验证搜索（[测试策略 L4](./testing-strategy.md)）。
 
-## 3. 最小工作流骨架（官方示例形态，落地时以官方文档为准）
+## 3. 工作流现状
+
+- **已建立**：`.github/workflows/deploy.yml`（官方形态：`actions/checkout@v7` → `withastro/action@v6` → `actions/deploy-pages@v5`，权限 `contents: read` / `pages: write` / `id-token: write`）。首次部署前需在仓库 Settings → Pages 把 **Source 设为 GitHub Actions**。
+- **已建立**：`.github/workflows/docs-check.yml` → `node scripts/check-docs.mjs`（推送与 PR 都跑）。
+- **实测（2026-11-26）**：`npm run build` 生成 5 个页面（4 语言 + 根重定向），约 1 秒；`dist/` 目录结构与 `base` 一致。
+- **受限环境注意**：Astro 会写用户目录遥测配置，沙箱内需 `ASTRO_TELEMETRY_DISABLED=1`；CI 无此问题。
+
+最小骨架（供核对，实际文件已在仓库中）：
 
 ```yaml
 name: Deploy to GitHub Pages
@@ -59,9 +66,6 @@ jobs:
       - id: deployment
         uses: actions/deploy-pages@v5
 ```
-
-- 本阶段**不创建** `deploy.yml`：没有 `package.json` 与站点源码时它必然失败（Phase 1 创建）。
-- 唯一已存在的工作流是文档检查：`.github/workflows/docs-check.yml` → `node scripts/check-docs.mjs`。
 
 ## 4. 部署前检查清单
 

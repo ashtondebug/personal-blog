@@ -1,4 +1,4 @@
-﻿# 计划索引
+# 计划索引
 
 > **用途**：计划板块入口。`docs/` 说"是什么/为什么"，`plans/` 说"什么时候做/做到哪一步"。
 > **状态**：Confirmed（目录约定）+ Proposed（当前路线图内容）
@@ -37,6 +37,7 @@ plans/
 | --- | --- | --- |
 | [初始实施路线图](./active/000-initial-implementation-roadmap.md) | Proposed（待用户确认后进入 Phase 1） | 12 个阶段，只规划未执行 |
 | [000 · 项目知识体系](./completed/000-project-mapping.md) | 已完成（2026-11-26） | 本知识库、ADR、路线图、文档检查工具 |
+| [001 · 项目初始化](./completed/001-phase-1-initialization.md) | 已完成（2026-11-26） | Astro 骨架、四语言首页、部署工作流 |
 
 ## 4. 计划的生命周期
 

@@ -1,0 +1,12 @@
+---
+/**
+ * 根路径 → 默认语言。
+ *
+ * 采用显式重定向而不是 i18n.routing.redirectToDefaultLocale：后者由框架决定目标格式，
+ * 这里需要保证目标地址包含 base 前缀，由 astro:i18n 工具（经 localeUrl 包装）负责。
+ */
+import { DEFAULT_LOCALE } from '../i18n/config';
+import { localeUrl } from '../i18n/url';
+
+return Astro.redirect(localeUrl(DEFAULT_LOCALE), 302);
+---

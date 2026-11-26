@@ -19,9 +19,9 @@
 | --- | --- | --- | --- | --- |
 | R-01 | 站点名称未定（空间概念方向） | `site`、标题、OG、PWA `name`、logo、仓库名 | 用户决策；代码中走配置项 | Needs Validation |
 | R-02 | 仓库名与 `base`：已定 `ashtondebug/personal-blog` → `base = '/personal-blog'` | 全站内链、资源路径、Waline `path`、搜索索引、PWA `start_url` | 已定案（2026-11-26）；日后改名会破坏评论 path 与分享链接 | Confirmed |
-| R-03 | 默认语言是否带 URL 前缀 | 全站 URL、评论 key、canonical、`hreflang` | 用户在两方案中选一（[路由与 i18n §4](./architecture/routing-and-i18n.md)） | Needs Validation |
+| R-03 | 默认语言是否带 URL 前缀：**已定全部带前缀** `/{locale}/...` | 全站 URL、评论 key、canonical、`hreflang` | 已定案（2026-11-26，[ADR-0008](./decisions/0008-url-strategy.md)） | Confirmed |
 | R-04 | 仓库可见性：已选 **Public** | Pages 可用性（公开仓库在 Free 计划下可发布） | 已定案（2026-11-26）；改私有需 Pro/Team | Confirmed |
-| R-05 | 尾斜杠与 `build.format` 策略 | 所有内链与评论 key 的一致性 | 与 R-03 一并定案 | Needs Validation |
+| R-05 | 尾斜杠与 `build.format`：**已定 `always` + `directory`** | 所有内链与评论 key 的一致性 | 已定案（2026-11-26，[ADR-0008](./decisions/0008-url-strategy.md)） | Confirmed |
 
 ## 2. P1：阻塞具体阶段
 

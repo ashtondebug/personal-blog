@@ -2,7 +2,7 @@
 
 一个**简约文艺风格的多语言个人门户型博客**：文字与摄影为主，静态生成，长期可维护。
 
-仓库：<https://github.com/ashtondebug/personal-blog> · 计划中的线上地址：`https://ashtondebug.github.io/personal-blog/`（Phase 1 之后可用）
+仓库：<https://github.com/ashtondebug/personal-blog> · 线上地址：`https://ashtondebug.github.io/personal-blog/`（Phase 1 部署后可用）
 
 - 内容方向：Tech（技术）· Life（生活）· Knowledge（知识）· Thought（思考）
 - 页面：Home · Blog · Projects · Knowledge · About · Gallery · Moments · Guestbook
@@ -11,8 +11,21 @@
 
 ## 当前状态
 
-**Phase 0：项目知识体系（已完成）**——仓库目前只有文档、规划与文档检查工具，**还没有网站代码**。
-下一步是 [路线图](plans/active/000-initial-implementation-roadmap.md) 的 Phase 1，开工前需先定几个不可逆的前置项（站点名、仓库名、语言前缀等），见 [风险清单](docs/risks-and-validation.md)。
+**Phase 1：项目初始化（已完成）**——已有可构建、可部署的骨架：四语言首页、根路径重定向、i18n 词典与路径工具、`base` 前缀正确、部署工作流。**尚无**文章内容、八大页面与设计系统（Phase 2 及以后）。
+
+站点名称仍是占位值 `未命名空间`（集中定义在 `src/config/site.ts`，定名后只改这一处），见 [风险清单](docs/risks-and-validation.md)。
+
+## 常用命令
+
+```bash
+npm install          # 安装依赖（lockfile 已入库，CI 用 npm ci）
+npm run dev          # 本地开发
+npm run build        # 构建到 dist/
+npm run preview      # 预览构建产物
+npm run check:docs   # 文档链接与结构检查（CI 也会跑）
+```
+
+构建注意：若在受限环境（如沙箱）运行，Astro 会尝试写用户目录的遥测配置，可设环境变量 `ASTRO_TELEMETRY_DISABLED=1`。
 
 ## 从这里开始读
 
@@ -33,19 +46,18 @@
 AGENTS.md            Agent 入口地图
 ARCHITECTURE.md      架构总地图
 README.md            本文件（人类入口）
+astro.config.mjs     站点配置（site / base / i18n / trailingSlash）
+tsconfig.json        TypeScript 严格模式配置
 docs/                项目知识库（产品/设计/架构/工程/集成/安全/决策/参考资料）
-plans/               路线图与技术债
+plans/               路线图、技术债与已完成计划
 scripts/check-docs.mjs  文档链接与结构检查
-.github/workflows/   文档检查 CI（站点部署工作流在 Phase 1 建立）
+src/
+  config/site.ts     站点名与定位（站名占位值的唯一定义处）
+  i18n/              语言定义、UI 词典、带 base 的路径工具
+  layouts/           页面骨架
+  pages/             路由（[locale] 展开四语言 + 根重定向）
+.github/workflows/   文档检查 CI + Pages 部署
 ```
-
-## 本地检查文档
-
-```bash
-node scripts/check-docs.mjs
-```
-
-检查相对链接是否可达、文档头四行是否齐备、AGENTS.md 是否超长。CI 每次推送都会跑。
 
 ## 约定
 
@@ -56,7 +68,7 @@ node scripts/check-docs.mjs
 
 ## 尚未确定
 
-站点名称（空间概念方向）未定；仓库名、默认语言 URL 前缀、评论服务端选型、搜索与字体方案均待定。完整清单见 [docs/risks-and-validation.md](docs/risks-and-validation.md)。
+站点名称（空间概念方向）；Waline 服务端选型、浏览量方案与点赞是否启用、搜索方案、中文字体策略。完整清单见 [docs/risks-and-validation.md](docs/risks-and-validation.md)。
 
 ## 许可
 

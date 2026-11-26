@@ -14,20 +14,20 @@
 
 ## 1. 总览
 
-| 阶段 | 名称 | 关键产出 | 依赖 |
-| --- | --- | --- | --- |
-| 1 | 项目初始化与基础架构 | `package.json`、`astro.config`、目录骨架、部署工作流 | R-01～R-05 |
-| 2 | 设计系统与全局布局 | token、reset、排版、Header/Footer、三态主题 | 1 |
-| 3 | 多语言系统 | 词典、路由展开、语言切换、meta 多语言 | 2 |
-| 4 | 内容模型与 Markdown 管理 | `content.config.ts`、schema、派生索引 | 3 |
-| 5 | 八大页面 | Home/Blog/Projects/Knowledge/About/Gallery/Moments/Guestbook | 4 |
-| 6 | 搜索与阅读功能 | 搜索索引与 UI、TOC、阅读进度与时间、分享、三视图 | 5 |
-| 7 | 交互功能 | 快捷键、灯箱、热力图、时间轴、音乐播放器 | 5、6 |
-| 8 | Waline 与第三方服务 | 评论、留言板、条件性浏览量/点赞 | 3、5 |
-| 9 | PWA | Manifest、Service Worker、更新机制 | 2、6 |
-| 10 | SEO、隐私、安全 | meta/canonical/hreflang、隐私与安全清单落地 | 5、3 |
-| 11 | 自动化部署 | 生产部署工作流、发布冒烟 | 1 且全站可构建 |
-| 12 | 最终验收 | 全量验收、性能实测、文档一致性 | 全部 |
+| 阶段 | 名称 | 关键产出 | 依赖 | 状态 |
+| --- | --- | --- | --- | --- |
+| 1 | 项目初始化与基础架构 | `package.json`、`astro.config`、目录骨架、部署工作流 | R-01～R-05 | ✅ 已完成（2026-11-26，[报告](../completed/001-phase-1-initialization.md)） |
+| 2 | 设计系统与全局布局 | token、reset、排版、Header/Footer、三态主题 | 1 | 未开始 |
+| 3 | 多语言系统 | 词典、路由展开、语言切换、meta 多语言 | 2 | 未开始 |
+| 4 | 内容模型与 Markdown 管理 | `content.config.ts`、schema、派生索引 | 3 | 未开始 |
+| 5 | 八大页面 | Home/Blog/Projects/Knowledge/About/Gallery/Moments/Guestbook | 4 | 未开始 |
+| 6 | 搜索与阅读功能 | 搜索索引与 UI、TOC、阅读进度与时间、分享、三视图 | 5 | 未开始 |
+| 7 | 交互功能 | 快捷键、灯箱、热力图、时间轴、音乐播放器 | 5、6 | 未开始 |
+| 8 | Waline 与第三方服务 | 评论、留言板、条件性浏览量/点赞 | 3、5 | 未开始 |
+| 9 | PWA | Manifest、Service Worker、更新机制 | 2、6 | 未开始 |
+| 10 | SEO、隐私、安全 | meta/canonical/hreflang、隐私与安全清单落地 | 5、3 | 未开始 |
+| 11 | 自动化部署 | 生产部署工作流、发布冒烟 | 1 且全站可构建 | 部分完成（`deploy.yml` 已建，Pages 待启用） |
+| 12 | 最终验收 | 全量验收、性能实测、文档一致性 | 全部 | 未开始 |
 
 **最小可发布切片**：Phase 1–5 完成即可首次上线（有页面、有内容、能构建、能部署）。Phase 6–12 为增量能力，可分批上线；但**评论（8）上线前必须已定案 R-02/R-03**，否则评论 path 会漂移。
 

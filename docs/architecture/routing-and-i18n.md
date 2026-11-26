@@ -1,9 +1,9 @@
 # 路由与国际化
 
 > **用途**：定义 URL 结构、语言前缀策略、语言切换与回退规则。改任何路由、加任何语言相关功能前必读。
-> **状态**：Confirmed（四语言、独立语言文章、UI 全量国际化）+ Proposed（具体路由形态）+ Needs Validation（默认语言前缀、`base`）
+> **状态**：Confirmed（四语言、独立语言文章、UI 全量国际化、URL 策略）+ Proposed（具体实现细节）
 > **更新**：2026-11-26
-> **相关**：[信息架构](../product/information-architecture.md) · [前端架构](./frontend-architecture.md) · [内容架构](./content-architecture.md) · [ADR-0004](../decisions/0004-per-language-articles.md) · [Waline 集成](../integrations/waline.md)
+> **相关**：[信息架构](../product/information-architecture.md) · [前端架构](./frontend-architecture.md) · [内容架构](./content-architecture.md) · [ADR-0004](../decisions/0004-per-language-articles.md) · [ADR-0008](../decisions/0008-url-strategy.md) · [Waline 集成](../integrations/waline.md)
 
 ## 1. 语言集合
 
@@ -39,24 +39,29 @@ src/pages/[locale]/blog/[slug].astro   → /{locale}/blog/{slug}/
 | --- | --- | --- |
 | `defaultLocale` | 默认语言 | `zh-CN`（Proposed） |
 | `locales` | 语言列表 | `['zh-CN','zh-TW','en','ja']` |
-| `routing.prefixDefaultLocale` | 默认语言是否也带前缀 | **Needs Validation**（见 §4） |
+| `routing.prefixDefaultLocale` | 默认语言是否也带前缀 | `true`（[ADR-0008](../decisions/0008-url-strategy.md)） |
+| `trailingSlash` | 尾斜杠 | `'always'`（[ADR-0008](../decisions/0008-url-strategy.md)） |
 | `routing.fallbackType` | 回退方式 `redirect` \| `rewrite` | 本项目**不用内容级 fallback**（见 §6） |
 | `fallback` | 语言 → 回退语言 | 不使用 |
 
-URL 生成统一使用 `astro:i18n` 提供的工具：`getRelativeLocaleUrl(locale, path?, options?)`、`getAbsoluteLocaleUrl(...)`、`getRelativeLocaleUrlList(...)`、`normalizeTheLocale(...)`、`pathHasLocale(...)`；当前语言用 `Astro.currentLocale` 读取。**禁止手写 `/${locale}/` 字符串拼接**——它无法同时正确处理 `base`、`trailingSlash` 与默认语言前缀策略。
+URL 生成统一使用 `src/i18n/url.ts` 的 `localeUrl(locale, path?)`（内部调用 `astro:i18n` 的 `getRelativeLocaleUrl`，并传 `normalizeLocale: false`）。**禁止**手写 `/${locale}/` 字符串拼接，也**不要**在页面里直接调用 `getRelativeLocaleUrl`——见下方陷阱说明。
 
-## 4. 未定项：默认语言是否加前缀
+> **已踩过的坑（Phase 1 实测）**：`getRelativeLocaleUrl` 默认会把 `zh-CN` 归一化为小写 `zh-cn`，而静态产物目录是 `zh-CN`；GitHub Pages 大小写敏感，链接会 404。必须传 `normalizeLocale: false`，或一律走 `localeUrl()` 包装。
 
-| 方案 | 优点 | 代价 | 状态 |
-| --- | --- | --- | --- |
-| A. 全部带前缀 `/{locale}/...` | 规则单一，切换语言时 path 结构对称，边界最少 | 根路径 `/` 需要重定向到 `/zh-CN/` | Proposal（推荐） |
-| B. 默认语言无前缀 `/blog/...`，其余 `/{locale}/blog/...` | 中文 URL 更短更好看 | 每个页面都要处理两种形态；Waline `path` 与搜索索引会出现双形态；重定向规则复杂 | 备选 |
+## 4. URL 策略（已定案）
 
-此决定影响：全站 URL、Waline 评论 `path`、搜索索引 URL、canonical、`hreflang`、PWA `start_url`。**未定案前不得先实现其中一种**，因为评论数据一旦按某种 path 写入就难以迁移。
+| 项 | 决定 | 依据 |
+| --- | --- | --- |
+| 默认语言前缀 | **全部语言都带**：`/{locale}/...` | [ADR-0008](../decisions/0008-url-strategy.md) |
+| 根路径 | `/` → 302 重定向到 `/zh-CN/` | `src/pages/index.astro` |
+| 尾斜杠 | `always` + `build.format: 'directory'` | ADR-0008 |
+| `base` | `/personal-blog` | 项目页路径 |
+
+曾考虑的"默认语言不带前缀"方案已否决：会导致评论 path、搜索索引与 canonical 出现双形态。此决定影响：全站 URL、Waline 评论 `path`、搜索索引 URL、canonical、`hreflang`、PWA `start_url`。**上线后不得变更**。
 
 ## 5. 语言切换
 
-- 站点级页面：切到目标语言的同一路径（`getRelativeLocaleUrl` 生成）。
+- 站点级页面：切到目标语言的同一路径（由 `localeUrl()` 生成）。
 - 内容页：**只有存在目标语言版本时**才提供该语言链接；否则该语言项显示为不可用并给出说明，禁止指向同 slug 的其他语言页面。
 - 内容之间的对应关系由内容模型里的可选字段声明（如 `translationKey`，[数据模型](./data-models.md) 定义），构建期生成"该内容的可用语言列表"。
 - 不生成伪 `hreflang`：只对真正存在的语言版本输出 `<link rel="alternate" hreflang>`。

@@ -59,3 +59,18 @@
 - v6 起引入 live collections（`defineLiveCollection`、`src/live.config.*`），本项目**不使用**（无运行时数据源）。
 - Markdown 处理管线在近期版本有变动（出现 Sätteri / Unified 两种 processor 文档），插件接入方式需在实现阶段按当期文档复核。
 - `getEntry` 的 `id` 语义与文件名/目录结构相关，改动目录会改变 `id` → 影响 URL 与评论 `path`。
+
+## 6. 本项目实测踩坑（2026-11-26，来自真实构建）
+
+| 现象 | 原因 | 处置 |
+| --- | --- | --- |
+| `MissingIndexForInternationalization` 构建失败 | 开启 `i18n.routing.redirectToDefaultLocale: true` 时必须存在根 `src/pages/index.astro` | 改为 `false` 并显式写根重定向页（[ADR-0008](../decisions/0008-url-strategy.md)） |
+| 链接指向 `/zh-cn/` 但产物目录是 `/zh-CN/` → 线上 404 | `getRelativeLocaleUrl` 默认 `normalizeLocale: true`，会把 locale 小写化 | 统一走 `src/i18n/url.ts` 的 `localeUrl()`（传 `normalizeLocale: false`） |
+| 构建报 `EPERM: mkdir <user>\AppData\Roaming\astro\Config` | Astro 遥测写用户目录，受限环境不可写 | 构建时设 `ASTRO_TELEMETRY_DISABLED=1` |
+| 静态构建下 `Astro.redirect` 的产物 | 生成带 `<meta http-equiv="refresh">` 与 canonical 的 HTML 重定向页，目标需自带 `base` | 用 `localeUrl()` 生成目标 |
+
+## 7. 待复核
+
+- `i18n.routing.redirectToDefaultLocale` 的推荐用法（当前选择绕开它是否仍有副作用）。
+- `trailingSlash: 'always'` 与 `build.format: 'directory'` 之外的其他组合行为。
+- 未来版本中 `normalizeLocale` 默认值是否变化。

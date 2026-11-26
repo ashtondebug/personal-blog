@@ -77,10 +77,12 @@ flowchart LR
 | 构建超时 | 图片优化或大媒体 | 拆分媒体源、改为外置存储 |
 | 评论全部消失 | URL 变更导致 Waline `path` 变化 | 查路径变更记录，必要时迁移评论 |
 
-## 7. 上线前必须定案的三件事
+## 7. 上线前的三件定案事项（2026-11-26 已全部定案）
 
-1. 仓库名（决定 `base`）。
-2. 仓库可见性（决定 Pages 是否可用；Free 计划下需公开）。
-3. 默认语言是否带前缀（决定全站 URL 与评论 key）。
+| 事项 | 结论 |
+| --- | --- |
+| 仓库名（决定 `base`） | `ashtondebug/personal-blog` → `base = '/personal-blog'` |
+| 仓库可见性 | Public（Free 计划下 Pages 可用） |
+| 默认语言前缀 | 全部带前缀 `/{locale}/...`（[ADR-0008](../decisions/0008-url-strategy.md)） |
 
-三项都会写进 [技术债](../../plans/tech-debt.md)，未定案前不得部署到生产路径。
+部署工作流 `.github/workflows/deploy.yml` 已随 Phase 1 建立；**首次部署前**需在仓库 Settings → Pages 将 Source 设为 **GitHub Actions**。

@@ -28,7 +28,7 @@
 | REQ-I18N-04 | 不自动生成机器翻译；不生成不存在的翻译链接（禁止 404 语言切换） | ✅ |
 | REQ-I18N-05 | UI 与导航必须**完整国际化**（菜单、按钮、表单、空状态、分页、日期格式、Waline 语言） | ✅ |
 | REQ-I18N-06 | 四语言元信息（`<html lang>`、`hreflang`/`canonical`、`og:locale`）随页面语言输出 | ✅ |
-| REQ-I18N-07 | 默认语言与前缀策略（是否 `/zh-CN/` 前缀）未定 | 🔵 |
+| REQ-I18N-07 | 默认语言与前缀策略（是否 `/zh-CN/` 前缀） | ✅ 已定：全部带前缀（[ADR-0008](../decisions/0008-url-strategy.md)） |
 
 ## 2. 八大页面
 
@@ -127,7 +127,7 @@
 | REQ-DEPLOY-04 | 普通资源按体积决定是否入库；高清摄影图与大型媒体可外置存储 | ✅ |
 | REQ-DEPLOY-05 | 音乐文件使用本地资源 | ✅ |
 | REQ-DEPLOY-06 | Waline 必须作为独立服务考虑（GitHub Pages 不能跑后端） | ✅ |
-| REQ-DEPLOY-07 | 仓库名与 Pages 路径（决定 `base`） | 🔵 |
+| REQ-DEPLOY-07 | 仓库名与 Pages 路径（决定 `base`） | ✅ 已定：`personal-blog` / `/personal-blog` |
 | REQ-DEPLOY-08 | 外置存储具体提供方（图床/对象存储） | 🔵 |
 
 ## 9. 工程与文档
