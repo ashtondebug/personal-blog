@@ -6,8 +6,9 @@ import { PRIMARY_NAV } from '../../config/nav';
 import { LOCALES, getLocaleDefinition, type Locale } from '../../i18n/config';
 import { t } from '../../i18n/ui';
 import { localeUrl } from '../../i18n/url';
-import { byLocale, entrySlug, published, sortByDateDesc } from '../../lib/content';
+import { byLocale, entrySlug, published, sortByDateDesc, yearlyActivity } from '../../lib/content';
 import { formatDate, isoDate } from '../../lib/format';
+import Heatmap from '../../components/home/Heatmap.astro';
 
 export function getStaticPaths() {
   return LOCALES.map((locale) => ({ params: { locale: locale.code } }));
@@ -19,6 +20,18 @@ const definition = getLocaleDefinition(locale);
 const all = await getCollection('blog');
 const latest = sortByDateDesc(byLocale(published(all), locale)).slice(0, 4);
 const sections = PRIMARY_NAV.filter((item) => item.enabled && item.path !== '');
+
+// 年度热力图：跨集合统计（已发布条目），只展示当前年份
+const collections = await Promise.all([
+  getCollection('blog'),
+  getCollection('knowledge'),
+  getCollection('projects'),
+  getCollection('moments'),
+  getCollection('gallery'),
+]);
+const activity = yearlyActivity(collections.flat());
+const currentYear = new Date().getUTCFullYear();
+const yearCounts = Object.fromEntries(activity.get(currentYear) ?? []);
 ---
 <BaseLayout locale={locale} path="">
   <div class="u-container home">
@@ -55,6 +68,10 @@ const sections = PRIMARY_NAV.filter((item) => item.enabled && item.path !== '');
           </ul>
         )
       }
+    </section>
+
+    <section class="block" aria-labelledby="heatmap-title">
+      <Heatmap locale={locale} year={currentYear} counts={yearCounts} />
     </section>
 
     <section class="block" aria-labelledby="explore">

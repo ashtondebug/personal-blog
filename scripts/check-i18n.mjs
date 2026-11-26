@@ -107,10 +107,19 @@ for (const section of SECTIONS) {
       }
     }
 
-    const currentCount = (html.match(/aria-current="page"/g) || []).length;
-    const expectedCurrent = NAV_SECTIONS.has(section) ? 1 : 0;
-    if (currentCount !== expectedCurrent) {
-      fail(`${tag}: aria-current="page" 出现 ${currentCount} 次，期望 ${expectedCurrent} 次`);
+    // 每个 <nav> 内最多一个 aria-current="page"；主导航版块至少有 1 个（桌面导航 + 移动端菜单各一份）
+    const navBlocks = [...html.matchAll(/<nav\b[\s\S]*?<\/nav>/g)].map((m) => m[0]);
+    const perNav = navBlocks.map((block) => (block.match(/aria-current="page"/g) || []).length);
+    if (perNav.some((count) => count > 1)) {
+      fail(`${tag}: 某个 <nav> 内出现多个 aria-current="page"（${perNav.join(',')}）`);
+    }
+    const currentCount = perNav.reduce((sum, count) => sum + count, 0);
+    const isNavSection = NAV_SECTIONS.has(section);
+    if (isNavSection && currentCount < 1) {
+      fail(`${tag}: 主导航版块缺少 aria-current="page"`);
+    }
+    if (!isNavSection && currentCount !== 0) {
+      fail(`${tag}: 非主导航页面不应标记 aria-current="page"（出现 ${currentCount} 次）`);
     }
 
     // 哨兵路径绝不允许泄漏到链接里（曾因 404 的 navPath 与状态切换路径耦合而出现）

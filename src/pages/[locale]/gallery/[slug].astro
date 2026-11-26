@@ -1,4 +1,4 @@
----
+﻿---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { getCollection, render } from 'astro:content';
 import type { Locale } from '../../../i18n/config';
@@ -6,6 +6,7 @@ import { t } from '../../../i18n/ui';
 import { localeUrl } from '../../../i18n/url';
 import { entryLocale, entrySlug, published } from '../../../lib/content';
 import { formatDate } from '../../../lib/format';
+import Lightbox from '../../../components/gallery/Lightbox.astro';
 import '../../../styles/prose.css';
 
 type GalleryEntry = Awaited<ReturnType<typeof getCollection<'gallery'>>>[number];
@@ -45,13 +46,22 @@ const facts = [
       {
         entry.data.images.map((image) => (
           <li class="grid__item">
-            <img
-              src={image.src}
-              alt={image.alt}
-              width={image.width}
-              height={image.height}
-              loading="lazy"
-            />
+            <a
+              href={image.src}
+              rel="noopener noreferrer"
+              data-lightbox
+              data-gallery={entrySlug(entry.id)}
+              data-caption={image.caption ?? image.alt}
+              data-alt={image.alt}
+            >
+              <img
+                src={image.src}
+                alt={image.alt}
+                width={image.width}
+                height={image.height}
+                loading="lazy"
+              />
+            </a>
             {image.caption && <p class="caption u-sans u-muted">{image.caption}</p>}
           </li>
         ))
@@ -79,6 +89,7 @@ const facts = [
       <a href={localeUrl(locale, 'gallery')}>{t(locale, 'nav.gallery')} →</a>
     </footer>
   </article>
+  <Lightbox locale={locale} />
 </BaseLayout>
 
 <style>

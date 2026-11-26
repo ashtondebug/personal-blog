@@ -1,4 +1,4 @@
----
+﻿---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { LOCALES, type Locale } from '../../../i18n/config';
@@ -6,6 +6,7 @@ import { t } from '../../../i18n/ui';
 import { localeUrl } from '../../../i18n/url';
 import { byLocale, entrySlug, published, sortByDateDesc } from '../../../lib/content';
 import { formatDate, isoDate } from '../../../lib/format';
+import Lightbox from '../../../components/gallery/Lightbox.astro';
 
 export function getStaticPaths() {
   return LOCALES.map((locale) => ({ params: { locale: locale.code } }));
@@ -38,7 +39,7 @@ const sets = sortByDateDesc(byLocale(published(all), locale));
             <ul role="list" class="grid">
               {set.data.images.map((image) => (
                 <li class="grid__item">
-                  <a href={image.src} rel="noopener noreferrer">
+                  <a href={image.src} rel="noopener noreferrer" data-lightbox data-gallery={set.id} data-caption={image.caption ?? image.alt} data-alt={image.alt}>
                     <img
                       src={image.src}
                       alt={image.alt}
@@ -56,6 +57,7 @@ const sets = sortByDateDesc(byLocale(published(all), locale));
       )
     }
   </div>
+  <Lightbox locale={locale} />
 </BaseLayout>
 
 <style>

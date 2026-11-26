@@ -15,6 +15,7 @@ import { assertContentIntegrity } from '../lib/content-integrity';
 import SiteHeader from '../components/layout/SiteHeader.astro';
 import SiteFooter from '../components/layout/SiteFooter.astro';
 import SearchOverlay from '../components/search/SearchOverlay.astro';
+import MusicPlayer from '../components/music/MusicPlayer.astro';
 
 interface Props {
   locale: Locale;
@@ -125,6 +126,7 @@ const xDefaultHref = absolute(DEFAULT_LOCALE);
     </main>
     <SiteFooter locale={locale} />
     <SearchOverlay locale={locale} mode="overlay" />
+    <MusicPlayer locale={locale} />
     <script>
       import '../scripts/theme';
     </script>

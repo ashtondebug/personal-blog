@@ -84,6 +84,6 @@
 | TOC 高亮 | ✅ 已实现 | `src/scripts/toc.ts`；当前章节 `aria-current="true"`；1100px 以上吸顶 |
 | 阅读进度 | ✅ 已实现 | `src/scripts/reading-progress.ts`；以文章元素为基准；减少动效时无过渡 |
 | 复制链接分享 | ✅ 已实现 | `src/scripts/share.ts`；失败时兜底选中并提示手动复制 |
-| 导航抽屉（移动端） | ⏳ Phase 7 | 当前移动端导航为横向滚动 |
-| 灯箱 | ⏳ Phase 7 | 图集当前点开原图新标签页 |
-| 音乐播放器 | ⏳ Phase 7 | — |
+| 导航抽屉（移动端） | ✅ 已实现 | `MobileMenu.astro`：原生 `<details>`，`<900px` 显示，桌面隐藏，不依赖 JS |
+| 灯箱 | ✅ 已实现 | `scripts/lightbox.ts`：按组浏览、`←/→` 翻页、`Esc` 关闭、焦点归还、锁滚动 |
+| 音乐播放器 | ✅ 已实现（未启用） | 曲目表为空时不渲染任何 UI；不自动播放、不跨页续播（TD-29） |

@@ -1,34 +1,83 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Timeline from '../../components/home/Timeline.astro';
+import { getCollection } from 'astro:content';
 import { LOCALES, type Locale } from '../../i18n/config';
-import { t, type UiKey } from '../../i18n/ui';
+import { t } from '../../i18n/ui';
+import { localeUrl } from '../../i18n/url';
+import { entrySlug, entryLocale, published } from '../../lib/content';
 
 export function getStaticPaths() {
   return LOCALES.map((locale) => ({ params: { locale: locale.code } }));
 }
 
 const locale = Astro.params.locale as Locale;
-const titleKey: UiKey = 'nav.about';
+
+const [blog, knowledge, projects, moments, gallery] = await Promise.all([
+  getCollection('blog'),
+  getCollection('knowledge'),
+  getCollection('projects'),
+  getCollection('moments'),
+  getCollection('gallery'),
+]);
+
+const sections = [
+  { path: 'blog', entries: blog },
+  { path: 'knowledge', entries: knowledge },
+  { path: 'projects', entries: projects },
+  { path: 'moments', entries: moments },
+  { path: 'gallery', entries: gallery },
+] as const;
+
+const items = sections
+  .flatMap((section) =>
+    published(section.entries as { id: string; data: { draft: boolean; date: Date; title: string } }[])
+      .filter((entry) => entryLocale(entry.id) === locale)
+      .map((entry) => ({
+        iso: entry.data.date.toISOString().slice(0, 10),
+        label: entry.data.title,
+        href: localeUrl(locale, `${section.path}/${entrySlug(entry.id)}`),
+      })),
+  )
+  .sort((a, b) => b.iso.localeCompare(a.iso))
+  .slice(0, 60);
+
+const byYear = new Map<number, typeof items>();
+for (const item of items) {
+  const year = Number(item.iso.slice(0, 4));
+  const list = byYear.get(year) ?? [];
+  list.push(item);
+  byYear.set(year, list);
+}
+
+const groups = [...byYear.entries()]
+  .sort(([a], [b]) => b - a)
+  .map(([year, yearItems]) => ({ year, items: yearItems }));
 ---
-<BaseLayout locale={locale} title={t(locale, titleKey)} path="about" indexable>
+<BaseLayout locale={locale} title={t(locale, 'nav.about')} path="about" indexable>
   <div class="u-container page">
-    <h1>{t(locale, titleKey)}</h1>
-    <p class="u-muted u-sans">{t(locale, 'about.placeholder')}</p>
+    <header class="head">
+      <h1>{t(locale, 'nav.about')}</h1>
+      <p class="u-muted u-sans">{t(locale, 'about.placeholder')}</p>
+    </header>
+
+    <Timeline locale={locale} groups={groups} />
   </div>
 </BaseLayout>
 
 <style>
   .page {
     display: grid;
-    gap: var(--space-4);
-    max-width: 42rem;
+    gap: var(--space-16);
+    max-width: 48rem;
+  }
+
+  .head {
+    display: grid;
+    gap: var(--space-3);
   }
 
   h1 {
     font-size: var(--text-3xl);
-  }
-
-  p {
-    font-size: var(--text-sm);
   }
 </style>

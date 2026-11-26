@@ -27,7 +27,7 @@
 | TD-08 | Waline 服务端与数据库未选型 | 待验证 | 评论可用性 | Phase 8 | Open | [Waline](../docs/integrations/waline.md) |
 | TD-09 | 搜索实现已在 Phase 6 落地（Pagefind 1.6.0 + 客户端语言过滤） | 待验证 | 搜索可用性与体积 | — | Closed（2026-11-26） | [搜索](../docs/integrations/search.md) |
 | TD-10 | 暂用系统字体栈；中文子集化方案仍未定 | 待验证 | 首屏性能、视觉统一 | 想统一各平台观感时 | Open（Phase 2 给了默认方案） | [排版](../docs/design/typography.md) |
-| TD-11 | 音乐体积与 Pages 限制冲突 | 风险 | 播放器可行性 | Phase 7 | Open | [媒体存储](../docs/integrations/media-storage.md) |
+| TD-11 | 音乐体积与 Pages 限制冲突；文件由作者后补，播放器已就绪但未启用 | 风险 | 播放器可行性、带宽 | 音乐文件到位后实测 | Open | [媒体存储](../docs/integrations/media-storage.md) |
 | TD-12 | 高清摄影图外置存储未定 | 待验证 | Gallery 成本与稳定性 | Phase 5 | Open | [R-11](../docs/risks-and-validation.md) |
 | TD-13 | PWA 缓存与内容更新冲突 | 风险 | 用户看到旧内容 | Phase 9 | Open | [PWA](../docs/integrations/pwa.md) |
 | TD-14 | `base` 前缀一致性风险 | 风险 | 全站 404 | 持续 | Open | [部署架构](../docs/architecture/deployment-architecture.md) |
@@ -45,6 +45,8 @@
 | TD-26 | 图集外链/外置存储与 `image()` 只支持本地图片冲突 | 风险 | 高清摄影作品 | 上传真实作品前（Phase 7/12） | Open | [媒体存储](../docs/integrations/media-storage.md) |
 | TD-27 | 搜索索引为单 bundle，含四语言元数据；首次搜索会拉多语言数据 | 债务 | 首搜速度、体积 | 内容量变大后（Phase 12 评估） | Open | [搜索](../docs/integrations/search.md) |
 | TD-28 | Projects / Gallery / Moments 详情页暂无 TOC | 债务 | 长内容页的可导航性 | 这些页面出现长文时 | Open | [交互准则](../docs/design/interaction-guidelines.md) |
+| TD-29 | 音乐播放器不能跨页面续播（多页静态站会重建 `<audio>`） | 债务 | 播放连续性 | 需要连续播放时（需 ADR + 客户端路由评估） | Open | [交互准则](../docs/design/interaction-guidelines.md) |
+| TD-30 | 热力图仅展示当前年份，无年份切换；时间轴上限 60 条 | 债务 | 历史内容展示 | 内容跨多年后 | Open | [Phase 7 报告](./completed/007-phase-7-interactions.md) |
 
 ## 3. 维护规则
 

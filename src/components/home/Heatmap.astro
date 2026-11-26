@@ -1,0 +1,127 @@
+---
+import { t, tFormat } from '../../i18n/ui';
+import type { Locale } from '../../i18n/config';
+
+interface Props {
+  locale: Locale;
+  year: number;
+  /** ISO 日期 → 当日条目数 */
+  counts: Record<string, number>;
+}
+
+const { locale, year, counts } = Astro.props;
+const total = Object.values(counts).reduce((sum, value) => sum + value, 0);
+
+// 从 1 月 1 日排到 12 月 31 日，前面按星期补空格，使每一列都是同一星期
+const first = new Date(Date.UTC(year, 0, 1));
+const startPad = first.getUTCDay();
+const daysInYear =
+  (Date.UTC(year + 1, 0, 1) - Date.UTC(year, 0, 1)) / (24 * 60 * 60 * 1000);
+
+const cells = [
+  ...Array.from({ length: startPad }, () => ({ empty: true, iso: '', count: 0, level: 0 })),
+  ...Array.from({ length: daysInYear }, (_, offset) => {
+    const date = new Date(Date.UTC(year, 0, 1 + offset));
+    const iso = date.toISOString().slice(0, 10);
+    const count = counts[iso] ?? 0;
+    const level = count >= 3 ? 3 : count;
+    return { empty: false, iso, count, level };
+  }),
+];
+---
+<section class="heatmap" aria-labelledby="heatmap-title">
+  <header class="heatmap__head">
+    <h2 id="heatmap-title" class="heatmap__title u-sans">{t(locale, 'heatmap.label')}</h2>
+    <p class="heatmap__summary u-sans u-muted">{tFormat(locale, 'heatmap.summary', { year, n: total })}</p>
+  </header>
+
+  <div class="heatmap__grid" role="img" aria-label={`${year}`}>
+    {
+      cells.map((cell) =>
+        cell.empty ? (
+          <span class="cell cell--empty" aria-hidden="true" />
+        ) : (
+          <span
+            class="cell"
+            data-level={cell.level}
+            title={cell.count > 0 ? `${cell.iso} · ${cell.count}` : cell.iso}
+          />
+        ),
+      )
+    }
+  </div>
+
+  <p class="heatmap__legend u-sans u-muted">
+    <span>{t(locale, 'heatmap.less')}</span>
+    <span class="cell" data-level="0" aria-hidden="true"></span>
+    <span class="cell" data-level="1" aria-hidden="true"></span>
+    <span class="cell" data-level="2" aria-hidden="true"></span>
+    <span class="cell" data-level="3" aria-hidden="true"></span>
+    <span>{t(locale, 'heatmap.more')}</span>
+  </p>
+</section>
+
+<style>
+  .heatmap {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .heatmap__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-2);
+  }
+
+  .heatmap__title {
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+
+  .heatmap__summary {
+    font-size: var(--text-xs);
+  }
+
+  .heatmap__grid {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(7, 1fr);
+    gap: 2px;
+    overflow-x: auto;
+    padding-bottom: var(--space-2);
+  }
+
+  .cell {
+    display: block;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    background-color: var(--color-line);
+  }
+
+  .cell--empty {
+    background-color: transparent;
+  }
+
+  .cell[data-level='1'] {
+    background-color: color-mix(in srgb, var(--color-text) 30%, var(--color-bg));
+  }
+
+  .cell[data-level='2'] {
+    background-color: color-mix(in srgb, var(--color-text) 60%, var(--color-bg));
+  }
+
+  .cell[data-level='3'] {
+    background-color: var(--color-text);
+  }
+
+  .heatmap__legend {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-size: var(--text-xs);
+  }
+</style>

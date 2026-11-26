@@ -6,6 +6,7 @@ import { t } from '../../i18n/ui';
 import type { Locale } from '../../i18n/config';
 import LanguageSwitcher from '../ui/LanguageSwitcher.astro';
 import ThemeToggle from '../ui/ThemeToggle.astro';
+import MobileMenu from './MobileMenu.astro';
 
 interface Props {
   locale: Locale;
@@ -50,6 +51,7 @@ const switchTarget = switchPath ?? navPath;
     </nav>
 
     <div class="header__controls">
+      <MobileMenu locale={locale} navPath={navPath} />
       <a
         class="header__search"
         href={localeUrl(locale, 'search')}
@@ -78,6 +80,17 @@ const switchTarget = switchPath ?? navPath;
     background-color: var(--color-bg);
     border-bottom: var(--line-hair) solid var(--color-line);
     font-family: var(--font-sans);
+  }
+
+  /* 移动端菜单面板以 header 为定位基准 */
+  .header__inner {
+    position: relative;
+  }
+
+  @media (max-width: 899px) {
+    .nav {
+      display: none;
+    }
   }
 
   .header__inner {

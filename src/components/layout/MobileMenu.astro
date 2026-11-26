@@ -1,0 +1,106 @@
+---
+import { t } from '../../i18n/ui';
+import { localeUrl } from '../../i18n/url';
+import type { Locale } from '../../i18n/config';
+import { PRIMARY_NAV } from '../../config/nav';
+
+interface Props {
+  locale: Locale;
+  /** 当前版块路径，用于高亮 */
+  navPath?: string;
+}
+
+const { locale, navPath = '' } = Astro.props;
+---
+<details class="menu u-sans">
+  <summary class="menu__summary">{t(locale, 'nav.menu')}</summary>
+  <nav class="menu__nav" aria-label={t(locale, 'nav.primary')}>
+    <ul role="list" class="menu__list">
+      {
+        PRIMARY_NAV.map((item) => (
+          <li>
+            {item.enabled ? (
+              <a
+                class="menu__link"
+                href={localeUrl(locale, item.path)}
+                aria-current={item.path === navPath ? 'page' : undefined}
+              >
+                {t(locale, item.key)}
+              </a>
+            ) : (
+              <span class="menu__link menu__link--pending" aria-disabled="true">
+                {t(locale, item.key)}
+              </span>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</details>
+
+<style>
+  .menu {
+    display: none;
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+  }
+
+  .menu__summary {
+    list-style: none;
+    cursor: pointer;
+    min-height: 2.75rem;
+    display: inline-flex;
+    align-items: center;
+    padding-inline: var(--space-2);
+    color: var(--color-muted);
+    border: var(--line-hair) solid var(--color-line);
+    border-radius: var(--radius-sm);
+  }
+
+  .menu__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .menu[open] .menu__summary {
+    color: var(--color-text);
+    border-color: var(--color-text);
+  }
+
+  .menu__nav {
+    position: absolute;
+    inset-inline: 0;
+    top: 100%;
+    background-color: var(--color-bg);
+    border-bottom: var(--line-hair) solid var(--color-line);
+    padding: var(--space-3) var(--gutter) var(--space-4);
+  }
+
+  .menu__list {
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .menu__link {
+    display: block;
+    padding-block: var(--space-2);
+    color: var(--color-muted);
+    text-decoration: none;
+  }
+
+  .menu__link[aria-current='page'] {
+    color: var(--color-text);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .menu__link--pending {
+    opacity: 0.38;
+  }
+
+  @media (max-width: 899px) {
+    .menu {
+      display: block;
+    }
+  }
+</style>

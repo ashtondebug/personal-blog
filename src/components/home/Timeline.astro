@@ -1,0 +1,107 @@
+---
+import { t } from '../../i18n/ui';
+import type { Locale } from '../../i18n/config';
+
+interface TimelineItem {
+  iso: string;
+  label: string;
+  href: string;
+}
+
+interface Props {
+  locale: Locale;
+  /** 按年份倒序分组 */
+  groups: { year: number; items: TimelineItem[] }[];
+}
+
+const { locale, groups } = Astro.props;
+---
+<section class="timeline" aria-labelledby="timeline-title">
+  <h2 id="timeline-title" class="timeline__title u-sans">{t(locale, 'timeline.label')}</h2>
+
+  {
+    groups.length === 0 ? (
+      <p class="u-muted u-sans">{t(locale, 'timeline.empty')}</p>
+    ) : (
+      groups.map((group) => (
+        <section class="year">
+          <h3 class="year__label u-sans u-muted">{group.year}</h3>
+          <ol role="list" class="entries">
+            {group.items.map((item) => (
+              <li class="entry">
+                <time class="entry__date u-sans u-muted" datetime={item.iso}>
+                  {item.iso.slice(5)}
+                </time>
+                <a class="entry__link" href={item.href}>
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </section>
+      ))
+    )
+  }
+</section>
+
+<style>
+  .timeline {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .timeline__title {
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    padding-bottom: var(--space-3);
+    border-bottom: var(--line-hair) solid var(--color-line);
+  }
+
+  .year {
+    display: grid;
+    grid-template-columns: 4rem 1fr;
+    gap: var(--space-4);
+  }
+
+  .year__label {
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    padding-top: var(--space-1);
+  }
+
+  .entries {
+    display: grid;
+    gap: var(--space-2);
+    border-inline-start: var(--line-hair) solid var(--color-line);
+    padding-inline-start: var(--space-4);
+  }
+
+  .entry {
+    display: grid;
+    grid-template-columns: 3.5rem 1fr;
+    gap: var(--space-3);
+    align-items: baseline;
+  }
+
+  .entry__date {
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .entry__link {
+    font-size: var(--text-sm);
+    text-decoration: none;
+  }
+
+  .entry__link:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  @media (max-width: 640px) {
+    .year {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
