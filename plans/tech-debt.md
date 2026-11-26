@@ -23,7 +23,7 @@
 | TD-04 | 仓库可见性已定为 Public（Pages 可用） | 风险 | Pages 是否可用 | Phase 1 | Closed（2026-11-26） | [R-04](../docs/risks-and-validation.md) |
 | TD-05 | 尾斜杠策略已定（always + directory） | 待验证 | 内链一致性、评论 key | Phase 3 前 | Closed（2026-11-26，ADR-0008） | [R-05](../docs/risks-and-validation.md) |
 | TD-06 | 浏览量方案未验证 | 待验证 | 是否展示浏览数 | Phase 6/8 | Open | [分析](../docs/integrations/analytics.md) |
-| TD-07 | 点赞是否等同 Waline `reaction` 未确认 | 待验证 | 点赞实现或彻底弃用 | Phase 7 前 | Open | [R-08](../docs/risks-and-validation.md) |
+| TD-07 | 点赞已定为 Waline `reaction`（用户确认等价） | 待验证 | 点赞实现 | 服务端就绪后生效 | Closed（2026-11-26，ADR-0010） | [R-08](../docs/risks-and-validation.md) |
 | TD-08 | Waline 服务端与数据库未选型 | 待验证 | 评论可用性 | Phase 8 | Open | [Waline](../docs/integrations/waline.md) |
 | TD-09 | 搜索实现已在 Phase 6 落地（Pagefind 1.6.0 + 客户端语言过滤） | 待验证 | 搜索可用性与体积 | — | Closed（2026-11-26） | [搜索](../docs/integrations/search.md) |
 | TD-10 | 暂用系统字体栈；中文子集化方案仍未定 | 待验证 | 首屏性能、视觉统一 | 想统一各平台观感时 | Open（Phase 2 给了默认方案） | [排版](../docs/design/typography.md) |
@@ -47,6 +47,8 @@
 | TD-28 | Projects / Gallery / Moments 详情页暂无 TOC | 债务 | 长内容页的可导航性 | 这些页面出现长文时 | Open | [交互准则](../docs/design/interaction-guidelines.md) |
 | TD-29 | 音乐播放器不能跨页面续播（多页静态站会重建 `<audio>`） | 债务 | 播放连续性 | 需要连续播放时（需 ADR + 客户端路由评估） | Open | [交互准则](../docs/design/interaction-guidelines.md) |
 | TD-30 | 热力图仅展示当前年份，无年份切换；时间轴上限 60 条 | 债务 | 历史内容展示 | 内容跨多年后 | Open | [Phase 7 报告](./completed/007-phase-7-interactions.md) |
+| TD-31 | 未配置评论服务端时，构建产物仍会留下未被引用的评论 JS/CSS chunk | 债务 | 构建体积（非运行时） | 需要瘦身时 | Open | [Phase 8 报告](./completed/008-phase-8-comments-frontend.md) |
+| TD-32 | 评论服务端上线后需补：联通测试、隐私说明、评论数据导出流程 | 待验证 | 评论区可用性与合规 | 服务端选定后 | Open | [Waline](../docs/integrations/waline.md) |
 
 ## 3. 维护规则
 

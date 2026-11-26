@@ -21,7 +21,7 @@ Waline 用 `path` 区分评论区，默认取 `window.location.pathname`（官�
 | 规范化 | 建议去掉末尾斜杠后作为 path（官方文档建议 `window.location.pathname.replace(/\/$/,'')` 之类处理），全站统一 |
 | 稳定性 | 文章 URL 一旦对公众发布并产生评论，**不得再改动** |
 | 语言隔离 | path 包含语言段 → 各语言评论区天然独立 |
-| 留言板 | Guestbook 使用固定独立 path（如 `guestbook` 或 `/<locale>/guestbook`），具体值 `Needs Validation`，确定后写入配置常量 |
+| 留言板 | 固定 key `guestbook`（全站共用一块留言板，不按语言拆分），见 [ADR-0010](../decisions/0010-comments-and-reactions.md) |
 
 受影响的外部变更：**仓库名变更（`base` 变化）、默认语言前缀策略变更、尾斜杠策略变更** 都会改变 path → 评论错位。因此这三项必须在启用评论前定案（[技术债](../../plans/tech-debt.md)）。
 
@@ -33,8 +33,8 @@ Waline 用 `path` 区分评论区，默认取 `window.location.pathname`（官�
 | `path` | 规范化后的当前路径 | 见 §2 |
 | `lang` | `zh-CN` / `zh-TW` / `en` / **`jp`** | 日语是 `jp`，不是 `ja`（官方核验） |
 | `dark` | `html[data-theme="dark"]` 选择器 | 不用 `'auto'`，否则会跟随系统而非用户选择 |
-| `reaction` | 默认不启用 | 与"点赞"需求的等价性未确认（[分析](./analytics.md)） |
-| `pageview` | 待验证后决定 | 见 [分析](./analytics.md) |
+| `reaction` | `true`（点赞，用户已确认等价，[ADR-0010](../decisions/0010-comments-and-reactions.md)） | 最多 9 个表情 |
+| `pageview` | **不启用** | 浏览量仍未通过免费验证（TD-06） |
 | `noCopyright` | `false` | 保留 Waline 署名 |
 | `login` | 待定 | 游客评论 vs 强制登录，`Needs Validation` |
 
@@ -73,3 +73,15 @@ Waline 用 `path` 区分评论区，默认取 `window.location.pathname`（官�
 - 反垃圾：Waline 自带审核与验证码能力（`recaptchaV3Key`/`turnstileKey` 需服务端配置密钥），密钥只放服务端。
 - 备份：定期导出评论数据；数据归属说明写入 [隐私规范](../security/privacy.md)。
 - 监控：无需自建监控，但发布后应人工打开一次评论区确认可用。
+
+## 8. 前端实现状态（Phase 8，服务端待定）
+
+| 项 | 实现 |
+| --- | --- |
+| 配置 | `src/config/comments.ts`：`WALINE_SERVER_URL` 读 `PUBLIC_WALINE_SERVER_URL`，为空则 `COMMENTS_READY = false` |
+| 评论组件 | `src/components/comments/Comments.astro` + `src/scripts/waline.ts`：按需 `import('@waline/client')`，`lang` 走本站映射（ja→`jp`），`dark` 传 `html[data-theme="dark"]`，`reaction: true` |
+| 挂载点 | 文章详情页（`path` = 去 base 的路径）与留言板页（`path` = `guestbook`） |
+| 未配置时 | 不渲染评论区、页面不引用任何 Waline JS/CSS；留言板保留说明文案 |
+| 验证 | 用临时 `PUBLIC_WALINE_SERVER_URL` 构建：容器、服务端地址、`path`、`reaction`、日语 `jp` 映射全部命中；默认构建下页面零引用 |
+
+服务端就绪后只需设置环境变量并重新构建，无需改代码。

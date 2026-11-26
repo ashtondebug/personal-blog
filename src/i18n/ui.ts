@@ -82,6 +82,9 @@ export const ui = {
     'music.prev': '上一首',
     'music.next': '下一首',
     'nav.menu': '菜单',
+    'comments.heading': '留言',
+    'comments.loading': '正在加载评论…',
+    'comments.unavailable': '评论暂时不可用，请稍后再试。',
   },
   'zh-TW': {
     'site.tagline': '簡約文藝的個人部落格',
@@ -160,6 +163,9 @@ export const ui = {
     'music.prev': '上一首',
     'music.next': '下一首',
     'nav.menu': '選單',
+    'comments.heading': '留言',
+    'comments.loading': '正在載入評論…',
+    'comments.unavailable': '評論暫時無法使用，請稍後再試。',
   },
   en: {
     'site.tagline': 'A minimal, literary personal blog',
@@ -238,6 +244,9 @@ export const ui = {
     'music.prev': 'Previous track',
     'music.next': 'Next track',
     'nav.menu': 'Menu',
+    'comments.heading': 'Comments',
+    'comments.loading': 'Loading comments…',
+    'comments.unavailable': 'Comments are unavailable right now. Please try again later.',
   },
   ja: {
     'site.tagline': '簡素で文芸的な個人ブログ',
@@ -316,6 +325,9 @@ export const ui = {
     'music.prev': '前の曲',
     'music.next': '次の曲',
     'nav.menu': 'メニュー',
+    'comments.heading': 'コメント',
+    'comments.loading': 'コメントを読み込み中…',
+    'comments.unavailable': 'コメントは現在利用できません。後ほどお試しください。',
   },
 } as const;
 

@@ -1,0 +1,59 @@
+---
+import { WALINE_SERVER_URL } from '../../config/comments';
+import { getLocaleDefinition, type Locale } from '../../i18n/config';
+import { t } from '../../i18n/ui';
+
+interface Props {
+  locale: Locale;
+  /** 评论 key；文章用去掉 base 的路径，留言板用固定 guestbook */
+  path: string;
+  /** 点赞 = Waline reaction（用户已确认等价，见 ADR-0010） */
+  reaction?: boolean;
+}
+
+const { locale, path, reaction = true } = Astro.props;
+const definition = getLocaleDefinition(locale);
+---
+<section class="comments" data-comments>
+  <h2 class="comments__title u-sans">{t(locale, 'comments.heading')}</h2>
+
+  <p class="comments__status u-sans u-muted" data-comments-status>{t(locale, 'comments.loading')}</p>
+
+  <div
+    id="waline"
+    data-waline
+    data-server-url={WALINE_SERVER_URL}
+    data-path={path}
+    data-lang={definition.walineLang}
+    data-reaction={reaction ? 'true' : 'false'}
+    data-msg-error={t(locale, 'comments.unavailable')}
+  >
+  </div>
+</section>
+
+<script>
+  import '../../scripts/waline';
+</script>
+
+<style>
+  .comments {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .comments__title {
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    padding-bottom: var(--space-3);
+    border-bottom: var(--line-hair) solid var(--color-line);
+  }
+
+  .comments__status {
+    font-size: var(--text-sm);
+  }
+
+  .comments__status[hidden] {
+    display: none;
+  }
+</style>

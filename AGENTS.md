@@ -1,7 +1,7 @@
 # 项目导航（AGENTS.md）
 
 简约文艺风格的多语言个人博客 **The Commons**。Astro + TypeScript + Markdown，托管 GitHub Pages，评论走 Waline 外部服务。
-当前阶段：**Phase 7 已完成（灯箱、年度热力图、时间轴、配置驱动的音乐播放器、移动端菜单）**；音乐文件待作者提供，评论、PWA、统计尚未开始。
+当前阶段：**Phase 8 前端已完成（Waline 按需挂载、留言板固定 key、点赞=reaction）**；评论服务端仍待定（`PUBLIC_WALINE_SERVER_URL` 为空则不渲染）、PWA 与 SEO/隐私/安全尚未开始。
 
 常用命令：`npm run build`、`npm run dev`、`npm run check:docs`、`npm run check:contrast`、`npm run check:i18n`（后者需先 build）。受限环境跑构建需 `ASTRO_TELEMETRY_DISABLED=1`。
 
@@ -61,6 +61,6 @@ node scripts/check-docs.mjs
 ## 当前起点
 
 1. URL 策略（全前缀 + 尾斜杠 always）、`base=/personal-blog`、站点名（The Commons）均已定案，见 [ADR-0008](docs/decisions/0008-url-strategy.md) 与 `src/config/site.ts`；不得擅自改动。
-2. 从 [路线图](plans/active/000-initial-implementation-roadmap.md) 的 Phase 8 开始；不得跳阶段。音乐文件由作者后补（`src/config/music.ts` 为空则不渲染播放器）。
+2. 下一步可做 Phase 9（PWA）或 Phase 10（SEO/隐私/安全），二者不依赖外部账号；Phase 8 的收尾等服务端确定后做（详见 [Phase 8 报告](plans/completed/008-phase-8-comments-frontend.md)）。音乐文件由作者后补（`src/config/music.ts` 为空则不渲染播放器）。
 3. 写文章：`src/content/blog/{zh-CN|zh-TW|en|ja}/<slug>.md`，字段见 [数据模型](docs/architecture/data-models.md)；构建期会自动校验语言目录、`translationKey` 与内部链接。
 3. `FOR_AGENT.md`（本地任务书）不入库，已在 `.gitignore` 排除；不要引用或推送它。

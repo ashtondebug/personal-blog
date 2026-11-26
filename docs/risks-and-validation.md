@@ -29,7 +29,7 @@
 | --- | --- | --- | --- | --- |
 | R-06 | Waline 服务端 + 数据库选型 | 评论可用性、免费额度、境内访问速度 | 按 [验证清单](./integrations/waline.md) 逐项取证 | Needs Validation |
 | R-07 | 浏览量方案 | 是否展示浏览数（无条件则不展示） | [分析](./integrations/analytics.md) 门槛 | Needs Validation |
-| R-08 | 点赞与 Waline `reaction` 是否等价 | 点赞是否启用或彻底弃用 | 用户确认 | Needs Validation |
+| R-08 | 点赞方案：**已定用 Waline `reaction`**（用户确认等价） | 点赞是否启用 | 已定案（2026-11-26，[ADR-0010](./decisions/0010-comments-and-reactions.md)）；服务端就绪后生效 | Confirmed |
 | R-09 | 搜索实现（Pagefind 1.6.0 一等候选） | 搜索可用性、体积、构建顺序 | 原型验证 + 体积实测 | Needs Validation |
 | R-10 | 中文字体策略（系统栈 / 子集化） | 首屏性能、视觉统一度 | 子集化体积实测 + 观感对比 | Needs Validation |
 | R-11 | 高清图外置存储方案 | Gallery 可用性、成本、稳定性 | 候选对比（[媒体存储](./integrations/media-storage.md)） | Needs Validation |

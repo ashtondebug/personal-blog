@@ -96,10 +96,10 @@
 | ID | 需求 | 状态 |
 | --- | --- | --- |
 | REQ-DATA-01 | 使用 Waline 作为评论系统 | ✅ |
-| REQ-DATA-02 | Guestbook 使用**独立于文章评论**的 Waline 页面标识 | ✅ |
+| REQ-DATA-02 | Guestbook 使用**独立于文章评论**的 Waline 页面标识 | ✅ 已定：固定 key `guestbook`（[ADR-0010](../decisions/0010-comments-and-reactions.md)） |
 | REQ-DATA-03 | 浏览量统计：**仅使用免费第三方方案**；找不到合适免费方案则不展示 | ✅（有条件） |
 | REQ-DATA-04 | 浏览量不得伪造，不得使用假数据占位 | ✅ |
-| REQ-DATA-05 | 文章点赞：**仅在找到真正免费且满足要求的服务时启用**；否则彻底弃用（不留按钮、UI、接口、数据结构、占位） | ✅（有条件，当前默认=弃用） |
+| REQ-DATA-05 | 文章点赞：**仅在找到真正免费且满足要求的服务时启用**；否则彻底弃用（不留按钮、UI、接口、数据结构、占位） | ✅ 已定：用 Waline 自带 `reaction`（用户确认等价，[ADR-0010](../decisions/0010-comments-and-reactions.md)）；服务端就绪后生效 |
 | REQ-DATA-06 | Waline 服务端部署方式（Vercel / 数据库选型等） | 🔵 |
 | REQ-DATA-07 | 浏览量服务选型（免费额度、接口、隐私、CORS、静态站适配） | 🔵 |
 

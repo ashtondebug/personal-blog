@@ -44,6 +44,7 @@ plans/
 | [005 · 八大页面](./completed/005-phase-5-pages.md) | 已完成（2026-11-26） | 八页齐备、三视图与分页、分类/标签聚合、双向链接与反链、项目/图集/动态 |
 | [006 · 搜索与阅读](./completed/006-phase-6-search-reading.md) | 已完成（2026-11-26） | Pagefind 索引、搜索浮层与 `/` 快捷键、TOC、阅读进度、分享 |
 | [007 · 交互功能](./completed/007-phase-7-interactions.md) | 已完成（2026-11-26） | 灯箱、年度热力图、时间轴、音乐播放器（配置驱动，待音乐文件）、移动端菜单 |
+| [008 · 评论与点赞（前端）](./completed/008-phase-8-comments-frontend.md) | 部分完成（2026-11-26） | Waline 按需挂载、评论 key 规则、点赞=reaction；服务端待定 |
 
 ## 4. 计划的生命周期
 
