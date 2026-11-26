@@ -33,7 +33,7 @@
 
 ## 3. 工作流现状
 
-- **构建命令**：`npm run build` = `astro build && pagefind --site dist`。搜索索引必须在产物生成之后，已固化为同一条命令（Phase 6 起）。
+- **构建命令**：`npm run build` = `astro build && pagefind --site dist && node scripts/build-sw.mjs`。顺序不能变：搜索索引依赖 HTML 产物，Service Worker 的缓存名依赖最终产物哈希（Phase 9 起）。
 - **已建立**：`.github/workflows/deploy.yml`（官方形态：`actions/checkout@v7` → `withastro/action@v6` → `actions/deploy-pages@v5`，权限 `contents: read` / `pages: write` / `id-token: write`）。仓库 Pages 已启用，Source = GitHub Actions，地址 `https://ashtondebug.github.io/personal-blog/`（2026-11-26 首次部署成功）。
 - **已建立**：`.github/workflows/docs-check.yml` → `node scripts/check-docs.mjs`（推送与 PR 都跑）。
 - **实测（2026-11-26）**：`npm run build` 生成 5 个页面（4 语言 + 根重定向），约 1 秒；`dist/` 目录结构与 `base` 一致。

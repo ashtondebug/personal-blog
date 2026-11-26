@@ -9,7 +9,7 @@
 
 一个**简约文艺风格的多语言个人门户型博客**：四个内容方向（Tech / Life / Knowledge / Thought），八个页面（Home / Blog / Projects / Knowledge / About / Gallery / Moments / Guestbook），四种语言（`zh-CN` / `zh-TW` / `en` / `ja`），技术栈为 Astro + TypeScript + Markdown/MDX + Content Collections，托管在 GitHub Pages，评论用 Waline（独立外部服务）。默认不引入前端框架。
 
-**当前阶段**：Phase 7 已完成 —— 八页 + 搜索/阅读 + 灯箱/热力图/时间轴/移动菜单；音乐播放器待文件，评论、PWA、统计尚未开始。
+**当前阶段**：Phase 9 已完成（PWA）；首页已改为二次元主视觉（仅首页允许强调色）。剩余 Phase 10（SEO/隐私/安全）与 Phase 12（最终验收）；Phase 8 评论服务端待定。
 
 ## 2. 领域与权威文档
 

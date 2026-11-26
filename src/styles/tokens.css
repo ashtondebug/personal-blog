@@ -74,6 +74,13 @@
   --measure-prose: 68ch;
   --gutter: var(--space-4);
 
+  /* 首页二次元主视觉专用（2026-11-26 用户明确同意：仅首页允许少量强调色，其余页面保持黑白灰） */
+  --color-accent: #22d3ee;
+  --color-accent-ink: #041018;
+  --color-hero-bg: #0e1116;
+  --color-hero-text: #f2f4f7;
+  --color-hero-muted: #a9b4c2;
+
   color-scheme: light;
 }
 

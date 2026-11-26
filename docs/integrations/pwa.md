@@ -54,7 +54,20 @@
 
 自定义域名迁移后（`base` 被移除），旧 SW 可能仍在旧作用域下生效 → 迁移时需考虑让旧 SW 自注销（`Needs Validation`）。
 
-## 5. 验证清单
+## 5. 实现（Phase 9，2026-11-26）
+
+| 项 | 实现 |
+| --- | --- |
+| 图标 | `scripts/generate-icons.mjs` 用 Node 内建 `zlib` 生成 192/512/maskable/180 与 `favicon.svg`（几何占位，可替换） |
+| Manifest | `src/pages/site.webmanifest.ts`：构建期生成，`start_url`/`scope`/图标路径自动带 `base` |
+| SW | `scripts/build-sw.mjs` 在构建末尾生成 `dist/sw.js`；缓存名 = 产物哈希前 10 位 |
+| 缓存 | 页面导航网络优先（离线回退缓存再回退首页）；`/_astro/`、`/icons/`、`/pagefind/` 缓存优先；跨域请求不拦截 |
+| 注册 | `src/scripts/pwa.ts`，仅生产环境注册，`scope` = base |
+| 更新 | 版本化缓存名 + `activate` 清旧缓存；下次加载生效，不做"发现新版本"提示 |
+
+真机离线与安装验证留到 Phase 12（命令行只能验证产物结构）。
+
+## 6. 验证清单
 
 - [ ] 安装提示可用，图标与名称正确，启动后进入正确语言首页。
 - [ ] 断网可打开首页与一篇已访问过的文章。

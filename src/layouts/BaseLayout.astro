@@ -78,6 +78,11 @@ const xDefaultHref = absolute(DEFAULT_LOCALE);
     <title>{pageTitle}</title>
     <meta name="description" content={pageDescription} />
     <link rel="canonical" href={canonical.href} />
+    <link rel="icon" href={`${import.meta.env.BASE_URL}favicon.svg`} type="image/svg+xml" />
+    <link rel="apple-touch-icon" href={`${import.meta.env.BASE_URL}icons/apple-touch-icon-180.png`} />
+    <link rel="manifest" href={`${import.meta.env.BASE_URL}site.webmanifest`} />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#121212" media="(prefers-color-scheme: dark)" />
     {
       showAlternates && (
         <>
@@ -129,6 +134,7 @@ const xDefaultHref = absolute(DEFAULT_LOCALE);
     <MusicPlayer locale={locale} />
     <script>
       import '../scripts/theme';
+      import '../scripts/pwa';
     </script>
   </body>
 </html>

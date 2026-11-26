@@ -1,7 +1,7 @@
 # 项目导航（AGENTS.md）
 
 简约文艺风格的多语言个人博客 **The Commons**。Astro + TypeScript + Markdown，托管 GitHub Pages，评论走 Waline 外部服务。
-当前阶段：**Phase 8 前端已完成（Waline 按需挂载、留言板固定 key、点赞=reaction）**；评论服务端仍待定（`PUBLIC_WALINE_SERVER_URL` 为空则不渲染）、PWA 与 SEO/隐私/安全尚未开始。
+当前阶段：**Phase 9 已完成（PWA：图标、manifest、构建期生成的 SW、版本化缓存）**，首页已按作者要求改为二次元主视觉（仅首页允许强调色，[ADR-0011](docs/decisions/0011-home-hero-acg-style.md)）。剩余：Phase 10（SEO/隐私/安全）、Phase 12（最终验收）；Phase 8 评论服务端待定。
 
 常用命令：`npm run build`、`npm run dev`、`npm run check:docs`、`npm run check:contrast`、`npm run check:i18n`（后者需先 build）。受限环境跑构建需 `ASTRO_TELEMETRY_DISABLED=1`。
 
@@ -41,7 +41,7 @@
 
 - **需求只信** [requirements.md](docs/product/requirements.md)。不得增删需求语义；改需求必须先获用户确认。
 - **不得编造事实**：API、参数名、服务额度、平台限制一律先查 [参考资料](docs/references/index.md) 或官方文档，并把结论与核验日期写回该目录。查不到就标 `Needs Validation`。
-- **不得擅自改变**：简约文艺/黑白灰/杂志编辑式排版/三态主题的视觉方向；独立语言文章策略；零前端框架。
+- **不得擅自改变**：简约文艺/黑白灰/杂志编辑式排版/三态主题的视觉方向；独立语言文章策略；零前端框架。**唯一例外**是首页二次元主视觉与强调色（[ADR-0011](docs/decisions/0011-home-hero-acg-style.md)），扩大范围需新 ADR。
 - **条件性功能不得写成必做**：浏览量、点赞必须经免费方案验证；不满足则完全不实现，不留按钮/UI/接口/字段/占位。
 - **禁止伪造数据**：不使用假浏览量、假点赞、假翻译链接。
 - 不写入真实姓名、学校、班级、住址、私人联系方式；不编造个人资料。
@@ -61,6 +61,6 @@ node scripts/check-docs.mjs
 ## 当前起点
 
 1. URL 策略（全前缀 + 尾斜杠 always）、`base=/personal-blog`、站点名（The Commons）均已定案，见 [ADR-0008](docs/decisions/0008-url-strategy.md) 与 `src/config/site.ts`；不得擅自改动。
-2. 下一步可做 Phase 9（PWA）或 Phase 10（SEO/隐私/安全），二者不依赖外部账号；Phase 8 的收尾等服务端确定后做（详见 [Phase 8 报告](plans/completed/008-phase-8-comments-frontend.md)）。音乐文件由作者后补（`src/config/music.ts` 为空则不渲染播放器）。
+2. 下一步做 Phase 10（SEO/隐私/安全），然后 Phase 12（最终验收）。首页的强调色是**已批准的例外**，只限首页；想扩大到内页必须先改 [ADR-0011](docs/decisions/0011-home-hero-acg-style.md)。Phase 8 的服务端收尾等作者选型，音乐与首页插画等作者提供素材。
 3. 写文章：`src/content/blog/{zh-CN|zh-TW|en|ja}/<slug>.md`，字段见 [数据模型](docs/architecture/data-models.md)；构建期会自动校验语言目录、`translationKey` 与内部链接。
 3. `FOR_AGENT.md`（本地任务书）不入库，已在 `.gitignore` 排除；不要引用或推送它。

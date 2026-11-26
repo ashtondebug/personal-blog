@@ -98,6 +98,14 @@ const PAIRS = [
   ['invert-text', 'invert-bg', '反白文字 / 反白底'],
 ];
 
+/** 首页主视觉与强调色：不随主题变化，只校验一次（ADR-0011） */
+const SHARED_PAIRS = [
+  ['hero-text', 'hero-bg', '主视觉文字 / 主视觉底'],
+  ['hero-muted', 'hero-bg', '主视觉次要文字 / 主视觉底'],
+  ['accent-ink', 'accent', '强调色上的文字 / 强调色'],
+  ['accent', 'hero-bg', '强调色 / 主视觉底'],
+];
+
 let failures = 0;
 for (const [themeName, colors] of themes) {
   console.log(`\n${themeName}主题`);
@@ -118,9 +126,24 @@ for (const [themeName, colors] of themes) {
   }
 }
 
+console.log('\n首页主视觉（不随主题变化）');
+const sharedColors = themes[0][1];
+for (const [fg, bg, label] of SHARED_PAIRS) {
+  const fgColor = sharedColors[fg];
+  const bgColor = sharedColors[bg];
+  if (!fgColor || !bgColor) {
+    console.log(`  ?  ${label}: 缺少 token --color-${fg} 或 --color-${bg}`);
+    failures += 1;
+    continue;
+  }
+  const ratio = contrast(fgColor, bgColor);
+  const ok = ratio >= MIN_TEXT;
+  if (!ok) failures += 1;
+  console.log(`  ${ok ? 'OK  ' : 'FAIL'} ${label}: ${ratio.toFixed(2)}:1 (${fgColor} on ${bgColor})`);
+}
+
 if (failures > 0) {
   console.error(`\n对比度检查失败：${failures} 项低于 ${MIN_TEXT}:1`);
   process.exit(1);
 }
-
 console.log(`\n通过：所有组合均 ≥ ${MIN_TEXT}:1（阈值为 WCAG AA 正文标准）`);

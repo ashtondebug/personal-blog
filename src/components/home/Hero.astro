@@ -1,0 +1,241 @@
+---
+import { SITE_NAME } from '../../config/site';
+import { HERO_IMAGE, HERO_JP_LABEL } from '../../config/home';
+import { localeUrl } from '../../i18n/url';
+import { t } from '../../i18n/ui';
+import type { Locale } from '../../i18n/config';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const heroSrc = HERO_IMAGE ? `${import.meta.env.BASE_URL}${HERO_IMAGE}` : undefined;
+---
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero__bg" aria-hidden="true"></div>
+  <div class="hero__dots" aria-hidden="true"></div>
+
+  <div class="hero__content">
+    <p class="hero__eyebrow">
+      <span class="hero__tag">THE COMMONS</span>
+      <span class="hero__jp" lang="ja">{HERO_JP_LABEL}</span>
+    </p>
+
+    <h1 class="hero__title" id="hero-title">{SITE_NAME}</h1>
+    <p class="hero__lead">{t(locale, 'site.tagline')}</p>
+
+    <div class="hero__actions">
+      <a class="hero__cta" href={localeUrl(locale, 'blog')}>
+        {t(locale, 'nav.blog')}
+        <span aria-hidden="true">→</span>
+      </a>
+      <a class="hero__ghost" href={localeUrl(locale, 'about')}>{t(locale, 'nav.about')}</a>
+    </div>
+  </div>
+
+  <div class="hero__art" aria-hidden="true">
+    {
+      heroSrc ? (
+        <img class="hero__image" src={heroSrc} alt="" loading="eager" decoding="async" />
+      ) : (
+        <div class="hero__placeholder">
+          <span class="hero__moon"></span>
+          <span class="hero__horizon"></span>
+        </div>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  /* 二次元主视觉：仅在首页出现；全站其余部分保持黑白灰（ADR-0011） */
+  .hero {
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-8);
+    padding: var(--space-12) var(--space-6);
+    color: var(--color-hero-text);
+    background-color: var(--color-hero-bg);
+    border: var(--line-bold) solid var(--color-accent);
+    border-radius: var(--radius-md);
+    box-shadow: var(--space-2) var(--space-2) 0 0 var(--color-line);
+    isolation: isolate;
+  }
+
+  /* 背景：斜向速度线 + 顶部光晕 */
+  .hero__bg {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    background-image:
+      repeating-linear-gradient(
+        115deg,
+        color-mix(in srgb, var(--color-accent) 10%, transparent) 0 1px,
+        transparent 1px 9px
+      ),
+      radial-gradient(120% 90% at 88% 8%, color-mix(in srgb, var(--color-accent) 34%, transparent) 0 24%, transparent 62%);
+  }
+
+  /* 网点纸（漫画半调网点） */
+  .hero__dots {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    width: 46%;
+    z-index: -1;
+    opacity: 0.5;
+    background-image: radial-gradient(var(--color-hero-muted) 1px, transparent 1.4px);
+    background-size: 10px 10px;
+    mask-image: linear-gradient(100deg, #000 0%, transparent 78%);
+  }
+
+  .hero__content {
+    display: grid;
+    gap: var(--space-4);
+    align-content: center;
+    max-width: 34rem;
+  }
+
+  .hero__eyebrow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-3);
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .hero__tag {
+    padding: var(--space-1) var(--space-2);
+    background-color: var(--color-accent);
+    color: var(--color-accent-ink);
+    font-weight: 700;
+    transform: skewX(-8deg);
+  }
+
+  .hero__jp {
+    color: var(--color-hero-muted);
+  }
+
+  .hero__title {
+    font-size: clamp(2.5rem, 8vw, 4.5rem);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    text-shadow: 0.06em 0.06em 0 color-mix(in srgb, var(--color-accent) 55%, transparent);
+  }
+
+  .hero__lead {
+    color: var(--color-hero-muted);
+    max-width: 32rem;
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+  }
+
+  .hero__cta,
+  .hero__ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-6);
+    text-decoration: none;
+    border-radius: var(--radius-sm);
+    min-height: 2.75rem;
+    transition: transform var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-standard);
+  }
+
+  .hero__cta {
+    background-color: var(--color-accent);
+    color: var(--color-accent-ink);
+    font-weight: 600;
+  }
+
+  .hero__cta:hover {
+    transform: translate(-2px, -2px);
+  }
+
+  .hero__ghost {
+    color: var(--color-hero-text);
+    border: var(--line-hair) solid color-mix(in srgb, var(--color-hero-text) 45%, transparent);
+  }
+
+  .hero__ghost:hover {
+    border-color: var(--color-hero-text);
+  }
+
+  /* 主视觉右侧：图片槽位（作者提供素材后自动替换） */
+  .hero__art {
+    position: relative;
+    min-height: 14rem;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+  }
+
+  .hero__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* 未提供素材时的几何主视觉：月牙 + 地平线 */
+  .hero__placeholder {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    background:
+      linear-gradient(180deg, transparent 0 58%, color-mix(in srgb, var(--color-hero-text) 9%, transparent) 58% 59%, transparent 59%),
+      radial-gradient(70% 70% at 50% 42%, color-mix(in srgb, var(--color-accent) 22%, transparent) 0%, transparent 70%);
+  }
+
+  .hero__moon {
+    width: 7rem;
+    height: 7rem;
+    border-radius: 50%;
+    background-color: var(--color-hero-text);
+    box-shadow: inset 1.4rem -0.6rem 0 0 var(--color-hero-bg);
+    transform: translateY(-0.6rem);
+  }
+
+  .hero__horizon {
+    position: absolute;
+    inset-inline: 22%;
+    top: 62%;
+    height: 2px;
+    background-color: var(--color-hero-text);
+    opacity: 0.85;
+  }
+
+  @media (min-width: 900px) {
+    .hero {
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+      align-items: stretch;
+      padding: var(--space-16) var(--space-12);
+    }
+
+    .hero__art {
+      min-height: 18rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero__cta,
+    .hero__ghost {
+      transition: none;
+    }
+
+    .hero__cta:hover {
+      transform: none;
+    }
+  }
+</style>

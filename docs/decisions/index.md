@@ -19,6 +19,7 @@
 | [0008](./0008-url-strategy.md) | URL 策略：全语言前缀 + 尾斜杠 always + `base=/personal-blog` | Confirmed（Phase 1 定案） | 2026-11-26 |
 | [0009](./0009-markdown-pipeline-and-wiki-links.md) | 引入 `@astrojs/markdown-remark` 以支持 `[[双向链接]]` 插件 | Confirmed（Phase 5 定案） | 2026-11-26 |
 | [0010](./0010-comments-and-reactions.md) | 评论前端先就绪、服务端待定；点赞用 Waline `reaction`；评论 key 规则 | Confirmed（2026-11-26 用户确认） | 2026-11-26 |
+| [0011](./0011-home-hero-acg-style.md) | 首页二次元主视觉与"强调色"例外（仅首页） | Confirmed（2026-11-26 用户要求） | 2026-11-26 |
 
 ## 2. 什么情况必须写 ADR
 

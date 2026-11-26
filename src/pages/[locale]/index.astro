@@ -1,21 +1,20 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/home/Hero.astro';
+import Heatmap from '../../components/home/Heatmap.astro';
 import { getCollection } from 'astro:content';
-import { SITE_NAME } from '../../config/site';
 import { PRIMARY_NAV } from '../../config/nav';
-import { LOCALES, getLocaleDefinition, type Locale } from '../../i18n/config';
+import { LOCALES, type Locale } from '../../i18n/config';
 import { t } from '../../i18n/ui';
 import { localeUrl } from '../../i18n/url';
 import { byLocale, entrySlug, published, sortByDateDesc, yearlyActivity } from '../../lib/content';
 import { formatDate, isoDate } from '../../lib/format';
-import Heatmap from '../../components/home/Heatmap.astro';
 
 export function getStaticPaths() {
   return LOCALES.map((locale) => ({ params: { locale: locale.code } }));
 }
 
 const locale = Astro.params.locale as Locale;
-const definition = getLocaleDefinition(locale);
 
 const all = await getCollection('blog');
 const latest = sortByDateDesc(byLocale(published(all), locale)).slice(0, 4);
@@ -35,12 +34,7 @@ const yearCounts = Object.fromEntries(activity.get(currentYear) ?? []);
 ---
 <BaseLayout locale={locale} path="">
   <div class="u-container home">
-    <section class="hero">
-      <p class="hero__eyebrow u-sans u-muted" lang={definition.htmlLang}>
-        {t(locale, 'site.tagline')}
-      </p>
-      <h1 class="hero__title">{SITE_NAME}</h1>
-    </section>
+    <Hero locale={locale} />
 
     <section class="block" aria-labelledby="latest">
       <div class="block__head">
@@ -96,24 +90,7 @@ const yearCounts = Object.fromEntries(activity.get(currentYear) ?? []);
   .home {
     display: grid;
     gap: var(--space-24);
-    max-width: 60rem;
-  }
-
-  .hero {
-    display: grid;
-    gap: var(--space-4);
-    padding-block: var(--space-8) var(--space-4);
-  }
-
-  .hero__eyebrow {
-    font-size: var(--text-xs);
-    letter-spacing: var(--tracking-wide);
-    text-transform: uppercase;
-  }
-
-  .hero__title {
-    font-size: var(--text-4xl);
-    letter-spacing: -0.02em;
+    max-width: 72rem;
   }
 
   .block {
@@ -130,12 +107,23 @@ const yearCounts = Object.fromEntries(activity.get(currentYear) ?? []);
     border-bottom: var(--line-hair) solid var(--color-line);
   }
 
+  /* 首页限定的一点强调色：章节标题左侧短竖条（ADR-0011） */
   .block__title {
+    position: relative;
     font-family: var(--font-sans);
     font-size: var(--text-sm);
     font-weight: 600;
     letter-spacing: var(--tracking-wide);
-    text-transform: uppercase;
+    padding-inline-start: var(--space-3);
+  }
+
+  .block__title::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block: 0.1em 0.1em;
+    width: 3px;
+    background-color: var(--color-accent);
   }
 
   .block__more {
@@ -169,6 +157,7 @@ const yearCounts = Object.fromEntries(activity.get(currentYear) ?? []);
   .post__title:hover {
     text-decoration: underline;
     text-underline-offset: 0.2em;
+    text-decoration-color: var(--color-accent);
   }
 
   .post__date {
