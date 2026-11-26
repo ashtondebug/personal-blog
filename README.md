@@ -2,7 +2,7 @@
 
 一个**简约文艺风格的多语言个人门户型博客**：文字与摄影为主，静态生成，长期可维护。
 
-仓库：<https://github.com/ashtondebug/personal-blog> · 线上地址：`https://ashtondebug.github.io/personal-blog/`（Phase 1 部署后可用）
+仓库：<https://github.com/ashtondebug/personal-blog> · 线上地址：<https://ashtondebug.github.io/personal-blog/>
 
 - 内容方向：Tech（技术）· Life（生活）· Knowledge（知识）· Thought（思考）
 - 页面：Home · Blog · Projects · Knowledge · About · Gallery · Moments · Guestbook

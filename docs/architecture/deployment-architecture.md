@@ -85,4 +85,4 @@ flowchart LR
 | 仓库可见性 | Public（Free 计划下 Pages 可用） |
 | 默认语言前缀 | 全部带前缀 `/{locale}/...`（[ADR-0008](../decisions/0008-url-strategy.md)） |
 
-部署工作流 `.github/workflows/deploy.yml` 已随 Phase 1 建立；**首次部署前**需在仓库 Settings → Pages 将 Source 设为 **GitHub Actions**。
+部署工作流 `.github/workflows/deploy.yml` 已随 Phase 1 建立并**首次部署成功**（2026-11-26）：Pages Source = GitHub Actions，线上地址 `https://ashtondebug.github.io/personal-blog/`，HTTPS 已强制。

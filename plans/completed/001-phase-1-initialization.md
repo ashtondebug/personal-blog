@@ -38,6 +38,9 @@
 | canonical | `https://ashtondebug.github.io/personal-blog/{locale}/` |
 | `<html lang>` | `zh-CN` / `zh-TW` / `en` / `ja` 各自正确 |
 | 词典 | 四语言首页文案各自正确，未出现串语言 |
+| GitHub Pages | **已启用**（Source = GitHub Actions，`https_enforced: true`），地址 `https://ashtondebug.github.io/personal-blog/` |
+| 部署工作流 | run `45828802713`：build + deploy 全绿，43 s |
+| 线上验证 | `/personal-blog/` → 重定向到 `/personal-blog/zh-CN/`；`/en/`、`/ja/`、`/zh-CN/`、`/zh-TW/` 均 HTTP 200，文案与语言正确 |
 
 ## 4. 踩到的三个坑（后来者必看）
 
@@ -47,10 +50,10 @@
 
 ## 5. 未完成 / 遗留
 
-- **Pages 尚未启用**：需在仓库 Settings → Pages 把 Source 设为 GitHub Actions（或由 API 设定），`deploy.yml` 才会真正发布。
 - **站点名仍是占位「未命名空间」**：定名后改 `src/config/site.ts` 一处。
 - **根重定向是 302**：内容稳定后可视情况改 301。
 - **尚无**：样式与设计 token（Phase 2）、内容集合（Phase 4）、八大页面（Phase 5）、搜索索引（Phase 6）。
+- **Phase 11 剩余**：发布后冒烟清单尚未固化为流程（每次发布人工走一遍即可，待写作 PWA/搜索后再补自动化）。
 
 ## 6. 下一阶段
 

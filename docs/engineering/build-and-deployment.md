@@ -33,7 +33,7 @@
 
 ## 3. 工作流现状
 
-- **已建立**：`.github/workflows/deploy.yml`（官方形态：`actions/checkout@v7` → `withastro/action@v6` → `actions/deploy-pages@v5`，权限 `contents: read` / `pages: write` / `id-token: write`）。首次部署前需在仓库 Settings → Pages 把 **Source 设为 GitHub Actions**。
+- **已建立**：`.github/workflows/deploy.yml`（官方形态：`actions/checkout@v7` → `withastro/action@v6` → `actions/deploy-pages@v5`，权限 `contents: read` / `pages: write` / `id-token: write`）。仓库 Pages 已启用，Source = GitHub Actions，地址 `https://ashtondebug.github.io/personal-blog/`（2026-11-26 首次部署成功）。
 - **已建立**：`.github/workflows/docs-check.yml` → `node scripts/check-docs.mjs`（推送与 PR 都跑）。
 - **实测（2026-11-26）**：`npm run build` 生成 5 个页面（4 语言 + 根重定向），约 1 秒；`dist/` 目录结构与 `base` 一致。
 - **受限环境注意**：Astro 会写用户目录遥测配置，沙箱内需 `ASTRO_TELEMETRY_DISABLED=1`；CI 无此问题。
