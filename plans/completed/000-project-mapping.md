@@ -77,7 +77,7 @@
 | 远程仓库 | `https://github.com/ashtondebug/personal-blog`（Public，2026-11-26 建立） |
 | 提交 | `5960d24 docs: 建立项目知识体系（Phase 0）`，作者邮箱 `debug_life@qq.com` |
 | 分支 | `main`（已设置 upstream） |
-| CI | 「Docs Check」工作流首次运行：**success**（10s） |
+| CI | 「Docs Check」工作流首次运行：**success**（10s）；后随 Phase 2 增加对比度检查并改名为「Docs & Design Check」 |
 | `FOR_AGENT.md` | 未推送（`.gitignore` 排除，远程根目录无此文件） |
 | Pages | **未启用**（当前无站点产物；Phase 1 建立 `deploy.yml` 后再启用，Source 选 GitHub Actions） |
 
