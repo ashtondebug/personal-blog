@@ -39,6 +39,7 @@
 | --- | --- | --- | --- | --- | --- |
 | `astro` | 站点框架 | A | 构建期；产物为静态文件 | 2026-11-26 | [ADR-0001](../decisions/0001-astro-as-site-framework.md) |
 | `@astrojs/markdown-remark` | 恢复 unified/remark 管线，挂载 `[[双向链接]]` 插件（Astro 7 默认 Sätteri） | C | 仅构建期，不进客户端 | 2026-11-26 | [ADR-0009](../decisions/0009-markdown-pipeline-and-wiki-links.md) |
+| `pagefind` | 构建后生成静态搜索索引（CLI 由 `npm run build` 调用） | C | 仅构建期；产物是静态索引文件 | 2026-11-26 | [Pagefind 参考](../references/pagefind.md) |
 
 ## 5. 版本与锁定
 

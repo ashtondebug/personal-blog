@@ -42,6 +42,7 @@ plans/
 | [003 · 多语言系统](./completed/003-phase-3-i18n.md) | 已完成（2026-11-26） | hreflang/x-default/og:locale、版块级语言切换、语言感知 404、i18n 产物校验 |
 | [004 · 内容模型](./completed/004-phase-4-content-model.md) | 已完成（2026-11-26） | 五集合 schema、派生数据、双向链接、构建期内容门禁、最小 Blog 列表/详情 |
 | [005 · 八大页面](./completed/005-phase-5-pages.md) | 已完成（2026-11-26） | 八页齐备、三视图与分页、分类/标签聚合、双向链接与反链、项目/图集/动态 |
+| [006 · 搜索与阅读](./completed/006-phase-6-search-reading.md) | 已完成（2026-11-26） | Pagefind 索引、搜索浮层与 `/` 快捷键、TOC、阅读进度、分享 |
 
 ## 4. 计划的生命周期
 

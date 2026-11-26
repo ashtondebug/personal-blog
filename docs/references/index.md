@@ -30,6 +30,7 @@
 | [GitHub Pages 与 Actions](./github-pages-and-actions.md) | Pages 限制与计划要求、默认域名、官方部署 Action 版本、工作流权限 |
 | [Waline](./waline.md) | 客户端 props、`pageview`/`reaction`、部署方式、数据库矩阵 |
 | [Web 标准](./web-standards.md) | Manifest、Service Worker、`prefers-color-scheme`、`color-scheme`、无障碍 |
+| [Pagefind](./pagefind.md) | 搜索 CLI 参数、浏览器 API、索引控制与实测行为 |
 
 ## 4. 核验纪律
 

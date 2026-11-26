@@ -1,0 +1,54 @@
+---
+import { t } from '../../i18n/ui';
+import type { Locale } from '../../i18n/config';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+<div class="share u-sans">
+  <span class="share__label u-muted">{t(locale, 'share.label')}</span>
+  <button
+    type="button"
+    class="share__button"
+    data-share-copy
+    data-msg-copied={t(locale, 'share.copied')}
+    data-msg-failed={t(locale, 'share.failed')}
+  >
+    {t(locale, 'share.copy')}
+  </button>
+  <span class="share__status u-muted" data-share-status aria-live="polite"></span>
+</div>
+
+<script>
+  import '../../scripts/share';
+</script>
+
+<style>
+  .share {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-3);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .share__button {
+    color: var(--color-text);
+    border: var(--line-hair) solid var(--color-line);
+    border-radius: var(--radius-sm);
+    padding: var(--space-2) var(--space-3);
+    min-height: 2.5rem;
+  }
+
+  .share__button:hover {
+    border-color: var(--color-text);
+  }
+
+  .share__status {
+    min-height: 1em;
+  }
+</style>

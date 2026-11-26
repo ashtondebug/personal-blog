@@ -25,7 +25,7 @@
 | TD-06 | 浏览量方案未验证 | 待验证 | 是否展示浏览数 | Phase 6/8 | Open | [分析](../docs/integrations/analytics.md) |
 | TD-07 | 点赞是否等同 Waline `reaction` 未确认 | 待验证 | 点赞实现或彻底弃用 | Phase 7 前 | Open | [R-08](../docs/risks-and-validation.md) |
 | TD-08 | Waline 服务端与数据库未选型 | 待验证 | 评论可用性 | Phase 8 | Open | [Waline](../docs/integrations/waline.md) |
-| TD-09 | 搜索实现未验证（Pagefind 候选） | 待验证 | 搜索可用性与体积 | Phase 6 | Open | [搜索](../docs/integrations/search.md) |
+| TD-09 | 搜索实现已在 Phase 6 落地（Pagefind 1.6.0 + 客户端语言过滤） | 待验证 | 搜索可用性与体积 | — | Closed（2026-11-26） | [搜索](../docs/integrations/search.md) |
 | TD-10 | 暂用系统字体栈；中文子集化方案仍未定 | 待验证 | 首屏性能、视觉统一 | 想统一各平台观感时 | Open（Phase 2 给了默认方案） | [排版](../docs/design/typography.md) |
 | TD-11 | 音乐体积与 Pages 限制冲突 | 风险 | 播放器可行性 | Phase 7 | Open | [媒体存储](../docs/integrations/media-storage.md) |
 | TD-12 | 高清摄影图外置存储未定 | 待验证 | Gallery 成本与稳定性 | Phase 5 | Open | [R-11](../docs/risks-and-validation.md) |
@@ -43,6 +43,8 @@
 | TD-24 | 未启用 schema `.strict()`，拼错字段会被静默忽略 | 风险 | 内容质量 | 写正式内容前评估 | Open | [数据模型](../docs/architecture/data-models.md) |
 | TD-25 | 知识目录仍是「按 section 分组」，未实现多级层级路径 `/knowledge/a/b/` | 债务 | REQ-CONTENT-05 的"层级目录" | 需要多级结构时（Phase 6/12 评估） | Open | [内容架构](../docs/architecture/content-architecture.md) |
 | TD-26 | 图集外链/外置存储与 `image()` 只支持本地图片冲突 | 风险 | 高清摄影作品 | 上传真实作品前（Phase 7/12） | Open | [媒体存储](../docs/integrations/media-storage.md) |
+| TD-27 | 搜索索引为单 bundle，含四语言元数据；首次搜索会拉多语言数据 | 债务 | 首搜速度、体积 | 内容量变大后（Phase 12 评估） | Open | [搜索](../docs/integrations/search.md) |
+| TD-28 | Projects / Gallery / Moments 详情页暂无 TOC | 债务 | 长内容页的可导航性 | 这些页面出现长文时 | Open | [交互准则](../docs/design/interaction-guidelines.md) |
 
 ## 3. 维护规则
 

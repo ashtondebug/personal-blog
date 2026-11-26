@@ -1,0 +1,190 @@
+---
+import { t } from '../../i18n/ui';
+import type { Locale } from '../../i18n/config';
+
+interface Props {
+  locale: Locale;
+  /** overlay：由按钮/快捷键唤出的浮层；page：/search/ 页内常驻 */
+  mode?: 'overlay' | 'page';
+}
+
+const { locale, mode = 'overlay' } = Astro.props;
+const isOverlay = mode === 'overlay';
+---
+<div
+  class="search"
+  data-search
+  data-locale={locale}
+  data-mode={mode}
+  data-msg-hint={t(locale, 'search.hint')}
+  data-msg-empty={t(locale, 'search.empty')}
+  data-msg-loading={t(locale, 'search.loading')}
+  data-msg-error={t(locale, 'search.error')}
+  data-open={isOverlay ? 'false' : 'true'}
+  hidden={isOverlay}
+>
+  <div class="search__backdrop" data-search-close aria-hidden="true"></div>
+
+  <div
+    class="search__dialog"
+    role="dialog"
+    aria-modal={isOverlay ? 'true' : 'false'}
+    aria-label={t(locale, 'search.label')}
+  >
+    <div class="search__head">
+      <input
+        class="search__input"
+        type="search"
+        data-search-input
+        placeholder={t(locale, 'search.placeholder')}
+        aria-label={t(locale, 'search.label')}
+        autocomplete="off"
+        spellcheck="false"
+      />
+      {
+        isOverlay && (
+          <button class="search__close" type="button" data-search-close aria-label={t(locale, 'search.close')}>
+            <span aria-hidden="true">✕</span>
+          </button>
+        )
+      }
+    </div>
+
+    <p class="search__status u-sans u-muted" data-search-status>
+      {t(locale, 'search.hint')}
+    </p>
+
+    <ul role="list" class="search__results" data-search-results></ul>
+  </div>
+</div>
+
+<script>
+  import '../../scripts/search';
+</script>
+
+<style>
+  .search[hidden] {
+    display: none;
+  }
+
+  .search {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-modal);
+    display: grid;
+    place-items: start center;
+    padding: var(--space-4);
+  }
+
+  /* /search/ 页内常驻模式：参与正常文档流 */
+  .search[data-mode='page'] {
+    position: static;
+    padding: 0;
+    z-index: auto;
+  }
+
+  .search__backdrop {
+    position: absolute;
+    inset: 0;
+    background-color: color-mix(in srgb, var(--color-bg) 72%, transparent);
+    backdrop-filter: blur(2px);
+  }
+
+  .search[data-mode='page'] .search__backdrop {
+    display: none;
+  }
+
+  .search__dialog {
+    position: relative;
+    width: min(44rem, 100%);
+    margin-top: 10vh;
+    background-color: var(--color-bg);
+    border: var(--line-hair) solid var(--color-line);
+    border-radius: var(--radius-md);
+    padding: var(--space-4);
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .search[data-mode='page'] .search__dialog {
+    margin-top: 0;
+    width: 100%;
+  }
+
+  .search__head {
+    display: flex;
+    gap: var(--space-3);
+    align-items: center;
+  }
+
+  .search__input {
+    flex: 1;
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    color: var(--color-text);
+    background-color: var(--color-surface);
+    border: var(--line-hair) solid var(--color-line);
+    border-radius: var(--radius-sm);
+    padding: var(--space-3);
+    min-height: 2.75rem;
+  }
+
+  .search__input:focus-visible {
+    outline: var(--line-bold) solid currentColor;
+    outline-offset: 1px;
+  }
+
+  .search__close {
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    color: var(--color-muted);
+    border-radius: var(--radius-sm);
+  }
+
+  .search__close:hover {
+    color: var(--color-text);
+  }
+
+  .search__status {
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .search__results {
+    display: grid;
+    gap: var(--space-2);
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+
+  .search__results :global(.result) {
+    display: grid;
+    gap: var(--space-1);
+    padding: var(--space-3);
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+  }
+
+  .search__results :global(.result:hover),
+  .search__results :global(.result[aria-selected='true']) {
+    background-color: var(--color-surface);
+  }
+
+  .search__results :global(.result__title) {
+    font-size: var(--text-base);
+    font-weight: 600;
+  }
+
+  .search__results :global(.result__excerpt) {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--color-muted);
+  }
+
+  .search__results :global(mark) {
+    background-color: var(--color-invert-bg);
+    color: var(--color-invert-text);
+    padding: 0 0.1em;
+    border-radius: 2px;
+  }
+</style>

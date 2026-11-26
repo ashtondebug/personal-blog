@@ -70,3 +70,17 @@ Pagefind 的版本事实来自 npm registry 官方元数据（核验 2026-11-26�
 - [ ] `base` 前缀下搜索可用（无 404）。
 - [ ] 键盘可完成"打开 → 输入 → 选择结果"全流程。
 - [ ] 索引资源未加载时页面不报错，搜索入口给出降级提示。
+
+## 9. 实现（Phase 6，2026-11-26）
+
+| 项 | 实现 |
+| --- | --- |
+| 索引命令 | `npm run build` = `astro build && pagefind --site dist`；产物在 `dist/pagefind/` |
+| 索引范围 | 内容详情页与 About 带 `data-pagefind-body`；其它页面 body 带 `data-pagefind-ignore` |
+| 语言隔离 | 单一 bundle，客户端按 `url.startsWith(BASE + locale + '/')` 过滤；代价见 TD-27 |
+| 客户端 | `src/scripts/search.ts`：懒加载 `${BASE}pagefind/pagefind.js`、`pagefind.options({ baseUrl: BASE })`、`debouncedSearch`、取前 30 条加载数据后过滤、最多显示 8 条 |
+| 摘要渲染 | `data().excerpt` 直接作为 `innerHTML`（Pagefind 已转义实体并注入 `<mark>`） |
+| 交互 | 头部入口（无 JS 时是到 `/{locale}/search/` 的普通链接）、`/` 打开、`Esc` 关闭、焦点回到触发元素 |
+| 空站兜底 | About 页始终可索引；Pagefind 在零可索引页面时会直接失败退出（实测），这是必要设计 |
+
+验收证据见 [Phase 6 报告](../../plans/completed/006-phase-6-search-reading.md)。

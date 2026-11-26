@@ -1,0 +1,39 @@
+---
+/**
+ * 阅读进度条：固定在视口顶部，仅内容详情页使用。
+ * 依赖 [data-reading-article] 与 [data-reading-progress-bar] 两个标记。
+ */
+---
+<div class="progress" aria-hidden="true">
+  <span class="progress__bar" data-reading-progress-bar></span>
+</div>
+
+<script>
+  import '../../scripts/reading-progress';
+</script>
+
+<style>
+  .progress {
+    position: fixed;
+    inset-inline: 0;
+    top: 0;
+    height: 2px;
+    background-color: transparent;
+    z-index: 150;
+    pointer-events: none;
+  }
+
+  .progress__bar {
+    display: block;
+    height: 100%;
+    width: 0;
+    background-color: var(--color-text);
+    transition: width 80ms linear;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .progress__bar {
+      transition: none;
+    }
+  }
+</style>

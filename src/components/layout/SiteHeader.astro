@@ -50,6 +50,15 @@ const switchTarget = switchPath ?? navPath;
     </nav>
 
     <div class="header__controls">
+      <a
+        class="header__search"
+        href={localeUrl(locale, 'search')}
+        data-search-open
+        aria-label={t(locale, 'search.open')}
+      >
+        <span aria-hidden="true">⌕</span>
+        <span class="header__search-text">{t(locale, 'search.open')}</span>
+      </a>
       <LanguageSwitcher
         locale={locale}
         path={switchTarget}
@@ -133,6 +142,32 @@ const switchTarget = switchPath ?? navPath;
     align-items: center;
     gap: var(--space-4);
     margin-inline-start: auto;
+  }
+
+  .header__search {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: 2.75rem;
+    padding-inline: var(--space-2);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-muted);
+    text-decoration: none;
+  }
+
+  .header__search:hover {
+    color: var(--color-text);
+  }
+
+  .header__search-text {
+    display: none;
+  }
+
+  @media (min-width: 900px) {
+    .header__search-text {
+      display: inline;
+    }
   }
 
   @media (min-width: 900px) {

@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SearchOverlay from '../../components/search/SearchOverlay.astro';
+import { LOCALES, type Locale } from '../../i18n/config';
+import { t } from '../../i18n/ui';
+
+export function getStaticPaths() {
+  return LOCALES.map((locale) => ({ params: { locale: locale.code } }));
+}
+
+const locale = Astro.params.locale as Locale;
+---
+<BaseLayout locale={locale} path="search" title={t(locale, 'search.label')}>
+  <div class="u-container search-page">
+    <h1>{t(locale, 'search.label')}</h1>
+    <SearchOverlay locale={locale} mode="page" />
+  </div>
+</BaseLayout>
+
+<style>
+  .search-page {
+    display: grid;
+    gap: var(--space-8);
+    max-width: 48rem;
+  }
+
+  h1 {
+    font-size: var(--text-3xl);
+  }
+</style>

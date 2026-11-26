@@ -11,9 +11,9 @@
 
 ## 当前状态
 
-**Phase 5：八大页面（已完成）**——Home / Blog / Projects / Knowledge / About / Gallery / Moments / Guestbook 全部可用；Blog 支持列表/网格/杂志三视图与分页，分类与标签有聚合页；Knowledge 支持 `[[双向链接]]` 与反向链接面板。
+**Phase 6：搜索与阅读（已完成）**——Pagefind 构建后索引 + 搜索浮层（`/` 呼出、`Esc` 关闭，结果只含当前语言）、文章 TOC、阅读进度、复制链接分享；搜索索引由 `npm run build` 自动生成。
 
-此前已完成：设计系统与三态主题、四语言元信息与语言感知 404、内容集合与构建期内容门禁。**尚未开始**：搜索、TOC、阅读进度、灯箱、评论、PWA、统计（按路线图后续阶段推进）。
+此前已完成：八大页面、三视图与分页、分类/标签聚合、双向链接与反链、设计系统与三态主题、四语言元信息与 404。**尚未开始**：灯箱、年度热力图、时间轴、音乐播放器、评论、PWA、统计。
 
 写文章：在 `src/content/blog/<语言>/<slug>.md` 新建文件，字段见 [数据模型](docs/architecture/data-models.md)。
 
@@ -63,7 +63,7 @@ src/
   lib/               内容派生函数、构建期内容门禁、日期格式化、分页与 URL 归一、wiki 链接插件
   styles/            设计 token、reset、排版基线、正文排版
   scripts/           客户端交互脚本（主题、Blog 视图切换）
-  components/        layout（Header/Footer）、ui（语言/主题切换、分页）、blog（列表与视图切换）
+  components/        layout（Header/Footer）、ui（语言/主题切换、分页）、blog（列表/视图切换/TOC/进度/分享）、search（搜索浮层）
   layouts/           页面骨架
   pages/             路由（[locale] 展开四语言 + 根重定向 + 404）
 .github/workflows/   文档与设计检查 CI + Pages 部署

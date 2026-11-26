@@ -13,6 +13,7 @@ import {
   published,
 } from '../../../lib/content';
 import { formatDate, isoDate } from '../../../lib/format';
+import TableOfContents from '../../../components/blog/TableOfContents.astro';
 import '../../../styles/prose.css';
 
 type KnowledgeEntry = Awaited<ReturnType<typeof getCollection<'knowledge'>>>[number];
@@ -28,7 +29,7 @@ export async function getStaticPaths() {
 const { entry } = Astro.props as { entry: KnowledgeEntry };
 const locale: Locale = entryLocale(entry.id);
 
-const { Content } = await render(entry);
+const { Content, headings } = await render(entry);
 
 const all = await getCollection('knowledge');
 const sameLocale = byLocale(all, locale);
@@ -55,10 +56,12 @@ const referring = [
   path="knowledge"
   alternatePaths={alternatePaths}
   availableLocales={available}
+  indexable
   title={entry.data.title}
   description={entry.data.description}
 >
-  <article class="u-container article">
+  <div class="u-container layout">
+  <article class="article">
     <header class="head">
       <h1>{entry.data.title}</h1>
       <p class="meta u-sans u-muted">
@@ -103,13 +106,27 @@ const referring = [
       <a href={localeUrl(locale, 'knowledge')}>{t(locale, 'nav.knowledge')} →</a>
     </footer>
   </article>
+  <TableOfContents locale={locale} headings={headings} />
+  </div>
 </BaseLayout>
 
 <style>
+  .layout {
+    display: grid;
+    gap: var(--space-12);
+    align-items: start;
+  }
+
   .article {
     display: grid;
     gap: var(--space-8);
     max-width: 48rem;
+  }
+
+  @media (min-width: 1100px) {
+    .layout {
+      grid-template-columns: minmax(0, 1fr) 14rem;
+    }
   }
 
   .head {

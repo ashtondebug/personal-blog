@@ -80,7 +80,10 @@
 | 焦点环 | ✅ 已实现 | 全局 `:focus-visible` 2px 描边 |
 | 减少动效 | ✅ 已实现 | `reset.css` 内全局 `prefers-reduced-motion` 降级 |
 | 列表视图切换 | ✅ 已实现 | `src/scripts/blog-view.ts`；`data-view` 驱动 CSS，`localStorage: blog:view` 持久化；无 JS 时隐藏切换器 |
+| 搜索浮层 `/` `Esc` | ✅ 已实现 | `src/scripts/search.ts`；可编辑区域内不劫持 `/`；关闭后焦点回到触发元素；浮层内 Tab 循环 |
+| TOC 高亮 | ✅ 已实现 | `src/scripts/toc.ts`；当前章节 `aria-current="true"`；1100px 以上吸顶 |
+| 阅读进度 | ✅ 已实现 | `src/scripts/reading-progress.ts`；以文章元素为基准；减少动效时无过渡 |
+| 复制链接分享 | ✅ 已实现 | `src/scripts/share.ts`；失败时兜底选中并提示手动复制 |
 | 导航抽屉（移动端） | ⏳ Phase 7 | 当前移动端导航为横向滚动 |
-| 搜索浮层 `/` `Esc` | ⏳ Phase 6 | — |
 | 灯箱 | ⏳ Phase 7 | 图集当前点开原图新标签页 |
-| 阅读进度 / 播放器 | ⏳ Phase 7 | — |
+| 音乐播放器 | ⏳ Phase 7 | — |

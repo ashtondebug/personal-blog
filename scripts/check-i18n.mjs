@@ -26,7 +26,9 @@ const LOCALES = [
   { code: 'ja', htmlLang: 'ja', ogLocale: 'ja_JP' },
 ];
 const DEFAULT_LOCALE = 'zh-CN';
-const SECTIONS = ['', 'about', 'blog'];
+const SECTIONS = ['', 'about', 'blog', 'knowledge', 'projects', 'gallery', 'moments', 'search', 'guestbook'];
+/** 主导航里存在的版块：应当恰好有一个 aria-current="page"；其余页面（搜索/留言板）不应有 */
+const NAV_SECTIONS = new Set(['', 'about', 'blog', 'knowledge', 'projects', 'gallery', 'moments']);
 
 const failures = [];
 
@@ -106,8 +108,9 @@ for (const section of SECTIONS) {
     }
 
     const currentCount = (html.match(/aria-current="page"/g) || []).length;
-    if (currentCount !== 1) {
-      fail(`${tag}: aria-current="page" 出现 ${currentCount} 次，期望 1 次`);
+    const expectedCurrent = NAV_SECTIONS.has(section) ? 1 : 0;
+    if (currentCount !== expectedCurrent) {
+      fail(`${tag}: aria-current="page" 出现 ${currentCount} 次，期望 ${expectedCurrent} 次`);
     }
 
     // 哨兵路径绝不允许泄漏到链接里（曾因 404 的 navPath 与状态切换路径耦合而出现）

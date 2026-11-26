@@ -10,7 +10,7 @@ export function getStaticPaths() {
 const locale = Astro.params.locale as Locale;
 const titleKey: UiKey = 'nav.about';
 ---
-<BaseLayout locale={locale} title={t(locale, titleKey)} path="about">
+<BaseLayout locale={locale} title={t(locale, titleKey)} path="about" indexable>
   <div class="u-container page">
     <h1>{t(locale, titleKey)}</h1>
     <p class="u-muted u-sans">{t(locale, 'about.placeholder')}</p>
