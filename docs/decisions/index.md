@@ -17,6 +17,7 @@
 | [0006](./0006-no-default-ui-framework.md) | 默认不引入 React/Vue 等 UI 框架 | Confirmed | 2026-11-26 |
 | [0007](./0007-static-dynamic-service-boundary.md) | 静态能力与外部动态服务分离 | Confirmed | 2026-11-26 |
 | [0008](./0008-url-strategy.md) | URL 策略：全语言前缀 + 尾斜杠 always + `base=/personal-blog` | Confirmed（Phase 1 定案） | 2026-11-26 |
+| [0009](./0009-markdown-pipeline-and-wiki-links.md) | 引入 `@astrojs/markdown-remark` 以支持 `[[双向链接]]` 插件 | Confirmed（Phase 5 定案） | 2026-11-26 |
 
 ## 2. 什么情况必须写 ADR
 

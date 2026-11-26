@@ -1,0 +1,39 @@
+﻿---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { LOCALES, type Locale } from '../../i18n/config';
+import { t } from '../../i18n/ui';
+
+export function getStaticPaths() {
+  return LOCALES.map((locale) => ({ params: { locale: locale.code } }));
+}
+
+const locale = Astro.params.locale as Locale;
+---
+<BaseLayout locale={locale} path="guestbook" title={t(locale, 'nav.guestbook')}>
+  <div class="u-container guestbook">
+    <h1>{t(locale, 'nav.guestbook')}</h1>
+    <p class="u-muted u-sans">{t(locale, 'guestbook.placeholder')}</p>
+
+    <p class="note u-sans u-muted">
+      Waline 将以独立的页面标识挂载在这里，与文章评论互不干扰。接入时只替换本页的评论容器，不改动其它页面。
+    </p>
+  </div>
+</BaseLayout>
+
+<style>
+  .guestbook {
+    display: grid;
+    gap: var(--space-6);
+    max-width: 42rem;
+  }
+
+  h1 {
+    font-size: var(--text-3xl);
+  }
+
+  .note {
+    font-size: var(--text-sm);
+    padding-top: var(--space-6);
+    border-top: var(--line-hair) solid var(--color-line);
+  }
+</style>

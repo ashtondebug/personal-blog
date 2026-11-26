@@ -1,0 +1,123 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { LOCALES, type Locale } from '../../../i18n/config';
+import { t } from '../../../i18n/ui';
+import { localeUrl } from '../../../i18n/url';
+import { byLocale, entrySlug, published, sortByDateDesc } from '../../../lib/content';
+import { formatDate, isoDate } from '../../../lib/format';
+
+export function getStaticPaths() {
+  return LOCALES.map((locale) => ({ params: { locale: locale.code } }));
+}
+
+const locale = Astro.params.locale as Locale;
+const all = await getCollection('gallery');
+const sets = sortByDateDesc(byLocale(published(all), locale));
+---
+<BaseLayout locale={locale} path="gallery" title={t(locale, 'nav.gallery')}>
+  <div class="u-container gallery">
+    <h1>{t(locale, 'nav.gallery')}</h1>
+
+    {
+      sets.length === 0 ? (
+        <p class="u-muted u-sans">{t(locale, 'taxonomy.empty')}</p>
+      ) : (
+        sets.map((set) => (
+          <section class="set">
+            <header class="set__head">
+              <h2 class="set__title">
+                <a href={localeUrl(locale, `gallery/${entrySlug(set.id)}`)}>{set.data.title}</a>
+              </h2>
+              <p class="set__meta u-sans u-muted">
+                <time datetime={isoDate(set.data.date)}>{formatDate(locale, set.data.date)}</time>
+                {set.data.location && <><span aria-hidden="true">·</span><span>{set.data.location}</span></>}
+              </p>
+            </header>
+
+            <ul role="list" class="grid">
+              {set.data.images.map((image) => (
+                <li class="grid__item">
+                  <a href={image.src} rel="noopener noreferrer">
+                    <img
+                      src={image.src}
+                      alt={image.alt}
+                      width={image.width}
+                      height={image.height}
+                      loading="lazy"
+                    />
+                  </a>
+                  {image.caption && <p class="caption u-sans u-muted">{image.caption}</p>}
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))
+      )
+    }
+  </div>
+</BaseLayout>
+
+<style>
+  .gallery {
+    display: grid;
+    gap: var(--space-16);
+    max-width: 72rem;
+  }
+
+  h1 {
+    font-size: var(--text-3xl);
+  }
+
+  .set {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .set__head {
+    display: grid;
+    gap: var(--space-2);
+    padding-bottom: var(--space-4);
+    border-bottom: var(--line-hair) solid var(--color-line);
+  }
+
+  .set__title {
+    font-size: var(--text-2xl);
+  }
+
+  .set__title a {
+    text-decoration: none;
+  }
+
+  .set__title a:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .set__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    gap: var(--space-4);
+    align-items: start;
+  }
+
+  .grid__item img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-sm);
+    background-color: var(--color-surface);
+  }
+
+  .caption {
+    font-size: var(--text-xs);
+    margin-top: var(--space-2);
+  }
+</style>

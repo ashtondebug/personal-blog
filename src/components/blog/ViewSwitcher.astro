@@ -1,0 +1,61 @@
+---
+import { t } from '../../i18n/ui';
+import type { Locale } from '../../i18n/config';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const options = [
+  { value: 'list', label: t(locale, 'view.list') },
+  { value: 'grid', label: t(locale, 'view.grid') },
+  { value: 'magazine', label: t(locale, 'view.magazine') },
+];
+---
+<div class="views" data-view-switcher role="group" aria-label={t(locale, 'view.label')}>
+  {
+    options.map((option, index) => (
+      <button
+        type="button"
+        class="views__button"
+        data-view-value={option.value}
+        aria-pressed={index === 0 ? 'true' : 'false'}
+      >
+        {option.label}
+      </button>
+    ))
+  }
+</div>
+
+<style>
+  .views {
+    display: inline-flex;
+    border: var(--line-hair) solid var(--color-line);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+  }
+
+  .views__button {
+    padding: var(--space-2) var(--space-3);
+    color: var(--color-muted);
+    letter-spacing: var(--tracking-wide);
+    min-height: 2.5rem;
+  }
+
+  .views__button + .views__button {
+    border-inline-start: var(--line-hair) solid var(--color-line);
+  }
+
+  .views__button[aria-pressed='true'] {
+    background-color: var(--color-invert-bg);
+    color: var(--color-invert-text);
+  }
+
+  /* 无 JS 时视图切换无效，隐藏以免误点 */
+  :global(html:not(.js) .views) {
+    display: none;
+  }
+</style>

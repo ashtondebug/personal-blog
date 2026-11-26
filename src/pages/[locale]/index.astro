@@ -1,8 +1,13 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
 import { SITE_NAME } from '../../config/site';
+import { PRIMARY_NAV } from '../../config/nav';
 import { LOCALES, getLocaleDefinition, type Locale } from '../../i18n/config';
 import { t } from '../../i18n/ui';
+import { localeUrl } from '../../i18n/url';
+import { byLocale, entrySlug, published, sortByDateDesc } from '../../lib/content';
+import { formatDate, isoDate } from '../../lib/format';
 
 export function getStaticPaths() {
   return LOCALES.map((locale) => ({ params: { locale: locale.code } }));
@@ -10,23 +15,77 @@ export function getStaticPaths() {
 
 const locale = Astro.params.locale as Locale;
 const definition = getLocaleDefinition(locale);
+
+const all = await getCollection('blog');
+const latest = sortByDateDesc(byLocale(published(all), locale)).slice(0, 4);
+const sections = PRIMARY_NAV.filter((item) => item.enabled && item.path !== '');
 ---
 <BaseLayout locale={locale} path="">
-  <div class="u-container hero">
-    <p class="hero__eyebrow u-sans u-muted" lang={definition.htmlLang}>
-      {t(locale, 'site.tagline')}
-    </p>
-    <h1 class="hero__title">{SITE_NAME}</h1>
-    <p class="hero__status u-sans u-muted">{t(locale, 'home.status')}</p>
+  <div class="u-container home">
+    <section class="hero">
+      <p class="hero__eyebrow u-sans u-muted" lang={definition.htmlLang}>
+        {t(locale, 'site.tagline')}
+      </p>
+      <h1 class="hero__title">{SITE_NAME}</h1>
+    </section>
+
+    <section class="block" aria-labelledby="latest">
+      <div class="block__head">
+        <h2 id="latest" class="block__title u-sans">{t(locale, 'home.latest')}</h2>
+        <a class="block__more u-sans u-muted" href={localeUrl(locale, 'blog')}>
+          {t(locale, 'nav.blog')} →
+        </a>
+      </div>
+
+      {
+        latest.length === 0 ? (
+          <p class="u-muted u-sans">{t(locale, 'home.empty')}</p>
+        ) : (
+          <ul role="list" class="posts">
+            {latest.map((post) => (
+              <li class="post">
+                <a class="post__title" href={localeUrl(locale, `blog/${entrySlug(post.id)}`)}>
+                  {post.data.title}
+                </a>
+                <time class="post__date u-sans u-muted" datetime={isoDate(post.data.date)}>
+                  {formatDate(locale, post.data.date)}
+                </time>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </section>
+
+    <section class="block" aria-labelledby="explore">
+      <h2 id="explore" class="block__title u-sans">{t(locale, 'home.explore')}</h2>
+      <ul role="list" class="explore">
+        {
+          sections.map((item) => (
+            <li>
+              <a class="explore__link" href={localeUrl(locale, item.path)}>
+                <span class="explore__label">{t(locale, item.key)}</span>
+                <span aria-hidden="true" class="explore__arrow">→</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
   </div>
 </BaseLayout>
 
 <style>
+  .home {
+    display: grid;
+    gap: var(--space-24);
+    max-width: 60rem;
+  }
+
   .hero {
     display: grid;
-    gap: var(--space-6);
-    padding-block: var(--space-8) var(--space-16);
-    max-width: 42rem;
+    gap: var(--space-4);
+    padding-block: var(--space-8) var(--space-4);
   }
 
   .hero__eyebrow {
@@ -37,13 +96,93 @@ const definition = getLocaleDefinition(locale);
 
   .hero__title {
     font-size: var(--text-4xl);
-    font-weight: 600;
     letter-spacing: -0.02em;
   }
 
-  .hero__status {
+  .block {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .block__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding-bottom: var(--space-3);
+    border-bottom: var(--line-hair) solid var(--color-line);
+  }
+
+  .block__title {
+    font-family: var(--font-sans);
     font-size: var(--text-sm);
-    border-top: var(--line-hair) solid var(--color-line);
-    padding-top: var(--space-4);
+    font-weight: 600;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+
+  .block__more {
+    font-size: var(--text-xs);
+    text-decoration: none;
+  }
+
+  .block__more:hover {
+    color: var(--color-text);
+    text-decoration: underline;
+  }
+
+  .posts {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .post {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-2) var(--space-6);
+  }
+
+  .post__title {
+    font-size: var(--text-xl);
+    text-decoration: none;
+  }
+
+  .post__title:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .post__date {
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .explore {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+    gap: var(--space-2);
+  }
+
+  .explore__link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    border: var(--line-hair) solid var(--color-line);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+  }
+
+  .explore__link:hover {
+    border-color: var(--color-text);
+  }
+
+  .explore__arrow {
+    color: var(--color-muted);
   }
 </style>

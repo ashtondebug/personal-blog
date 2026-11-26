@@ -89,6 +89,7 @@ src/content/
 | 语言判定 | `src/lib/content.ts` 的 `entryLocale()` 做大小写无关映射；非法语言目录直接抛错 |
 | 派生数据 | 全部是 `src/lib/content.ts` 里的纯函数：`published` / `sortByDateDesc` / `byLocale` / `readingMinutes` / `normalizeTag` / `buildTagIndex` / `buildTranslations` / `availableLocalesFor` / `wikiLinkTargets` / `assertKnowledgeLinks` / `buildBacklinks` / `yearlyActivity` |
 | 双向链接语法 | `[[slug]]` 或 `[[slug\|显示文本]]`；在同一语言内匹配目标条目的 slug 或 `aliases`；目标不存在 → 构建失败并列出全部悬空链接 |
+| 链接渲染 | `src/lib/remark-wiki-links.ts` 在 Markdown 编译期把 `[[...]]` 换成相对链接 `../<目标>/`（兄弟目录，天然带 base 与语言前缀），并通过 `astro.config.mjs` 的 `markdown.remarkPlugins` 挂载。因 Astro 7 默认 Sätteri 处理器，需要 `@astrojs/markdown-remark`（见 [ADR-0009](../decisions/0009-markdown-pipeline-and-wiki-links.md)） |
 | 内容门禁 | `src/lib/content-integrity.ts` 的 `assertContentIntegrity()` 在 `BaseLayout` 调用一次（模块级缓存）：语言目录合法、`translationKey` 同语言不重复、知识链接可解析 |
 | 空集合 | 构建会打印 `[WARN] [glob-loader] No files found ...`，属正常现象，不是错误 |
 

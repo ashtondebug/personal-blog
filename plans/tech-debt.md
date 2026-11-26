@@ -41,6 +41,8 @@
 | TD-22 | MDX 未接入（当前仅 `.md`） | 债务 | 文章内嵌组件的能力 | 需要组件化文章时（Phase 5/6） | Open | [内容架构](../docs/architecture/content-architecture.md) |
 | TD-23 | 数学公式未接入（需 remark-math + rehype-katex） | 债务 | REQ-CONTENT-03 的公式部分 | Phase 6 | Open | [需求 §3](../docs/product/requirements.md) |
 | TD-24 | 未启用 schema `.strict()`，拼错字段会被静默忽略 | 风险 | 内容质量 | 写正式内容前评估 | Open | [数据模型](../docs/architecture/data-models.md) |
+| TD-25 | 知识目录仍是「按 section 分组」，未实现多级层级路径 `/knowledge/a/b/` | 债务 | REQ-CONTENT-05 的"层级目录" | 需要多级结构时（Phase 6/12 评估） | Open | [内容架构](../docs/architecture/content-architecture.md) |
+| TD-26 | 图集外链/外置存储与 `image()` 只支持本地图片冲突 | 风险 | 高清摄影作品 | 上传真实作品前（Phase 7/12） | Open | [媒体存储](../docs/integrations/media-storage.md) |
 
 ## 3. 维护规则
 

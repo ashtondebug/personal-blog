@@ -1,0 +1,177 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+import type { Locale } from '../../../i18n/config';
+import { t } from '../../../i18n/ui';
+import { localeUrl } from '../../../i18n/url';
+import { buildTranslations, entryLocale, entrySlug, published } from '../../../lib/content';
+import { formatDate, isoDate } from '../../../lib/format';
+import '../../../styles/prose.css';
+
+type ProjectEntry = Awaited<ReturnType<typeof getCollection<'projects'>>>[number];
+
+export async function getStaticPaths() {
+  const all = await getCollection('projects');
+  return published(all).map((entry) => ({
+    params: { locale: entryLocale(entry.id), slug: entrySlug(entry.id) },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props as { entry: ProjectEntry };
+const locale: Locale = entryLocale(entry.id);
+const { Content } = await render(entry);
+
+const all = await getCollection('projects');
+const translations = buildTranslations(all);
+const group = entry.data.translationKey ? translations.get(entry.data.translationKey) : undefined;
+const available = group ? [...group.keys()] : [locale];
+const alternatePaths: Partial<Record<Locale, string>> = {};
+if (group) {
+  for (const [code, item] of group) alternatePaths[code] = `projects/${entrySlug(item.id)}`;
+}
+---
+<BaseLayout
+  locale={locale}
+  path="projects"
+  alternatePaths={alternatePaths}
+  availableLocales={available}
+  title={entry.data.title}
+  description={entry.data.description}
+>
+  <article class="u-container article">
+    <header class="head">
+      <h1>{entry.data.title}</h1>
+      <p class="meta u-sans u-muted">
+        <time datetime={isoDate(entry.data.date)}>{formatDate(locale, entry.data.date)}</time>
+        <span aria-hidden="true">·</span>
+        <span>{entry.data.status}</span>
+      </p>
+    </header>
+
+    <dl class="facts u-sans">
+      <div class="facts__row">
+        <dt>{t(locale, 'projects.stack')}</dt>
+        <dd>
+          <ul role="list" class="stack">
+            {entry.data.stack.map((item) => <li class="stack__item">{item}</li>)}
+          </ul>
+        </dd>
+      </div>
+      {
+        entry.data.repo && (
+          <div class="facts__row">
+            <dt>{t(locale, 'projects.repo')}</dt>
+            <dd><a href={entry.data.repo} rel="noopener noreferrer">{entry.data.repo}</a></dd>
+          </div>
+        )
+      }
+      {
+        entry.data.demo && (
+          <div class="facts__row">
+            <dt>{t(locale, 'projects.demo')}</dt>
+            <dd><a href={entry.data.demo} rel="noopener noreferrer">{entry.data.demo}</a></dd>
+          </div>
+        )
+      }
+    </dl>
+
+    <div class="prose">
+      <Content />
+    </div>
+
+    {
+      entry.data.screenshots.length > 0 && (
+        <ul role="list" class="shots">
+          {entry.data.screenshots.map((shot) => (
+            <li><img src={shot.src} alt="" width={shot.width} height={shot.height} loading="lazy" /></li>
+          ))}
+        </ul>
+      )
+    }
+
+    <footer class="foot u-sans">
+      <a href={localeUrl(locale, 'projects')}>{t(locale, 'nav.projects')} →</a>
+    </footer>
+  </article>
+</BaseLayout>
+
+<style>
+  .article {
+    display: grid;
+    gap: var(--space-8);
+    max-width: 48rem;
+  }
+
+  .head {
+    display: grid;
+    gap: var(--space-4);
+    padding-bottom: var(--space-8);
+    border-bottom: var(--line-hair) solid var(--color-line);
+  }
+
+  h1 {
+    font-size: var(--text-3xl);
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .facts {
+    display: grid;
+    gap: var(--space-3);
+    font-size: var(--text-sm);
+  }
+
+  .facts__row {
+    display: grid;
+    grid-template-columns: 8rem 1fr;
+    gap: var(--space-4);
+    padding-block: var(--space-2);
+    border-bottom: var(--line-hair) solid var(--color-line);
+  }
+
+  dt {
+    color: var(--color-muted);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+
+  .stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .stack__item {
+    font-size: var(--text-xs);
+    color: var(--color-muted);
+    border: var(--line-hair) solid var(--color-line);
+    border-radius: var(--radius-sm);
+    padding: var(--space-1) var(--space-2);
+  }
+
+  .shots {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .foot {
+    font-size: var(--text-sm);
+    padding-top: var(--space-8);
+    border-top: var(--line-hair) solid var(--color-line);
+  }
+
+  @media (max-width: 640px) {
+    .facts__row {
+      grid-template-columns: 1fr;
+      gap: var(--space-1);
+    }
+  }
+</style>

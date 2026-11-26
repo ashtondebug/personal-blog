@@ -48,7 +48,7 @@
 
 **次级入口**：Guestbook（页脚 + About 内链）、Search（`/` 快捷键 + 图标）、主题切换（三态）、语言切换。
 
-> **现状（Phase 4）**：Home / Blog / About 可点击（About 为占位页）；Projects、Knowledge、Gallery、Moments 在 `src/config/nav.ts` 中仍为 `enabled: false`，渲染为不可点击文本（避免死链）。Phase 5 建好页面后逐个置为 `true`。
+> **现状（Phase 5）**：八个页面全部可点击（About 为占位页、Guestbook 待接入评论）。新增路由：`/{locale}/blog/page/{n}/`、`/{locale}/categories/{category}/`、`/{locale}/tags/{tag}/`，均已在 `scripts/check-i18n.mjs` 的版块列表内（分页与聚合页在有多篇内容时才会生成）。
 
 **页脚**：站点简介、四大内容方向入口、Guestbook、RSS（是否提供未定 🔵）、版权与许可声明（未定 🔵）、Waline 服务状态说明。
 

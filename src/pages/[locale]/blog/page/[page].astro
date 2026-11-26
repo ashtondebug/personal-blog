@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Archive from '../../../../components/blog/Archive.astro';
+import Pagination from '../../../../components/ui/Pagination.astro';
+import { getCollection } from 'astro:content';
+import { LOCALES, type Locale } from '../../../../i18n/config';
+import { t } from '../../../../i18n/ui';
+import { byLocale, published, sortByDateDesc, type EntryOf } from '../../../../lib/content';
+import { paginate } from '../../../../lib/blog';
+
+export async function getStaticPaths() {
+  const all = await getCollection('blog');
+  const routes = [];
+
+  for (const locale of LOCALES) {
+    const pages = paginate(sortByDateDesc(byLocale(published(all), locale.code)));
+    for (const page of pages.slice(1)) {
+      routes.push({
+        params: { locale: locale.code, page: String(page.number) },
+        props: { posts: page.posts, pageNumber: page.number, total: pages.length },
+      });
+    }
+  }
+  return routes;
+}
+
+const { posts, pageNumber, total } = Astro.props as {
+  posts: EntryOf<'blog'>[];
+  pageNumber: number;
+  total: number;
+};
+const locale = Astro.params.locale as Locale;
+---
+<BaseLayout locale={locale} path="blog" title={t(locale, 'nav.blog')}>
+  <div class="u-container">
+    <Archive locale={locale} posts={posts} title={t(locale, 'nav.blog')} pageNumber={pageNumber} />
+    <Pagination locale={locale} base="blog" current={pageNumber} total={total} />
+  </div>
+</BaseLayout>

@@ -69,6 +69,7 @@
 | 构建报 `EPERM: mkdir <user>\AppData\Roaming\astro\Config` | Astro 遥测写用户目录，受限环境不可写 | 构建时设 `ASTRO_TELEMETRY_DISABLED=1` |
 | 静态构建下 `Astro.redirect` 的产物 | 生成带 `<meta http-equiv="refresh">` 与 canonical 的 HTML 重定向页，目标需自带 `base` | 用 `localeUrl()` 生成目标 |
 | `glob()` 加载器把条目 `id` **整体 slug 化** | `zh-CN/hello.md` → id 为 `zh-cn/hello`（目录段小写）。若按 `id` 首段判定语言且区分大小写，四语言内容全部被判非法 | 语言判定做大小写无关映射（`src/lib/content.ts` 的 `entryLocale`），URL 语言段仍用我们自己的 `Locale` 常量 |
+| `markdown.remarkPlugins` 在 Astro 7 会直接报错 | v7 默认 Markdown 处理器为 **Sätteri**，remark/rehype 管线需另装 `@astrojs/markdown-remark` | 安装该官方包（构建期依赖）后重新启用 remark 插件，见 [ADR-0009](../decisions/0009-markdown-pipeline-and-wiki-links.md) |
 
 ## 7. 待复核
 

@@ -1,7 +1,12 @@
 // Astro 配置 —— 站点名见 src/config/site.ts；URL 策略见 docs/decisions/0008-url-strategy.md
 import { defineConfig } from 'astro/config';
+import remarkWikiLinks from './src/lib/remark-wiki-links.ts';
 
 export default defineConfig({
+  // 知识条目的 [[双向链接]] 语法（见 docs/architecture/content-architecture.md）
+  markdown: {
+    remarkPlugins: [remarkWikiLinks],
+  },
   // GitHub Pages 用户地址；项目页路径由 base 决定
   site: 'https://ashtondebug.github.io',
   base: '/personal-blog',

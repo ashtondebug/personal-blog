@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Archive from '../../../components/blog/Archive.astro';
+import { getCollection } from 'astro:content';
+import { LOCALES, type Locale } from '../../../i18n/config';
+import { byLocale, normalizeTag, published, sortByDateDesc } from '../../../lib/content';
+import { taxonomySlug } from '../../../lib/blog';
+
+export async function getStaticPaths() {
+  const all = await getCollection('blog');
+  const routes = [];
+
+  for (const locale of LOCALES) {
+    const posts = sortByDateDesc(byLocale(published(all), locale.code));
+    const groups = new Map<string, { posts: typeof posts; label: string }>();
+    for (const post of posts) {
+      for (const raw of post.data.tags ?? []) {
+        const tag = normalizeTag(raw);
+        if (!tag) continue;
+        const slug = taxonomySlug(tag);
+        const group = groups.get(slug) ?? { posts: [], label: tag };
+        group.posts.push(post);
+        groups.set(slug, group);
+      }
+    }
+    for (const [tag, group] of groups) {
+      routes.push({
+        params: { locale: locale.code, tag },
+        props: { posts: group.posts, title: `#${group.label}` },
+      });
+    }
+  }
+
+  return routes;
+}
+
+const { posts, title } = Astro.props as { posts: Awaited<ReturnType<typeof getCollection<'blog'>>>; title: string };
+const locale = Astro.params.locale as Locale;
+---
+<BaseLayout locale={locale} path="blog" title={title}>
+  <div class="u-container">
+    <Archive locale={locale} posts={posts} title={title} showSwitch={false} />
+  </div>
+</BaseLayout>

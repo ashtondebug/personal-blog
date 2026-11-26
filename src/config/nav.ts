@@ -6,9 +6,8 @@ export interface NavItem {
   /** 语言前缀之后的路径；空串表示首页。末尾不加斜杠，由 localeUrl 补齐 */
   path: string;
   /**
-   * 页面是否已经存在。
-   * Phase 2 只有首页；其余页面在 Phase 5 创建后再置为 true。
-   * 未启用的项渲染为不可点击的弱化文本，避免产生死链。
+   * 页面是否已经存在。Phase 5 起八个页面全部存在，因此全部为 true；
+   * 保留该字段是为了未来新增板块时可以先挂入口、后建页面，避免死链。
    */
   enabled: boolean;
 }
@@ -17,12 +16,12 @@ export interface NavItem {
 export const PRIMARY_NAV: NavItem[] = [
   { key: 'nav.home', path: '', enabled: true },
   { key: 'nav.blog', path: 'blog', enabled: true },
-  { key: 'nav.knowledge', path: 'knowledge', enabled: false },
-  { key: 'nav.projects', path: 'projects', enabled: false },
-  { key: 'nav.gallery', path: 'gallery', enabled: false },
-  { key: 'nav.moments', path: 'moments', enabled: false },
+  { key: 'nav.knowledge', path: 'knowledge', enabled: true },
+  { key: 'nav.projects', path: 'projects', enabled: true },
+  { key: 'nav.gallery', path: 'gallery', enabled: true },
+  { key: 'nav.moments', path: 'moments', enabled: true },
   { key: 'nav.about', path: 'about', enabled: true },
 ];
 
 /** 页脚条目 */
-export const FOOTER_NAV: NavItem[] = [{ key: 'nav.guestbook', path: 'guestbook', enabled: false }];
+export const FOOTER_NAV: NavItem[] = [{ key: 'nav.guestbook', path: 'guestbook', enabled: true }];

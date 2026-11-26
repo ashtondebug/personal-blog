@@ -79,6 +79,8 @@
 | 跳至正文 | ✅ 已实现 | `.skip-link`，仅键盘聚焦时出现 |
 | 焦点环 | ✅ 已实现 | 全局 `:focus-visible` 2px 描边 |
 | 减少动效 | ✅ 已实现 | `reset.css` 内全局 `prefers-reduced-motion` 降级 |
-| 导航抽屉（移动端） | ⏳ Phase 5 | 当前移动端导航为横向滚动 |
+| 列表视图切换 | ✅ 已实现 | `src/scripts/blog-view.ts`；`data-view` 驱动 CSS，`localStorage: blog:view` 持久化；无 JS 时隐藏切换器 |
+| 导航抽屉（移动端） | ⏳ Phase 7 | 当前移动端导航为横向滚动 |
 | 搜索浮层 `/` `Esc` | ⏳ Phase 6 | — |
-| 灯箱 / 阅读进度 / 播放器 | ⏳ Phase 7 | — |
+| 灯箱 | ⏳ Phase 7 | 图集当前点开原图新标签页 |
+| 阅读进度 / 播放器 | ⏳ Phase 7 | — |

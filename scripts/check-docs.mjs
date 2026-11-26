@@ -79,7 +79,9 @@ function checkLinks(relPath) {
       return;
     }
     if (inFence) return;
-    for (const m of line.matchAll(linkRe)) {
+    // 行内代码里的示例链接不算真链接（如 `[目标](../目标/)` 的语法说明）
+    const scanLine = line.replace(/`[^`]*`/g, '');
+    for (const m of scanLine.matchAll(linkRe)) {
       const raw = m[1].trim();
       const target = raw.replace(/^<|>$/g, '');
       const at = `${relPath}:${i + 1}`;

@@ -1,0 +1,80 @@
+---
+import { t, tFormat } from '../../i18n/ui';
+import { localeUrl } from '../../i18n/url';
+import type { Locale } from '../../i18n/config';
+
+interface Props {
+  locale: Locale;
+  /** 类别路径前缀（不含语言段），如 'blog' */
+  base: string;
+  current: number;
+  total: number;
+}
+
+const { locale, base, current, total } = Astro.props;
+const href = (page: number) =>
+  page <= 1 ? localeUrl(locale, base) : localeUrl(locale, `${base}/page/${page}`);
+---
+{
+  total > 1 && (
+    <nav class="pagination u-sans" aria-label={tFormat(locale, 'blog.pageN', { n: current })}>
+      {current > 1 ? (
+        <a class="pagination__link" href={href(current - 1)} rel="prev">
+          ← {t(locale, 'pagination.prev')}
+        </a>
+      ) : (
+        <span class="pagination__link pagination__link--disabled" aria-disabled="true">
+          ← {t(locale, 'pagination.prev')}
+        </span>
+      )}
+
+      <span class="pagination__status u-muted">
+        {tFormat(locale, 'blog.pageN', { n: current })} / {total}
+      </span>
+
+      {current < total ? (
+        <a class="pagination__link" href={href(current + 1)} rel="next">
+          {t(locale, 'pagination.next')} →
+        </a>
+      ) : (
+        <span class="pagination__link pagination__link--disabled" aria-disabled="true">
+          {t(locale, 'pagination.next')} →
+        </span>
+      )}
+    </nav>
+  )
+}
+
+<style>
+  .pagination {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-top: var(--space-12);
+    padding-top: var(--space-6);
+    border-top: var(--line-hair) solid var(--color-line);
+    font-size: var(--text-sm);
+  }
+
+  .pagination__link {
+    color: var(--color-muted);
+    text-decoration: none;
+  }
+
+  a.pagination__link:hover {
+    color: var(--color-text);
+    text-decoration: underline;
+  }
+
+  .pagination__link--disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  .pagination__status {
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+  }
+</style>

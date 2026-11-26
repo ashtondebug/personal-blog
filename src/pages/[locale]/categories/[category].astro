@@ -1,0 +1,41 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Archive from '../../../components/blog/Archive.astro';
+import { getCollection } from 'astro:content';
+import { LOCALES, type Locale } from '../../../i18n/config';
+import { byLocale, published, sortByDateDesc } from '../../../lib/content';
+import { taxonomySlug } from '../../../lib/blog';
+
+export async function getStaticPaths() {
+  const all = await getCollection('blog');
+  const routes = [];
+
+  for (const locale of LOCALES) {
+    const posts = sortByDateDesc(byLocale(published(all), locale.code));
+    const groups = new Map<string, typeof posts>();
+    for (const post of posts) {
+      const slug = taxonomySlug(post.data.category);
+      if (!slug) continue;
+      const list = groups.get(slug) ?? [];
+      list.push(post);
+      groups.set(slug, list);
+    }
+    for (const [category, items] of groups) {
+      routes.push({
+        params: { locale: locale.code, category },
+        props: { posts: items, title: items[0]!.data.category },
+      });
+    }
+  }
+
+  return routes;
+}
+
+const { posts, title } = Astro.props as { posts: Awaited<ReturnType<typeof getCollection<'blog'>>>; title: string };
+const locale = Astro.params.locale as Locale;
+---
+<BaseLayout locale={locale} path="blog" title={title}>
+  <div class="u-container">
+    <Archive locale={locale} posts={posts} title={title} showSwitch={false} />
+  </div>
+</BaseLayout>

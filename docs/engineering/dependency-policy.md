@@ -37,7 +37,8 @@
 
 | 包名 | 用途 | 类型(A–E) | 体积影响 | 引入日期 | 关联文档/ADR |
 | --- | --- | --- | --- | --- | --- |
-| _（当前尚无依赖；Phase 1 创建 `package.json` 时开始登记）_ | | | | | |
+| `astro` | 站点框架 | A | 构建期；产物为静态文件 | 2026-11-26 | [ADR-0001](../decisions/0001-astro-as-site-framework.md) |
+| `@astrojs/markdown-remark` | 恢复 unified/remark 管线，挂载 `[[双向链接]]` 插件（Astro 7 默认 Sätteri） | C | 仅构建期，不进客户端 | 2026-11-26 | [ADR-0009](../decisions/0009-markdown-pipeline-and-wiki-links.md) |
 
 ## 5. 版本与锁定
 

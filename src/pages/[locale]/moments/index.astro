@@ -1,0 +1,96 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { LOCALES, type Locale } from '../../../i18n/config';
+import { t } from '../../../i18n/ui';
+import { localeUrl } from '../../../i18n/url';
+import { byLocale, entrySlug, published, sortByDateDesc } from '../../../lib/content';
+import { formatDate, isoDate } from '../../../lib/format';
+
+export function getStaticPaths() {
+  return LOCALES.map((locale) => ({ params: { locale: locale.code } }));
+}
+
+const locale = Astro.params.locale as Locale;
+const all = await getCollection('moments');
+const moments = sortByDateDesc(byLocale(published(all), locale));
+---
+<BaseLayout locale={locale} path="moments" title={t(locale, 'nav.moments')}>
+  <div class="u-container stream">
+    <h1>{t(locale, 'nav.moments')}</h1>
+
+    {
+      moments.length === 0 ? (
+        <p class="u-muted u-sans">{t(locale, 'taxonomy.empty')}</p>
+      ) : (
+        <ol role="list" class="items">
+          {moments.map((moment) => (
+            <li class="item">
+              <p class="item__date u-sans u-muted">
+                <time datetime={isoDate(moment.data.date)}>{formatDate(locale, moment.data.date)}</time>
+              </p>
+              <div class="item__body">
+                <p class="item__text">{moment.data.description}</p>
+                <a class="item__link u-sans" href={localeUrl(locale, `moments/${entrySlug(moment.id)}`)}>
+                  {moment.data.title} →
+                </a>
+              </div>
+            </li>
+          ))}
+        </ol>
+      )
+    }
+  </div>
+</BaseLayout>
+
+<style>
+  .stream {
+    display: grid;
+    gap: var(--space-8);
+    max-width: 48rem;
+  }
+
+  h1 {
+    font-size: var(--text-3xl);
+  }
+
+  .items {
+    display: grid;
+    gap: var(--space-8);
+    border-top: var(--line-hair) solid var(--color-line);
+    padding-top: var(--space-8);
+  }
+
+  .item {
+    display: grid;
+    grid-template-columns: 8rem 1fr;
+    gap: var(--space-2) var(--space-6);
+  }
+
+  .item__date {
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .item__body {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .item__link {
+    font-size: var(--text-xs);
+    color: var(--color-muted);
+    text-decoration: none;
+  }
+
+  .item__link:hover {
+    color: var(--color-text);
+    text-decoration: underline;
+  }
+
+  @media (max-width: 640px) {
+    .item {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

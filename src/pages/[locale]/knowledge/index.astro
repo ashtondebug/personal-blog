@@ -1,0 +1,110 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { LOCALES, type Locale } from '../../../i18n/config';
+import { t } from '../../../i18n/ui';
+import { localeUrl } from '../../../i18n/url';
+import { byLocale, entrySlug, published, sortByDateDesc } from '../../../lib/content';
+
+export function getStaticPaths() {
+  return LOCALES.map((locale) => ({ params: { locale: locale.code } }));
+}
+
+const locale = Astro.params.locale as Locale;
+const all = await getCollection('knowledge');
+const entries = byLocale(published(all), locale);
+
+/** 按 section 分组；未声明 section 的归入「无分组」，组内先按 order 再按日期倒序 */
+const groups = new Map<string, typeof entries>();
+for (const entry of sortByDateDesc(entries)) {
+  const key = entry.data.section?.trim() || '';
+  const list = groups.get(key) ?? [];
+  list.push(entry);
+  groups.set(key, list);
+}
+const ordered = [...groups.entries()]
+  .sort(([a], [b]) => a.localeCompare(b))
+  .map(([section, items]) => ({
+    section,
+    items: [...items].sort((a, b) => (a.data.order ?? Number.MAX_SAFE_INTEGER) - (b.data.order ?? Number.MAX_SAFE_INTEGER)),
+  }));
+---
+<BaseLayout locale={locale} path="knowledge" title={t(locale, 'nav.knowledge')}>
+  <div class="u-container tree">
+    <h1>{t(locale, 'nav.knowledge')}</h1>
+
+    {
+      ordered.length === 0 ? (
+        <p class="u-muted u-sans">{t(locale, 'taxonomy.empty')}</p>
+      ) : (
+        ordered.map((group) => (
+          <section class="group">
+            {group.section && <h2 class="group__title u-sans">{group.section}</h2>}
+            <ul role="list" class="entries">
+              {group.items.map((entry) => (
+                <li>
+                  <a class="entries__link" href={localeUrl(locale, `knowledge/${entrySlug(entry.id)}`)}>
+                    <span class="entries__title">{entry.data.title}</span>
+                    <span class="entries__desc u-muted">{entry.data.description}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))
+      )
+    }
+  </div>
+</BaseLayout>
+
+<style>
+  .tree {
+    display: grid;
+    gap: var(--space-12);
+    max-width: 52rem;
+  }
+
+  h1 {
+    font-size: var(--text-3xl);
+  }
+
+  .group {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .group__title {
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-muted);
+    padding-bottom: var(--space-2);
+    border-bottom: var(--line-hair) solid var(--color-line);
+  }
+
+  .entries {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .entries__link {
+    display: grid;
+    gap: var(--space-1);
+    text-decoration: none;
+    padding-block: var(--space-2);
+  }
+
+  .entries__title {
+    font-size: var(--text-lg);
+  }
+
+  .entries__link:hover .entries__title {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .entries__desc {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+  }
+</style>

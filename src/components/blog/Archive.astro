@@ -1,0 +1,207 @@
+---
+import { t, tFormat } from '../../i18n/ui';
+import { localeUrl } from '../../i18n/url';
+import { entrySlug, readingMinutes, type EntryOf } from '../../lib/content';
+import { formatDate, isoDate } from '../../lib/format';
+import type { Locale } from '../../i18n/config';
+import ViewSwitcher from './ViewSwitcher.astro';
+
+interface Props {
+  locale: Locale;
+  posts: EntryOf<'blog'>[];
+  title: string;
+  /** 第 2 页起显示「第 N 页」 */
+  pageNumber?: number;
+  showSwitch?: boolean;
+}
+
+const { locale, posts, title, pageNumber = 1, showSwitch = true } = Astro.props;
+const label = pageNumber > 1 ? `${title} · ${tFormat(locale, 'blog.pageN', { n: pageNumber })}` : title;
+---
+<section class="archive" data-archive data-view="list">
+  <header class="archive__head">
+    <h1>{label}</h1>
+    {showSwitch && posts.length > 0 && <ViewSwitcher locale={locale} />}
+  </header>
+
+  {
+    posts.length === 0 ? (
+      <div class="empty u-sans">
+        <p class="empty__title">{t(locale, 'blog.empty.title')}</p>
+        <p class="u-muted">{t(locale, 'blog.empty.hint')}</p>
+      </div>
+    ) : (
+      <ul role="list" class="posts" aria-label={t(locale, 'blog.listLabel')}>
+        {posts.map((post) => {
+          const slug = entrySlug(post.id);
+          const minutes = readingMinutes(post.body);
+          return (
+            <li class="post">
+              <a class="post__title" href={localeUrl(locale, `blog/${slug}`)}>
+                {post.data.title}
+              </a>
+              <p class="post__desc">{post.data.description}</p>
+              <p class="post__meta u-sans u-muted">
+                <time datetime={isoDate(post.data.date)}>{formatDate(locale, post.data.date)}</time>
+                <span aria-hidden="true">·</span>
+                <span>{tFormat(locale, 'blog.readingTime', { n: minutes })}</span>
+                {post.data.category && (
+                  <>
+                    <span aria-hidden="true">·</span>
+                    <span>{post.data.category}</span>
+                  </>
+                )}
+              </p>
+            </li>
+          );
+        })}
+      </ul>
+    )
+  }
+</section>
+
+<script>
+  import '../../scripts/blog-view';
+</script>
+
+<style>
+  .archive {
+    display: grid;
+    gap: var(--space-8);
+    max-width: 60rem;
+  }
+
+  .archive__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    gap: var(--space-4);
+  }
+
+  h1 {
+    font-size: var(--text-3xl);
+  }
+
+  .posts {
+    display: grid;
+    gap: var(--space-8);
+    border-top: var(--line-hair) solid var(--color-line);
+    padding-top: var(--space-8);
+  }
+
+  .post {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .post__title {
+    font-size: var(--text-xl);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .post__title:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .post__desc {
+    color: var(--color-muted);
+    max-width: var(--measure-prose);
+  }
+
+  .post__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  /* 网格视图 */
+  .archive[data-view='grid'] .posts {
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    gap: var(--space-6);
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  .archive[data-view='grid'] .post {
+    border: var(--line-hair) solid var(--color-line);
+    border-radius: var(--radius-md);
+    padding: var(--space-4);
+  }
+
+  .archive[data-view='grid'] .post__title {
+    font-size: var(--text-lg);
+  }
+
+  /* 杂志视图：首条突出 */
+  .archive[data-view='magazine'] .posts {
+    gap: var(--space-12);
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  .archive[data-view='magazine'] .post:first-child .post__title {
+    font-size: var(--text-3xl);
+    line-height: var(--leading-tight);
+  }
+
+  .archive[data-view='magazine'] .post:first-child {
+    padding-bottom: var(--space-8);
+    border-bottom: var(--line-hair) solid var(--color-line);
+  }
+
+  .archive[data-view='magazine'] .post:not(:first-child) {
+    display: grid;
+    grid-template-columns: 8rem 1fr;
+    gap: var(--space-2) var(--space-6);
+    align-items: baseline;
+  }
+
+  .archive[data-view='magazine'] .post:not(:first-child) .post__title {
+    grid-column: 2;
+    font-size: var(--text-lg);
+  }
+
+  .archive[data-view='magazine'] .post:not(:first-child) .post__desc {
+    grid-column: 2;
+  }
+
+  .archive[data-view='magazine'] .post:not(:first-child) .post__meta {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    flex-direction: column;
+  }
+
+  .empty {
+    border-top: var(--line-hair) solid var(--color-line);
+    padding-top: var(--space-8);
+    font-size: var(--text-sm);
+  }
+
+  .empty__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-2);
+  }
+
+  @media (max-width: 640px) {
+    .archive[data-view='magazine'] .post:not(:first-child) {
+      grid-template-columns: 1fr;
+    }
+
+    .archive[data-view='magazine'] .post:not(:first-child) .post__title,
+    .archive[data-view='magazine'] .post:not(:first-child) .post__desc,
+    .archive[data-view='magazine'] .post:not(:first-child) .post__meta {
+      grid-column: 1;
+      grid-row: auto;
+    }
+
+    .archive[data-view='magazine'] .post:not(:first-child) .post__meta {
+      flex-direction: row;
+    }
+  }
+</style>
