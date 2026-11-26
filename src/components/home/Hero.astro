@@ -4,6 +4,7 @@ import { HERO_IMAGE, HERO_JP_LABEL } from '../../config/home';
 import { localeUrl } from '../../i18n/url';
 import { t } from '../../i18n/ui';
 import type { Locale } from '../../i18n/config';
+import Typewriter from './Typewriter.astro';
 
 interface Props {
   locale: Locale;
@@ -23,7 +24,7 @@ const heroSrc = HERO_IMAGE ? `${import.meta.env.BASE_URL}${HERO_IMAGE}` : undefi
     </p>
 
     <h1 class="hero__title" id="hero-title">{SITE_NAME}</h1>
-    <p class="hero__lead">{t(locale, 'site.tagline')}</p>
+    <Typewriter locale={locale} />
 
     <div class="hero__actions">
       <a class="hero__cta" href={localeUrl(locale, 'blog')}>
@@ -126,11 +127,6 @@ const heroSrc = HERO_IMAGE ? `${import.meta.env.BASE_URL}${HERO_IMAGE}` : undefi
     line-height: 1.02;
     letter-spacing: -0.03em;
     text-shadow: 0.06em 0.06em 0 color-mix(in srgb, var(--color-accent) 55%, transparent);
-  }
-
-  .hero__lead {
-    color: var(--color-hero-muted);
-    max-width: 32rem;
   }
 
   .hero__actions {

@@ -1,0 +1,63 @@
+---
+import type { Locale } from '../../i18n/config';
+import { t } from '../../i18n/ui';
+import { HERO_LINES } from '../../config/home';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const lines = HERO_LINES[locale] ?? [t(locale, 'site.tagline')];
+const spoken = lines.join('　');
+---
+<p class="tw" data-typewriter data-lines={JSON.stringify(lines)}>
+  <span class="tw__text" data-tw-text aria-hidden="true">{lines[0]}</span>
+  <span class="tw__cursor" aria-hidden="true">▍</span>
+  <span class="u-visually-hidden" data-tw-sr>{spoken}</span>
+</p>
+
+<script>
+  import '../../scripts/typewriter';
+</script>
+
+<style>
+  .tw {
+    display: flex;
+    align-items: baseline;
+    gap: 0.15em;
+    min-height: 3.4em;
+    color: var(--color-hero-muted);
+    font-size: var(--text-base);
+    line-height: 1.7;
+    max-width: 34rem;
+  }
+
+  .tw__text {
+    white-space: pre-wrap;
+  }
+
+  .tw__cursor {
+    color: var(--color-accent);
+    animation: tw-blink 1s steps(1, end) infinite;
+  }
+
+  @keyframes tw-blink {
+    0%,
+    49% {
+      opacity: 1;
+    }
+
+    50%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* 减少动效：不闪、不跑脚本，直接显示第一句 */
+  @media (prefers-reduced-motion: reduce) {
+    .tw__cursor {
+      animation: none;
+    }
+  }
+</style>
