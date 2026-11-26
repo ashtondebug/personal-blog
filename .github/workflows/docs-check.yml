@@ -1,0 +1,21 @@
+name: Docs Check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+      - name: 检查文档链接与结构
+        run: node scripts/check-docs.mjs

@@ -1,0 +1,52 @@
+﻿# 计划索引
+
+> **用途**：计划板块入口。`docs/` 说"是什么/为什么"，`plans/` 说"什么时候做/做到哪一步"。
+> **状态**：Confirmed（目录约定）+ Proposed（当前路线图内容）
+> **更新**：2026-11-26
+> **相关**：[路线图](./active/000-initial-implementation-roadmap.md) · [技术债](./tech-debt.md) · [文档地图](../docs/PROJECT_MAP.md) · [需求清单](../docs/product/requirements.md)
+
+## 1. 目录约定
+
+```text
+plans/
+├── index.md                          本文件
+├── active/                           进行中的计划
+│   └── 000-initial-implementation-roadmap.md
+├── completed/                        已完成计划归档
+├── completed/                        已完成计划归档
+│   └── 000-project-mapping.md        Phase 0：项目知识体系（已完成）
+└── tech-debt.md                      技术债 / 风险 / 待验证台账
+```
+
+- 文件名格式：`NNN-kebab-case.md`，编号递增不复用。
+- 一个计划完成后移入 `completed/`，并在本文登记"已完成 + 完成日期 + 结果链接"。
+- 计划内容只做**规划**，不写实现细节；实现细节归 `docs/engineering/`。
+
+## 2. 与 `docs/` 的边界
+
+| 问题 | 去哪 |
+| --- | --- |
+| 这个功能应该是什么行为？ | `docs/product/` |
+| 为什么这样架构？ | `docs/architecture/` + `docs/decisions/` |
+| 现在做到哪一步？下一步做什么？ | `plans/` |
+| 已知但没修的债？ | `plans/tech-debt.md` |
+
+## 3. 当前状态
+
+| 计划 | 状态 | 说明 |
+| --- | --- | --- |
+| [初始实施路线图](./active/000-initial-implementation-roadmap.md) | Proposed（待用户确认后进入 Phase 1） | 12 个阶段，只规划未执行 |
+| [000 · 项目知识体系](./completed/000-project-mapping.md) | 已完成（2026-11-26） | 本知识库、ADR、路线图、文档检查工具 |
+
+## 4. 计划的生命周期
+
+1. 立项：写清目标、前置条件、交付物、验收标准、依赖与风险。
+2. 执行：状态标 `In Progress`；每周/每阶段同步更新状态列。
+3. 收尾：构建通过 + 文档同步 + ADR 更新 + 无死链（阶段门禁）。
+4. 归档：移入 `completed/`，本文登记结果。
+
+## 5. 纪律
+
+- 不跳阶段：未经用户确认，不得越过未完成阶段提前开发（[路线图](./active/000-initial-implementation-roadmap.md)）。
+- 计划变更必须写原因；不允许悄悄改验收标准。
+- 技术债不"口头记账"：全部进 [tech-debt.md](./tech-debt.md)。
