@@ -21,7 +21,7 @@ export const PRIMARY_NAV: NavItem[] = [
   { key: 'nav.projects', path: 'projects', enabled: false },
   { key: 'nav.gallery', path: 'gallery', enabled: false },
   { key: 'nav.moments', path: 'moments', enabled: false },
-  { key: 'nav.about', path: 'about', enabled: false },
+  { key: 'nav.about', path: 'about', enabled: true },
 ];
 
 /** 页脚条目 */

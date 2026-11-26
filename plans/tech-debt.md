@@ -37,6 +37,7 @@
 | TD-18 | 文档与实现同步尚无自动校验 | 债务 | 文档漂移 | Phase 12 前 | Open（当前仅链接检查） | [脚本](../scripts/check-docs.mjs) |
 | TD-19 | 站内链接检查工具未建立 | 债务 | 发布后 404 | Phase 6 前 | Open | [测试策略](../docs/engineering/testing-strategy.md) |
 | TD-20 | 评论数据备份/导出流程未建立 | 风险 | 数据丢失 | Phase 8 | Open | [Waline](../docs/integrations/waline.md) |
+| TD-21 | 内容页的语言切换尚未生效（缺 `translationKey` 派生数据） | 待验证 | 多语言文章切换、hreflang 部分存在场景 | Phase 4 | Open | [路由与 i18n](../docs/architecture/routing-and-i18n.md) |
 
 ## 3. 维护规则
 

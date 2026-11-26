@@ -9,11 +9,12 @@ import ThemeToggle from '../ui/ThemeToggle.astro';
 
 interface Props {
   locale: Locale;
-  /** 当前页面在导航中的 path（用于 aria-current） */
-  currentPath?: string;
+  /** 当前版块路径（不含语言段），用于导航高亮与语言切换 */
+  path?: string;
+  availableLocales?: Locale[];
 }
 
-const { locale, currentPath = '' } = Astro.props;
+const { locale, path = '', availableLocales } = Astro.props;
 ---
 <header class="header">
   <div class="u-container header__inner">
@@ -28,7 +29,7 @@ const { locale, currentPath = '' } = Astro.props;
                 <a
                   class="nav__link"
                   href={localeUrl(locale, item.path)}
-                  aria-current={item.path === currentPath ? 'page' : undefined}
+                  aria-current={item.path === path ? 'page' : undefined}
                 >
                   {t(locale, item.key)}
                 </a>
@@ -44,7 +45,7 @@ const { locale, currentPath = '' } = Astro.props;
     </nav>
 
     <div class="header__controls">
-      <LanguageSwitcher locale={locale} />
+      <LanguageSwitcher locale={locale} path={path} availableLocales={availableLocales} />
       <ThemeToggle locale={locale} />
     </div>
   </div>

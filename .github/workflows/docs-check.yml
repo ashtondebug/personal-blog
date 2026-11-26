@@ -21,3 +21,9 @@ jobs:
         run: node scripts/check-docs.mjs
       - name: 检查设计 token 对比度
         run: node scripts/check-contrast.mjs
+      - name: 安装依赖
+        run: npm ci
+      - name: 构建站点
+        run: npm run build
+      - name: 校验 i18n 产物
+        run: node scripts/check-i18n.mjs

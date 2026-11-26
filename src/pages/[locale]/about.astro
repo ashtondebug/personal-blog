@@ -1,0 +1,34 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { LOCALES, type Locale } from '../../i18n/config';
+import { t, type UiKey } from '../../i18n/ui';
+
+export function getStaticPaths() {
+  return LOCALES.map((locale) => ({ params: { locale: locale.code } }));
+}
+
+const locale = Astro.params.locale as Locale;
+const titleKey: UiKey = 'nav.about';
+---
+<BaseLayout locale={locale} title={t(locale, titleKey)} path="about">
+  <div class="u-container page">
+    <h1>{t(locale, titleKey)}</h1>
+    <p class="u-muted u-sans">{t(locale, 'about.placeholder')}</p>
+  </div>
+</BaseLayout>
+
+<style>
+  .page {
+    display: grid;
+    gap: var(--space-4);
+    max-width: 42rem;
+  }
+
+  h1 {
+    font-size: var(--text-3xl);
+  }
+
+  p {
+    font-size: var(--text-sm);
+  }
+</style>

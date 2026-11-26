@@ -67,6 +67,13 @@ URL 生成统一使用 `src/i18n/url.ts` 的 `localeUrl(locale, path?)`（内部
 - 不生成伪 `hreflang`：只对真正存在的语言版本输出 `<link rel="alternate" hreflang>`。
 - 语言选择记忆：可选，存 `localStorage: blog:locale`（Proposed）。**注意**不得据此自动跳转用户所在语言——会破坏分享链接的可预测性。
 
+### 5.1 实现（Phase 3）
+
+- `BaseLayout` 接收 `path`（版块路径，不含语言段）与 `availableLocales`；`SiteHeader` → `LanguageSwitcher` 用同一 `path` 生成其他语言的同一版块链接，**不会退回首页**。
+- 当前语言项用 `aria-current="true"`（语言这一组的当前项）；导航当前版块用 `aria-current="page"`，全页**只有一个** `aria-current="page"`，便于自动化校验。
+- `availableLocales` 缺省为全部语言（站点级页面）；内容页在 Phase 4 接入后按 `translationKey` 分组传入，不存在的语言渲染为不可用文本。
+- 校验脚本 `scripts/check-i18n.mjs` 会检查"其他语言的切换链接指向同一版块"。
+
 ## 6. 回退与 404
 
 - **不使用内容级 fallback**：需求明确"不生成不存在的翻译链接"，回退渲染会让用户看到错误语言的内容，等价于伪造翻译。
@@ -74,9 +81,13 @@ URL 生成统一使用 `src/i18n/url.ts` 的 `localeUrl(locale, path?)`（内部
 - 非法 `locale` 段 → 404，不猜测、不重定向。
 - 尾斜杠策略（`trailingSlash`）与 `build.format` 需与 `base` 一起定案，否则站内链接会出现重定向链（`Needs Validation`）。
 
-## 7. 元信息一致性
+## 7. 元信息与 404
 
-每个页面必须输出：`<html lang>`（按页面语言）、`<title>`（含站点名与页面名，站点名未定 → 走配置项）、`meta description`、`canonical`（绝对 URL，需 `site`）、`hreflang` 组（仅存在的语言版本）、`og:locale`（`zh_CN` / `zh_TW` / `en` / `ja` 这类下划线形式）。四语言各自的文案来自词典，禁止把中文文案直接塞进英文页面的 meta。
+每个页面必须输出：`<html lang>`（按页面语言）、`<title>`（含站点名与页面名）、`meta description`、`canonical`（绝对 URL，需 `site`）、`hreflang` 组（仅存在的语言版本）、`x-default`（指向默认语言）、`og:locale`（`zh_CN` / `zh_TW` / `en_US` / `ja_JP`）。四语言各自的文案来自词典，禁止把中文文案直接塞进英文页面的 meta。
+
+**实现（Phase 3）**：上述元信息由 `BaseLayout` 统一输出；`showAlternates={false}` 用于 404 这类不该有语言替代的页面；`noindex` 控制是否输出 `robots`。
+
+**404**：GitHub Pages 只支持**一个**全局 `404.html`，无法按语言分文件。因此 `src/pages/404.astro` 静态渲染默认语言文案，再由一段内联脚本按 URL 语言段（其次浏览器语言）替换标题与提示并更新 `documentElement.lang`；禁用 JS 时显示默认语言，页面仍提供四语言首页入口。这是平台限制下的折中，已在 [Phase 3 报告](../../plans/completed/003-phase-3-i18n.md) 记录。
 
 ## 8. 检查清单（实现路由时逐条核对）
 

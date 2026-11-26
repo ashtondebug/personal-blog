@@ -1,0 +1,119 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE_NAME } from '../config/site';
+import { DEFAULT_LOCALE, LOCALES, type Locale } from '../i18n/config';
+import { localeUrl } from '../i18n/url';
+import { t } from '../i18n/ui';
+
+const locale: Locale = DEFAULT_LOCALE;
+
+// 每种语言的 404 文案：静态渲染默认语言，客户端按路径/浏览器语言切换
+const texts = Object.fromEntries(
+  LOCALES.map((item) => [
+    item.code,
+    {
+      title: t(item.code, 'notFound.title'),
+      hint: t(item.code, 'notFound.hint'),
+    },
+  ]),
+);
+---
+<BaseLayout
+  locale={locale}
+  title={t(locale, 'notFound.title')}
+  path="__404__"
+  showAlternates={false}
+  noindex
+>
+  <div class="u-container notfound">
+    <p class="notfound__code u-sans u-muted">404</p>
+    <h1 data-notfound-title>{t(locale, 'notFound.title')}</h1>
+    <p class="u-muted u-sans" data-notfound-hint>{t(locale, 'notFound.hint')}</p>
+
+    <ul role="list" class="notfound__links">
+      {
+        LOCALES.map((item) => (
+          <li>
+            <a href={localeUrl(item.code)} lang={item.htmlLang} hreflang={item.htmlLang}>
+              {item.label}
+              <span aria-hidden="true">·</span> {t(item.code, 'notFound.homeLink')}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <script is:inline define:vars={{ texts, siteName: SITE_NAME }}>
+    // 语言感知：优先看 URL 里的语言段，其次浏览器语言；失败则保留默认语言文案
+    (function () {
+      function normalize(value) {
+        var lower = String(value).toLowerCase();
+        if (lower === 'zh-cn') return 'zh-CN';
+        if (lower === 'zh-tw') return 'zh-TW';
+        return lower;
+      }
+
+      var match = location.pathname.match(/\/(zh-CN|zh-TW|en|ja)(\/|$)/i);
+      var code = match ? normalize(match[1]) : null;
+
+      if (!code) {
+        var nav = navigator.language || 'zh-CN';
+        if (/^zh/i.test(nav)) code = /tw|hk|hant/i.test(nav) ? 'zh-TW' : 'zh-CN';
+        else if (/^ja/i.test(nav)) code = 'ja';
+        else if (/^en/i.test(nav)) code = 'en';
+        else code = 'zh-CN';
+      }
+
+      var data = texts[code];
+      if (!data) return;
+
+      document.documentElement.lang = code;
+      document.title = data.title + ' \u00b7 ' + siteName;
+
+      var title = document.querySelector('[data-notfound-title]');
+      if (title) title.textContent = data.title;
+
+      var hint = document.querySelector('[data-notfound-hint]');
+      if (hint) hint.textContent = data.hint;
+    })();
+  </script>
+</BaseLayout>
+
+<style>
+  .notfound {
+    display: grid;
+    gap: var(--space-4);
+    max-width: 42rem;
+    padding-block: var(--space-8) var(--space-16);
+  }
+
+  .notfound__code {
+    font-size: var(--text-sm);
+    letter-spacing: 0.3em;
+  }
+
+  .notfound h1 {
+    font-size: var(--text-3xl);
+  }
+
+  .notfound__links {
+    display: grid;
+    gap: var(--space-2);
+    margin-top: var(--space-6);
+    padding-top: var(--space-6);
+    border-top: var(--line-hair) solid var(--color-line);
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+  }
+
+  .notfound__links a {
+    color: var(--color-muted);
+    text-decoration: none;
+  }
+
+  .notfound__links a:hover {
+    color: var(--color-text);
+    text-decoration: underline;
+  }
+</style>

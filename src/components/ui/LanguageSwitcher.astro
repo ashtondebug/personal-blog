@@ -5,20 +5,23 @@ import { t } from '../../i18n/ui';
 
 interface Props {
   locale: Locale;
-  /** 该页面在其他语言下是否真的存在；站点级页面传 false 表示都存在 */
-  variant?: 'site' | 'content';
+  /** 当前版块路径（不含语言段），切换语言时保持同一版块 */
+  path?: string;
+  /** 该页面真实存在的语言；缺省视为全部存在 */
+  availableLocales?: Locale[];
 }
 
-const { locale, variant = 'site' } = Astro.props;
+const { locale, path = '', availableLocales } = Astro.props;
+const available = availableLocales ?? LOCALES.map((item) => item.code);
 
 const links = LOCALES.map((item) => ({
   code: item.code,
   label: item.label,
   htmlLang: item.htmlLang,
-  href: localeUrl(item.code),
+  href: localeUrl(item.code, path),
   current: item.code === locale,
-  // 内容页在 Phase 5 接入 translationKey 判断；站内页面四语言始终存在
-  available: variant === 'site' || item.code === locale,
+  // 不存在的语言版本不生成可点击链接（禁止伪翻译入口）
+  available: available.includes(item.code),
 }));
 ---
 <nav class="lang" aria-label={t(locale, 'lang.label')}>
@@ -27,7 +30,7 @@ const links = LOCALES.map((item) => ({
       links.map((item) => (
         <li>
           {item.current ? (
-            <span class="lang__item lang__item--current" aria-current="page">
+            <span class="lang__item lang__item--current" aria-current="true">
               {item.label}
             </span>
           ) : item.available ? (

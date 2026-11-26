@@ -11,7 +11,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "check:docs": "node scripts/check-docs.mjs",
-    "check:contrast": "node scripts/check-contrast.mjs"
+    "check:contrast": "node scripts/check-contrast.mjs",
+    "check:i18n": "node scripts/check-i18n.mjs"
   },
   "dependencies": {
     "astro": "^7.4.13"

@@ -11,9 +11,9 @@
 
 ## 当前状态
 
-**Phase 2：设计系统与全局布局（已完成）**——设计 token、排版基线、Header/Footer、语言切换与三态主题（浅色/深色/跟随系统，首屏无闪烁）已落地，对比度经脚本与 CI 实测（两套主题全部 ≥ 4.5:1）。
+**Phase 3：多语言系统（已完成）**——四语言页面带 `hreflang` + `x-default` + `og:locale`；语言切换停在**同一版块**；404 按 URL/浏览器语言显示提示；i18n 产物由 `npm run check:i18n` 与 CI 校验。
 
-**尚无**文章内容、八大页面与搜索、评论（按路线图后续阶段推进）。
+设计系统与三态主题已在 Phase 2 落地（对比度实测两套主题全部 ≥ 4.5:1）。**尚无**文章内容、八大页面与搜索、评论（按路线图后续阶段推进）。
 
 ## 常用命令
 
@@ -24,6 +24,7 @@ npm run build           # 构建到 dist/
 npm run preview         # 预览构建产物
 npm run check:docs      # 文档链接与结构检查（CI 也会跑）
 npm run check:contrast  # 设计 token 对比度检查（CI 也会跑）
+npm run check:i18n      # 构建产物的 lang/canonical/hreflang 校验（需先 build，CI 也会跑）
 ```
 
 构建注意：若在受限环境（如沙箱）运行，Astro 会尝试写用户目录的遥测配置，可设环境变量 `ASTRO_TELEMETRY_DISABLED=1`。
@@ -51,7 +52,7 @@ astro.config.mjs     站点配置（site / base / i18n / trailingSlash）
 tsconfig.json        TypeScript 严格模式配置
 docs/                项目知识库（产品/设计/架构/工程/集成/安全/决策/参考资料）
 plans/               路线图、技术债与已完成计划
-scripts/             文档检查、对比度检查
+scripts/             文档检查、对比度检查、i18n 产物检查
 src/
   config/            站点常量与导航配置（站名唯一定义处）
   i18n/              语言定义、UI 词典、带 base 的路径工具

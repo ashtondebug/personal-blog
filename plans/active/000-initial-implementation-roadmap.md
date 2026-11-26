@@ -18,7 +18,7 @@
 | --- | --- | --- | --- | --- |
 | 1 | 项目初始化与基础架构 | `package.json`、`astro.config`、目录骨架、部署工作流 | R-01～R-05 | ✅ 已完成（2026-11-26，[报告](../completed/001-phase-1-initialization.md)） |
 | 2 | 设计系统与全局布局 | token、reset、排版、Header/Footer、三态主题 | 1 | ✅ 已完成（2026-11-26，[报告](../completed/002-phase-2-design-system.md)） |
-| 3 | 多语言系统 | 词典、路由展开、语言切换、meta 多语言 | 2 | 未开始 |
+| 3 | 多语言系统 | 词典、路由展开、语言切换、meta 多语言 | 2 | ✅ 已完成（2026-11-26，[报告](../completed/003-phase-3-i18n.md)） |
 | 4 | 内容模型与 Markdown 管理 | `content.config.ts`、schema、派生索引 | 3 | 未开始 |
 | 5 | 八大页面 | Home/Blog/Projects/Knowledge/About/Gallery/Moments/Guestbook | 4 | 未开始 |
 | 6 | 搜索与阅读功能 | 搜索索引与 UI、TOC、阅读进度与时间、分享、三视图 | 5 | 未开始 |

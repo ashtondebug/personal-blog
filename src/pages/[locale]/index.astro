@@ -11,7 +11,7 @@ export function getStaticPaths() {
 const locale = Astro.params.locale as Locale;
 const definition = getLocaleDefinition(locale);
 ---
-<BaseLayout locale={locale} currentPath="">
+<BaseLayout locale={locale} path="">
   <div class="u-container hero">
     <p class="hero__eyebrow u-sans u-muted" lang={definition.htmlLang}>
       {t(locale, 'site.tagline')}

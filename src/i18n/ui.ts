@@ -24,6 +24,10 @@ export const ui = {
     'lang.label': '语言',
     'skip.toContent': '跳到正文',
     'footer.note': '内容版权归作者所有。',
+    'notFound.title': '页面不存在',
+    'notFound.hint': '这个地址没有对应内容，可能已被移动或删除。',
+    'notFound.homeLink': '返回首页',
+    'about.placeholder': '这一页还没写。作者稍后补充。',
   },
   'zh-TW': {
     'site.tagline': '簡約文藝的個人部落格',
@@ -44,6 +48,10 @@ export const ui = {
     'lang.label': '語言',
     'skip.toContent': '跳至正文',
     'footer.note': '內容版權歸作者所有。',
+    'notFound.title': '頁面不存在',
+    'notFound.hint': '這個位址沒有對應內容，可能已被移動或刪除。',
+    'notFound.homeLink': '返回首頁',
+    'about.placeholder': '這一頁還沒寫。作者稍後補充。',
   },
   en: {
     'site.tagline': 'A minimal, literary personal blog',
@@ -64,6 +72,10 @@ export const ui = {
     'lang.label': 'Language',
     'skip.toContent': 'Skip to content',
     'footer.note': 'All content is the author\u2019s own.',
+    'notFound.title': 'Page not found',
+    'notFound.hint': 'This address has no content. It may have moved or been removed.',
+    'notFound.homeLink': 'Back to home',
+    'about.placeholder': 'This page has not been written yet.',
   },
   ja: {
     'site.tagline': '簡素で文芸的な個人ブログ',
@@ -84,6 +96,10 @@ export const ui = {
     'lang.label': '言語',
     'skip.toContent': '本文へスキップ',
     'footer.note': 'コンテンツの著作権は作者に帰属します。',
+    'notFound.title': 'ページが見つかりません',
+    'notFound.hint': 'このアドレスに対応する内容はありません。移動または削除された可能性があります。',
+    'notFound.homeLink': 'ホームへ戻る',
+    'about.placeholder': 'このページはまだ書かれていません。',
   },
 } as const;
 

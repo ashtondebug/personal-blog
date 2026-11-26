@@ -3,7 +3,13 @@ import '../styles/tokens.css';
 import '../styles/reset.css';
 import '../styles/base.css';
 import { SITE_NAME } from '../config/site';
-import { getLocaleDefinition, type Locale } from '../i18n/config';
+import {
+  DEFAULT_LOCALE,
+  LOCALE_CODES,
+  getLocaleDefinition,
+  type Locale,
+} from '../i18n/config';
+import { localeUrl } from '../i18n/url';
 import { t } from '../i18n/ui';
 import SiteHeader from '../components/layout/SiteHeader.astro';
 import SiteFooter from '../components/layout/SiteFooter.astro';
@@ -12,17 +18,41 @@ interface Props {
   locale: Locale;
   title?: string;
   description?: string;
-  /** 用于导航高亮，取 NavItem.path */
-  currentPath?: string;
+  /** 版块路径（不含语言段）：用于导航高亮、语言切换与 hreflang */
+  path?: string;
+  /** 该页面真实存在的语言；内容页传入，站点级页面默认全部语言 */
+  availableLocales?: Locale[];
+  /** 404 等页面不输出 alternates */
+  showAlternates?: boolean;
+  noindex?: boolean;
 }
 
-const { locale, title, description, currentPath = '' } = Astro.props;
+const {
+  locale,
+  title,
+  description,
+  path = '',
+  availableLocales,
+  showAlternates = true,
+  noindex = false,
+} = Astro.props;
+
 const definition = getLocaleDefinition(locale);
 const pageTitle = title ? `${title} · ${SITE_NAME}` : SITE_NAME;
 const pageDescription = description ?? t(locale, 'site.tagline');
 
-// canonical 用绝对地址；Astro.url.pathname 已包含 base 前缀
+const available = availableLocales ?? LOCALE_CODES;
+
+// canonical：使用实际路径（已包含 base），保证与 URL 一字不差
 const canonical = new URL(Astro.url.pathname, Astro.site);
+
+// hreflang 只指向真实存在的语言版本，且用绝对地址
+const absolute = (code: Locale) => new URL(localeUrl(code, path), Astro.site).href;
+const alternates = available.map((code) => ({
+  hreflang: getLocaleDefinition(code).htmlLang,
+  href: absolute(code),
+}));
+const xDefaultHref = absolute(DEFAULT_LOCALE);
 ---
 <!doctype html>
 <html lang={definition.htmlLang}>
@@ -32,6 +62,22 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <title>{pageTitle}</title>
     <meta name="description" content={pageDescription} />
     <link rel="canonical" href={canonical.href} />
+    {
+      showAlternates && (
+        <>
+          {alternates.map((item) => (
+            <link rel="alternate" hreflang={item.hreflang} href={item.href} />
+          ))}
+          <link rel="alternate" hreflang="x-default" href={xDefaultHref} />
+        </>
+      )
+    }
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:locale" content={definition.ogLocale} />
+    <meta property="og:type" content="website" />
     <script is:inline>
       // 首屏绘制前决定主题，避免闪白/闪黑（docs/design/color-and-theme.md）
       (function () {
@@ -52,7 +98,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   </head>
   <body>
     <a class="skip-link" href="#main">{t(locale, 'skip.toContent')}</a>
-    <SiteHeader locale={locale} currentPath={currentPath} />
+    <SiteHeader locale={locale} path={path} availableLocales={available} />
     <main id="main" class="main">
       <slot />
     </main>

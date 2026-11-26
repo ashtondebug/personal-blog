@@ -39,6 +39,7 @@ plans/
 | [000 · 项目知识体系](./completed/000-project-mapping.md) | 已完成（2026-11-26） | 本知识库、ADR、路线图、文档检查工具 |
 | [001 · 项目初始化](./completed/001-phase-1-initialization.md) | 已完成（2026-11-26） | Astro 骨架、四语言首页、部署工作流 |
 | [002 · 设计系统与全局布局](./completed/002-phase-2-design-system.md) | 已完成（2026-11-26） | token、reset、排版基线、Header/Footer、三态主题、对比度检查 |
+| [003 · 多语言系统](./completed/003-phase-3-i18n.md) | 已完成（2026-11-26） | hreflang/x-default/og:locale、版块级语言切换、语言感知 404、i18n 产物校验 |
 
 ## 4. 计划的生命周期
 
