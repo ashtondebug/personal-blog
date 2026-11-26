@@ -109,6 +109,12 @@ for (const section of SECTIONS) {
     if (currentCount !== 1) {
       fail(`${tag}: aria-current="page" 出现 ${currentCount} 次，期望 1 次`);
     }
+
+    // 哨兵路径绝不允许泄漏到链接里（曾因 404 的 navPath 与状态切换路径耦合而出现）
+    const leaked = html.match(/href="[^"]*__[^"]*"/);
+    if (leaked) {
+      fail(`${tag}: 链接中出现内部哨兵路径 ${leaked[0]}`);
+    }
   }
 }
 
@@ -125,6 +131,9 @@ if (notFound) {
     if (!notFound.includes(`href="${BASE}/${locale.code}/"`)) {
       fail(`404: 缺少 ${locale.code} 首页入口`);
     }
+  }
+  if (/href="[^"]*__[^"]*"/.test(notFound)) {
+    fail('404: 语言切换/入口链接中泄漏了内部哨兵路径');
   }
 }
 

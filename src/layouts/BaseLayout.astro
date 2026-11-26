@@ -18,8 +18,10 @@ interface Props {
   locale: Locale;
   title?: string;
   description?: string;
-  /** 版块路径（不含语言段）：用于导航高亮、语言切换与 hreflang */
+  /** 版块路径（不含语言段）：用于语言切换与 hreflang */
   path?: string;
+  /** 导航高亮用的路径；缺省与 path 相同。404 可传哨兵值表示不高亮 */
+  navPath?: string;
   /** 该页面真实存在的语言；内容页传入，站点级页面默认全部语言 */
   availableLocales?: Locale[];
   /** 404 等页面不输出 alternates */
@@ -32,6 +34,7 @@ const {
   title,
   description,
   path = '',
+  navPath,
   availableLocales,
   showAlternates = true,
   noindex = false,
@@ -98,7 +101,12 @@ const xDefaultHref = absolute(DEFAULT_LOCALE);
   </head>
   <body>
     <a class="skip-link" href="#main">{t(locale, 'skip.toContent')}</a>
-    <SiteHeader locale={locale} path={path} availableLocales={available} />
+    <SiteHeader
+      locale={locale}
+      navPath={navPath ?? path}
+      switchPath={path}
+      availableLocales={available}
+    />
     <main id="main" class="main">
       <slot />
     </main>
